@@ -1,0 +1,94 @@
+{
+  "VerifiedOn": "2026-10-16",
+  "MATLABRelease": "2026b",
+  "ProjectFile": "StampFly_Official.prj",
+  "DefinitionFolder": "resources/project",
+  "SourceControlIntegration": "Git",
+  "RegisteredExistingFiles": 909,
+  "ProjectPathCount": 13,
+  "Shortcuts": [
+    "プロジェクトの説明",
+    "ロガーアプリ",
+    "受信機モデル",
+    "機体モデル（PID比較版）",
+    "機体モデル（公式比較基準）"
+  ],
+  "ProjectStartupFolder": ".",
+  "CacheFolder": "build/cache",
+  "CodeGenFolder": "build/codegen",
+  "DependencyCacheFile": "build/project/dependencies.graphml",
+  "DependencyNodeCount": 693,
+  "DependencyEdgeCount": 2564,
+  "IndependentSessionReopenVerified": true,
+  "ProjectFilesResolvableFromAnotherFolder": true,
+  "Checks": [
+    {
+      "ID": "Project:Checks:ProjectDefinitionFilesAreUnderSourceControl",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:AllProjectFilesUnderSourceControl",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:AllFilesUnderSourceControlAreInProject",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ProjectFilesExist",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ProjectPath",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ReferencedSubprojects",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:OutdatedPcodedFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MDLToSLX",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:SLPRJ",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:PathCaseSensitive",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MissingOrDuplicateLabelsInProject",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:UnsavedProjectFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    }
+  ],
+  "Notes": [
+    "The 53 files that were untracked before project creation were added to Git on 2026-10-16 at the user request. All 12 project checks passed after source control registration.",
+    "Dependency analysis includes archived code, historical model-editing helpers, external toolkit functions, and generated C++ reference programs; unresolved references in those files remain unchanged."
+  ],
+  "GitRemotes": {
+    "GitLab": "https://insidelabs-git.mathworks.com/jp-cse-group/stampfly_flight_lab.git",
+    "GitHub": "https://github.com/TomoakiYasukawa/Stampfly_Flight_Lab.git"
+  }
+}

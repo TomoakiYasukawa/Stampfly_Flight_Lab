@@ -6,3 +6,5 @@
 *.py text eol=lf
 *.md text eol=lf
 *.ps1 text eol=crlf
+*.prj text eol=lf
+resources/project/**/*.xml text eol=lf

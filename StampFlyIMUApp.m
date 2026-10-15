@@ -176,6 +176,18 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.StatusLabel.Text = sprintf('CH %d の設定を送信', channel);
         end
 
+        function captureExtension(app,sample,frame)
+            if ~app.RecordingActive, return; end
+            try
+                app.RecordingWriter.appendExtension(sample,frame);
+            catch err
+                app.RecordingActive = false;
+                app.RecordButton.Text = '保存再試行';
+                app.RecordingStatusLabel.Text = '記録エラー: ボタンで保存再試行';
+                app.RecordingStatusLabel.Tooltip = err.message;
+            end
+        end
+
         function captureFrame(app, sample, frame)
             if ~app.RecordingActive
                 return
@@ -627,23 +639,8 @@ classdef StampFlyIMUApp < matlab.apps.App
             latestHeight = NaN;
             while numel(app.ByteBuffer) >= 4
                 first = app.ByteBuffer(1:4);
-                if isequal(first,uint8('SFI1').')
-                    frameBytes = 37;
-                elseif isequal(first,uint8('SFI2').')
-                    frameBytes = 63;
-                elseif isequal(first,uint8('SFI3').')
-                    frameBytes = 93;
-                elseif isequal(first,uint8('SFI4').')
-                    frameBytes = 106;
-                elseif isequal(first,uint8('SFI5').')
-                    frameBytes = 111;
-                elseif isequal(first,uint8('SFI6').')
-                    frameBytes = 114;
-                elseif isequal(first,uint8('SFI7').')
-                    frameBytes = 182;
-                elseif isequal(first,uint8('SFI8').')
-                    frameBytes = 190;
-                else
+                frameBytes = imu.frameLength(first);
+                if frameBytes == 0
                     marks = find(app.ByteBuffer(1:end-3) == uint8('S') & ...
                         app.ByteBuffer(2:end-2) == uint8('F') & ...
                         app.ByteBuffer(3:end-1) == uint8('I') & ...
@@ -654,7 +651,9 @@ classdef StampFlyIMUApp < matlab.apps.App
                          app.ByteBuffer(4:end) == uint8('5') | ...
                          app.ByteBuffer(4:end) == uint8('6') | ...
                          app.ByteBuffer(4:end) == uint8('7') | ...
-                         app.ByteBuffer(4:end) == uint8('8')),1);
+                         app.ByteBuffer(4:end) == uint8('8') | ...
+                     app.ByteBuffer(4:end) == uint8('X') | ...
+                     app.ByteBuffer(4:end) == uint8('Y')),1);
                     lf = find(app.ByteBuffer == 10,1);
                     if ~isempty(lf) && (isempty(marks) || lf < marks(1))
                         line = strtrim(string(char(app.ByteBuffer(1:lf-1).')));
@@ -689,7 +688,11 @@ classdef StampFlyIMUApp < matlab.apps.App
                 if numel(app.ByteBuffer) < frameBytes, break; end
                 candidate = app.ByteBuffer(1:frameBytes);
                 try
-                    sample = imu.decodeFrame(candidate);
+                    if first(4)==uint8('X') || first(4)==uint8('Y')
+                        sample = imu.decodeExtensionFrame(candidate);
+                    else
+                        sample = imu.decodeFrame(candidate);
+                    end
                 catch
                     app.CRCErrorCount = app.CRCErrorCount + 1;
                     app.ByteBuffer(1) = [];
@@ -698,6 +701,12 @@ classdef StampFlyIMUApp < matlab.apps.App
                     continue
                 end
                 app.ByteBuffer(1:frameBytes) = [];
+                if isfield(sample,'Kind')
+                    if app.ExpectedBuildID==0 || double(sample.BuildID)==double(app.ExpectedBuildID)
+                        app.captureExtension(sample,candidate);
+                    end
+                    continue
+                end
                 % 同じチャンネルの別ビルドを時刻・欠落・記録へ混ぜない。
                 if sample.Version >= 7 && app.ExpectedBuildID ~= 0 && ...
                         double(sample.BuildID) ~= double(app.ExpectedBuildID)

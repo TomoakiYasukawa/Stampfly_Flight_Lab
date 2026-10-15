@@ -1,6 +1,6 @@
 {
-  "Tests": 9,
-  "Passed": 9,
+  "Tests": 12,
+  "Passed": 12,
   "Failed": 0,
   "Incomplete": 0,
   "ExpectedBuildID": 1401,
@@ -12,6 +12,9 @@
   "WindowSeconds": 10,
   "SerialConnectionsOpened": 0,
   "Cases": [
+    "StampFlyIMUAppDisplayTest/tofGraphUsesTiltProjectionNotKalmanHeight",
+    "StampFlyIMUAppDisplayTest/supplementalFramesKeepOnePlotSamplePerSequence",
+    "StampFlyIMUAppDisplayTest/opticalFlowDistanceIsVisibleInMeters",
     "StampFlyIMUAppDisplayTest/mixedBuildsDoNotClearPlots",
     "StampFlyIMUAppDisplayTest/tenSecondHistoryDoesNotDependOnReceiveRate(ReceiveRate=ToF25Hz)",
     "StampFlyIMUAppDisplayTest/tenSecondHistoryDoesNotDependOnReceiveRate(ReceiveRate=Logger50Hz)",

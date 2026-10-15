@@ -6,13 +6,19 @@ M5Stack の公式飛行制御を、学生が機能ごとに編集できる Simul
 
 ## 開き方
 
-MATLAB の現在のフォルダーをこのリポジトリの直下にして実行します。
+`StampFly_Official.prj` を MATLAB で開いてください。コマンドからは、このリポジトリの直下で次を実行します。
 
 ```matlab
-run('config/startup.m');
+project = openProject('StampFly_Official.prj');
 open_system('StampFly_Official_FlightTest400.slx');
 app = StampFlyIMUApp;
 ```
+
+プロジェクトを開くと、必要な MATLAB パスと `build/cache/`・`build/codegen/` が設定されます。プロジェクトのショートカットから、機体モデル、受信機モデル、ロガーアプリ、README を開けます。プロジェクト定義は `StampFly_Official.prj` と `resources/project/` に保存され、既存の Git リポジトリで管理します。新しいソースやモデルを作成したら、プロジェクトのファイル一覧から追加してください。
+
+プロジェクトを開かずに作業する場合は、従来どおり `run('config/startup.m')` でパスとキャッシュを設定できます。
+
+プロジェクトの再オープン、パス、生成先、Git 状態の確認結果は [プロジェクト設定の検証記録](docs/matlab_project_setup.json) に保存しています。
 
 受信機モデルは `open_system('M5Stamp_IMU_Rx.slx')` で開きます。モデルとアプリの起動時にもパスとキャッシュ保存先を設定します。アプリの `StampFlyIMUApp.xml` は `.m` と同じく直下に置いてください。離着陸と操縦には公式 JoyStick、記録には受信機とロガーアプリを使います。シリアル接続はアプリ上で選択します。
 
@@ -47,7 +53,7 @@ buildReport = build_reorganized_flight_model();
 | `scripts/` | 起動、ビルド、検証、解析、モデル編集履歴 |
 | `models/`、`libraries/` | 代替・ベンチ・再生モデル、既存の学生用ライブラリー |
 | `tests/` | 比較入力、検証結果、検証用モデル、参照コード |
-| `docs/`、`resources/` | 説明・書き込み記録、表示用リソース |
+| `docs/`、`resources/` | 説明・書き込み記録、表示用リソース、MATLAB プロジェクト定義 |
 | `firmware/` | 書き込み済み版と前回成功版 |
 | `official_sources/`、`third_party/` | 公式ソースと依存ソース、各ライセンス |
 | `archive/`、`tools/` | 以前のモデル・説明、補助ツール |

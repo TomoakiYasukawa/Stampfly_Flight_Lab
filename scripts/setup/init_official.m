@@ -16,4 +16,5 @@ types={'uint8','uint32','uint32','uint32','single','uint8','int16','single','sin
  'uint8','uint8','uint8','uint8','uint8','single','single','uint8','uint32'};
 for k=1:numel(names),elements(k)=Simulink.BusElement;elements(k).Name=names{k};elements(k).Dimensions=dimensions(k);elements(k).DataType=types{k};end
 bus=Simulink.Bus;bus.Elements=elements;assignin('base','OfficialDiagnosticBus',bus);
+init_logging_buses();
 end

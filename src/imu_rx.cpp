@@ -12,8 +12,8 @@
 #include <string.h>
 
 namespace {
-constexpr size_t kMaxFrameBytes = 190;
-constexpr size_t kQueueDepth = 32;
+constexpr size_t kMaxFrameBytes = 246;
+constexpr size_t kQueueDepth = 64;
 constexpr uint8_t kBroadcast[6] = {255, 255, 255, 255, 255, 255};
 struct RadioFrame {
   uint8_t length;
@@ -47,8 +47,10 @@ void onReceive(const esp_now_recv_info_t *, const uint8_t *data, int length) {
   const bool isV6 = length == 114 && memcmp(data, "SFI6", 4) == 0;
   const bool isV7 = length == 182 && memcmp(data, "SFI7", 4) == 0;
   const bool isV8 = length == 190 && memcmp(data, "SFI8", 4) == 0;
+  const bool isCommands = length == 190 && memcmp(data, "SFIX", 4) == 0;
+  const bool isSensors = length == 246 && memcmp(data, "SFIY", 4) == 0;
   if (!isV1 && !isV2 && !isV3 && !isV4 && !isV5 && !isV6 &&
-      !isV7 && !isV8) return;
+      !isV7 && !isV8 && !isCommands && !isSensors) return;
   const uint16_t expected = static_cast<uint16_t>(data[length - 2]) |
                             (static_cast<uint16_t>(data[length - 1]) << 8);
   if (crc16(data, static_cast<size_t>(length - 2)) != expected) return;
@@ -198,7 +200,7 @@ void pollCommands() {
 extern "C" void imu_rx_init(uint8_t channel, uint32_t baudRate) {
   if (channel < 1 || channel > 13) channel = 3;
   radioChannel = channel;
-  Serial.setTxBufferSize(512);
+  Serial.setTxBufferSize(1024);
   Serial.begin(baudRate);
   rxQueue = xQueueCreate(kQueueDepth, sizeof(RadioFrame));
   if (rxQueue == nullptr) return;

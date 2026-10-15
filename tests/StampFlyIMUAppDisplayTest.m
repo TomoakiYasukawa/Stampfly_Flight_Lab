@@ -21,6 +21,77 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
     end
 
     methods (Test)
+        function tofGraphUsesTiltProjectionNotKalmanHeight(testCase)
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=official.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            raw.BottomMm=int16(500);
+            estimate.Height=single(.5); % Intentionally equal to the slant range.
+            angles=single([0 0 0;pi/6 0 0;0 pi/4 0;pi/6 pi/4 pi/3]);
+            frames=zeros(190,4,'uint8');
+            for k=1:4
+                raw.Time=single(1+(k-1)/50);
+                estimate.Angles=angles(k,:)';
+                [frames(:,k),~,~]=packer(raw,estimate,control,extra);
+            end
+            testCase.App.processBytes(frames(:));drawnow;
+            slant=findall(testCase.App.ToFAxes,'Type','line','DisplayName','斜距離');
+            corrected=findall(testCase.App.ToFAxes,'Type','line','DisplayName','補正高さ');
+            expected=.5*cos(double(angles(:,1))).*cos(double(angles(:,2)));
+            testCase.verifyEqual(slant.YData,repmat(.5,1,4),'AbsTol',1e-7);
+            testCase.verifyEqual(corrected.YData,expected','AbsTol',1e-6);
+            testCase.verifyGreaterThan(slant.YData(3)-corrected.YData(3),.14);
+        end
+
+        function supplementalFramesKeepOnePlotSamplePerSequence(testCase)
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=official.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            folder=string(fullfile(stampfly_project_root(),'build','tests','logger_display'));
+            file=testCase.App.startRecording(folder);
+            for k=1:101
+                raw.Time=single(1+(k-1)/50);
+                [base,commands,sensors]=packer(raw,estimate,control,extra);
+                % A supplement may arrive before the base packet and in pieces.
+                testCase.App.processBytes([sensors;commands(1:27)]);
+                if k==101,pause(0.1);end % Let the final live redraw pass its 80 ms throttle.
+                testCase.App.processBytes([commands(28:end);base]);
+            end
+            testCase.App.stopRecording();drawnow;
+            [time,~]=testCase.accelLine();
+            saved=load(file,'info','telemetry','extensionTelemetry');
+            joined=imu.readExtendedTelemetry(file);
+            testCase.verifyEqual(numel(time),101);
+            testCase.verifyEqual(time(end),2,'AbsTol',.0011);
+            testCase.verifyEqual(testCase.App.FrameLabel.Text,'フレーム: 101');
+            testCase.verifyEqual(testCase.App.ErrorLabel.Text,'欠落: 0 / CRC: 0 / 対象外: 0');
+            testCase.verifySize(saved.telemetry,[101 80]);
+            testCase.verifySize(saved.extensionTelemetry,[202 126]);
+            testCase.verifyEqual(saved.info.ExtensionFrames,202);
+            testCase.verifyEqual(joined.AppliedPWMFR,repmat(100,101,1));
+            testCase.verifyEqual(joined.FlowShutter16,repmat(8123,101,1));
+        end
+
+        function opticalFlowDistanceIsVisibleInMeters(testCase)
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=official.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            frames=zeros(190,51,'uint8');
+            for k=1:51
+                raw.Time=single(1+(k-1)/50);
+                extra.Distance.PositionEN=single([.004*(k-1);-.002*(k-1)]);
+                extra.Distance.Used=uint8(1);
+                extra.Distance.DeltaEN=single([.004;-.002]);
+                [frames(:,k),~,~]=packer(raw,estimate,control,extra);
+            end
+            testCase.App.processBytes(frames(:));drawnow;
+            plotted=findall(testCase.App.PathAxes,'Type','line');
+            testCase.verifyEqual(numel(plotted),1);
+            testCase.verifyEqual(plotted.XData(end),.2,'AbsTol',1e-6);
+            testCase.verifyEqual(plotted.YData(end),-.1,'AbsTol',1e-6);
+            testCase.verifyGreaterThanOrEqual(numel(plotted.XData),51);
+        end
+
         function mixedBuildsDoNotClearPlots(testCase)
             valid = testCase.frames(50,12,1401,44.729);
             foreign = testCase.frames(50,12,2026101202,1869.960);

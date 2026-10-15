@@ -15,17 +15,11 @@ classdef FlatGroundPoseTracker < handle
 
     methods
         function [positionENU,heightNow] = update(obj,sample)
-            if sample.Version >= 4
-                % SFI4 carries the height calculated on StampFly.
-                heightNow = double(sample.HeightM);
-                heightValid = logical(sample.HeightValid) && ...
-                    isfinite(heightNow) && heightNow >= 0;
-            else
-                % Older recordings only carry the slant range.
-                [heightNow,heightValid,bodyToNED] = imu.correctToFHeight( ...
-                    sample.ToFDistanceM,sample.ToFValid, ...
-                    sample.Orientation,sample.OrientationValid);
-            end
+            % 表示の「補正高さ」は同じToF測定の鉛直投影値。
+            % sample.HeightM は飛行制御のKalman高度で、傾き補正値とは別。
+            [heightNow,heightValid,bodyToNED] = imu.correctToFHeight( ...
+                sample.ToFDistanceM,sample.ToFValid, ...
+                sample.Orientation,sample.OrientationValid);
             if heightValid
                 obj.HeightM = heightNow;
             end

@@ -153,7 +153,7 @@ extern "C" uint8_t imu_tx_send(const uint8_t *frame, uint16_t length) {
   if (!ready || frame == nullptr ||
       (length != 37 && length != 63 && length != 93 && length != 106 &&
        length != 111 && length != 114 && length != 182 &&
-       length != 190)) return 0;
+       length != 190 && length != 246)) return 0;
   // 1 means queued by ESP-NOW; it does not prove the receiver got the frame.
   return imu_tx_radio_queue(kBroadcast,frame,length);
 }

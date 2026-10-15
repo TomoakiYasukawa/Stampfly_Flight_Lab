@@ -15,3 +15,12 @@ does not erase that notice.
 Bosch BMI270 and ST VL53LX sources retain their own notices in their original
 files and the copied `third_party` directory. Logger infrastructure was copied
 from the user's `stampfly_imu_monitor` project.
+
+`src/pmw3901/upstream/Bitcraze_PMW3901.*` retains Bitcraze AB's MIT
+copyright and license in the source headers. The inherited local change sets
+SPI to the PMW3901MB's 2 MHz maximum. The logger wrapper uses that driver for
+initialization and reads one Motion_Burst for each sample.
+
+`src/bmm150/upstream/` retains Bosch Sensortec's BSD-3-Clause license in
+`LICENSE` and the source headers. The compensation driver and cached logger
+wrapper use those sources. Preserve these notices with binary distributions.

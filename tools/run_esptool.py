@@ -4,6 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.stdout.reconfigure(encoding='utf-8')
 root = Path(__file__).resolve().parents[1]
 label, *args = sys.argv[1:]
 log = root / 'logs' / f'{label}.log'
