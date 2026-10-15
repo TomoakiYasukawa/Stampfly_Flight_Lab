@@ -1,0 +1,61 @@
+{
+  "recorded_at_utc": "2026-10-14T23:59:21.079476+00:00",
+  "device": {
+    "port_at_flash": "COM4",
+    "mac": "70:AF:09:DF:A6:C4"
+  },
+  "model": "models/StampFly_Official_FlightTest400.slx",
+  "firmware": "StampFly_Official_FlightTest400.bin",
+  "firmware_sha256": "1be3fd208a48e28de03acec995c71c9858a9d721ee789479e976b68f71d06d43",
+  "motor_output_enabled": true,
+  "flash_verified": true,
+  "flash_log": "logs/flight_enabled_bottom_tof_flash.log",
+  "bottom_tof_enabled": true,
+  "forward_tof_enabled": false,
+  "optical_flow_implemented": false,
+  "changes": [
+    "Single bottom ToF StartMeasurement prevents ULD stream error -20",
+    "Preserve ULD result errors",
+    "Bottom-only status and logger validity",
+    "Battery I2C on core0, cached value at 400 Hz",
+    "Only valid paired JoyStick commands renew flight connection"
+  ],
+  "tests": {
+    "raised_tof_log": "logs/bottom_raised_COM4.bin",
+    "raised_tof_range_m": [
+      0.305,
+      0.345
+    ],
+    "raised_tof_logger_frames": 500,
+    "raised_tof_crc_rejected": 0,
+    "raised_tof_missing": 0,
+    "battery_worker_bench_log": "logs/preflight_nonblocking30_COM4.bin",
+    "battery_worker_bench_task_max_us": 1988,
+    "battery_worker_bench_overruns": 0,
+    "flight_model_usb_log": "logs/flight_enabled_usb_boot_COM4.bin",
+    "flight_model_usb_task_max_us": 2053,
+    "flight_model_usb_overruns": 0,
+    "flight_model_usb_applied_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "pwm_readback_hz": 150094,
+    "pwm_bits": 8,
+    "radio_regression": "tests/radio_link_test.cpp",
+    "radio_regression_pass": true,
+    "disabled_motor_arming_log": "logs/preflight_arm_disabled_COM4.bin",
+    "disabled_motor_flight_transition_verified": true
+  },
+  "flight_test_status": "User reported successful takeoff, short hover and landing; accepted the first flight as OK and requested work to stop",
+  "flight_recording": "recordings/StampFly_20261015_090137_551.mat",
+  "flight_recording_started": true,
+  "user_reported_preflight_voltage_v": 4.0,
+  "flight_result_confirmed": true,
+  "user_accepted_first_flight": true,
+  "work_status": "Stopped at explicit user request",
+  "saved_recording_frames": 17964,
+  "saved_recording_missing_frames": 725,
+  "saved_recording_crc_rejected": 0
+}

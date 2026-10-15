@@ -1,0 +1,756 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<MATLABApp schemaVersion='1.0.0' release='R2026b.0' minRelease='R2026b'>
+    <UIFigure name='UIFigure'>
+        <CloseRequestFcn>closeApp</CloseRequestFcn>
+        <Name>'StampFlyIMUApp'</Name>
+        <Position>[40 40 1200 720]</Position>
+        <Children>
+            <GridLayout name='RootGrid'>
+                <ColumnWidth>{'1x'}</ColumnWidth>
+                <Padding>[0 0 0 0]</Padding>
+                <RowHeight>{'1x'}</RowHeight>
+                <Children>
+                    <TabGroup name='MainTabs'>
+                        <Layout>
+                            <Column>1</Column>
+                            <Row>1</Row>
+                        </Layout>
+                        <Children>
+                            <Tab name='MonitorTab'>
+                                <Title>'モニター'</Title>
+                                <Children>
+                                    <GridLayout name='MainGrid'>
+                                        <ColumnSpacing>8</ColumnSpacing>
+                                        <Padding>[4 4 4 4]</Padding>
+                                        <RowHeight>{36, 52, '1x', '1.3x', '1x', 30}</RowHeight>
+                                        <RowSpacing>4</RowSpacing>
+                                        <Children>
+                                            <UIAxes name='DroneAxes'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>[4 5]</Row>
+                                                </Layout>
+                                            </UIAxes>
+                                            <GridLayout name='HeaderGrid'>
+                                                <ColumnWidth>{'1.3x', '0.8x', '0.8x', '0.8x', '1x', '1x', '0.9x'}</ColumnWidth>
+                                                <Layout>
+                                                    <Column>[1 2]</Column>
+                                                    <Row>1</Row>
+                                                </Layout>
+                                                <Padding>[2 2 2 2]</Padding>
+                                                <RowHeight>{'1x'}</RowHeight>
+                                                <RowSpacing>0</RowSpacing>
+                                                <Children>
+                                                    <Label name='TitleLabel'>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'StampFly センサーモニター'</Text>
+                                                    </Label>
+                                                    <Label name='StatusLabel'>
+                                                        <Layout>
+                                                            <Column>2</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'未接続'</Text>
+                                                    </Label>
+                                                    <Label name='RateLabel'>
+                                                        <Layout>
+                                                            <Column>3</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </Label>
+                                                    <Label name='FrameLabel'>
+                                                        <Layout>
+                                                            <Column>4</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </Label>
+                                                    <Label name='ErrorLabel'>
+                                                        <Layout>
+                                                            <Column>5</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </Label>
+                                                    <Label name='FlightStateLabel'>
+                                                        <Layout>
+                                                            <Column>6</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'飛行状態: 未受信'</Text>
+                                                    </Label>
+                                                    <Label name='BatteryLabel'>
+                                                        <HorizontalAlignment>'center'</HorizontalAlignment>
+                                                        <Layout>
+                                                            <Column>7</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'電池: 未取得'</Text>
+                                                    </Label>
+                                                </Children>
+                                            </GridLayout>
+                                            <GridLayout name='ConfigGrid'>
+                                                <ColumnSpacing>4</ColumnSpacing>
+                                                <ColumnWidth>{100, 48, 100, 62, 68, 82, 78, '1x', 58, 58, 82, 106}</ColumnWidth>
+                                                <Layout>
+                                                    <Column>[1 2]</Column>
+                                                    <Row>2</Row>
+                                                </Layout>
+                                                <Padding>[2 2 2 2]</Padding>
+                                                <RowHeight>{20, 24}</RowHeight>
+                                                <RowSpacing>2</RowSpacing>
+                                                <Children>
+                                                    <Button name='ResetEmergencyButton'>
+                                                        <ButtonPushedFcn>resetEmergencyButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>12</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'非常停止解除'</Text>
+                                                    </Button>
+                                                    <Button name='EmergencyButton'>
+                                                        <ButtonPushedFcn>emergencyButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>11</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'非常停止'</Text>
+                                                    </Button>
+                                                    <Button name='LandingButton'>
+                                                        <ButtonPushedFcn>landingButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>10</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'着陸'</Text>
+                                                    </Button>
+                                                    <Button name='TakeoffButton'>
+                                                        <ButtonPushedFcn>takeoffButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>9</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'離陸'</Text>
+                                                    </Button>
+                                                    <Label name='PortLabel'>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'ポート'</Text>
+                                                    </Label>
+                                                    <DropDown name='PortDropDown'>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                    </DropDown>
+                                                    <Button name='RefreshButton'>
+                                                        <ButtonPushedFcn>refreshButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>2</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'更新'</Text>
+                                                    </Button>
+                                                    <Label name='BaudLabel'>
+                                                        <Layout>
+                                                            <Column>3</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'通信速度 [baud]'</Text>
+                                                    </Label>
+                                                    <NumericEditField name='BaudField'>
+                                                        <Layout>
+                                                            <Column>3</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                    </NumericEditField>
+                                                    <Label name='ChannelLabel'>
+                                                        <Layout>
+                                                            <Column>4</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'無線 CH'</Text>
+                                                    </Label>
+                                                    <NumericEditField name='ChannelField'>
+                                                        <Layout>
+                                                            <Column>4</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                    </NumericEditField>
+                                                    <Button name='ConnectButton'>
+                                                        <ButtonPushedFcn>connectButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>5</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'接続'</Text>
+                                                    </Button>
+                                                    <Button name='ApplyButton'>
+                                                        <ButtonPushedFcn>applyButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>6</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'CH を設定'</Text>
+                                                    </Button>
+                                                    <Label name='ProtocolLabel'>
+                                                        <Layout>
+                                                            <Column>[9 12]</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'SFI6 / 50 Hz'</Text>
+                                                    </Label>
+                                                    <Label name='RecordingStatusLabel'>
+                                                        <Layout>
+                                                            <Column>[5 7]</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </Label>
+                                                    <Button name='RecordButton'>
+                                                        <ButtonPushedFcn>recordButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>7</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'記録開始'</Text>
+                                                    </Button>
+                                                </Children>
+                                            </GridLayout>
+                                            <GridLayout name='PlotGrid'>
+                                                <ColumnSpacing>8</ColumnSpacing>
+                                                <ColumnWidth>{'1x', '1x', '1x'}</ColumnWidth>
+                                                <Layout>
+                                                    <Column>[1 2]</Column>
+                                                    <Row>3</Row>
+                                                </Layout>
+                                                <Padding>[4 4 4 4]</Padding>
+                                                <RowHeight>{'1x'}</RowHeight>
+                                                <Children>
+                                                    <UIAxes name='AccelAxes'>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                    <UIAxes name='GyroAxes'>
+                                                        <Layout>
+                                                            <Column>2</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                    <UIAxes name='MotorAxes'>
+                                                        <Layout>
+                                                            <Column>3</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                </Children>
+                                            </GridLayout>
+                                            <Label name='LatestLabel'>
+                                                <Layout>
+                                                    <Column>[1 2]</Column>
+                                                    <Row>6</Row>
+                                                </Layout>
+                                            </Label>
+                                            <GridLayout name='MotionGrid'>
+                                                <ColumnSpacing>8</ColumnSpacing>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>4</Row>
+                                                </Layout>
+                                                <Padding>[4 4 4 4]</Padding>
+                                                <RowHeight>{'1x', '1x', 24}</RowHeight>
+                                                <RowSpacing>4</RowSpacing>
+                                                <Children>
+                                                    <UIAxes name='ToFAxes'>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>[1 2]</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                    <UIAxes name='PathAxes'>
+                                                        <Layout>
+                                                            <Column>2</Column>
+                                                            <Row>[1 2]</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                    <Label name='MotionLabel'>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>3</Row>
+                                                        </Layout>
+                                                    </Label>
+                                                </Children>
+                                            </GridLayout>
+                                            <GridLayout name='AttitudeGrid'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>5</Row>
+                                                </Layout>
+                                                <Padding>[4 4 4 4]</Padding>
+                                                <RowHeight>{'1x', 24}</RowHeight>
+                                                <RowSpacing>4</RowSpacing>
+                                                <Children>
+                                                    <UIAxes name='MagAxes'>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                    </UIAxes>
+                                                    <Label name='AttitudeLabel'>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'磁気・姿勢: データ待機中'</Text>
+                                                    </Label>
+                                                </Children>
+                                            </GridLayout>
+                                        </Children>
+                                    </GridLayout>
+                                </Children>
+                            </Tab>
+                            <Tab name='FlightTab'>
+                                <Title>'飛行操作・設定'</Title>
+                                <Children>
+                                    <GridLayout name='FlightGrid'>
+                                        <ColumnWidth>{'1x', '1x', '1x', '1x'}</ColumnWidth>
+                                        <Padding>[14 10 14 10]</Padding>
+                                        <RowHeight>{34, 40, 40, 40, 2, 30, 30, 28, 30, 30, 30, 30, 30, 34, 50, '1x'}</RowHeight>
+                                        <RowSpacing>4</RowSpacing>
+                                        <Children>
+                                            <Label name='FlightTitleLabel'>
+                                                <FontSize>18</FontSize>
+                                                <Layout>
+                                                    <Column>[1 4]</Column>
+                                                    <Row>1</Row>
+                                                </Layout>
+                                                <Text>'飛行操作・設定'</Text>
+                                            </Label>
+                                            <Label name='ClimbSpeedLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>2</Row>
+                                                </Layout>
+                                                <Text>'離陸速度 [m/s]'</Text>
+                                            </Label>
+                                            <NumericEditField name='ClimbSpeedField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>2</Row>
+                                                </Layout>
+                                                <Limits>[0.001 1]</Limits>
+                                                <Value>0.1</Value>
+                                            </NumericEditField>
+                                            <Label name='HoverHeightLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>3</Row>
+                                                </Layout>
+                                                <Text>'ホバリング高さ [m]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HoverHeightField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>3</Row>
+                                                </Layout>
+                                                <Limits>[0.02 0.5]</Limits>
+                                                <Value>0.15</Value>
+                                            </NumericEditField>
+                                            <Label name='LandSpeedLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>4</Row>
+                                                </Layout>
+                                                <Text>'着陸速度 [m/s]'</Text>
+                                            </Label>
+                                            <NumericEditField name='LandSpeedField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>4</Row>
+                                                </Layout>
+                                                <Limits>[0.001 1]</Limits>
+                                                <Value>0.08</Value>
+                                            </NumericEditField>
+                                            <Label name='FlightHelpLabel'>
+                                                <Layout>
+                                                    <Column>[3 4]</Column>
+                                                    <Row>2</Row>
+                                                </Layout>
+                                                <Text>'目標の離陸速度・高度・着陸速度は次の飛行指令で反映します。'</Text>
+                                            </Label>
+                                            <Label name='FlightStateDetailLabel'>
+                                                <Layout>
+                                                    <Column>[1 4]</Column>
+                                                    <Row>6</Row>
+                                                </Layout>
+                                                <Text>'機体状態: 未受信'</Text>
+                                            </Label>
+                                            <Label name='FlightCommandStatusLabel'>
+                                                <Layout>
+                                                    <Column>[1 4]</Column>
+                                                    <Row>7</Row>
+                                                </Layout>
+                                                <Text>'指令: 未送信'</Text>
+                                            </Label>
+                                            <Label name='HeightTuningTitleLabel'>
+                                                <FontSize>16</FontSize>
+                                                <Layout>
+                                                    <Column>[1 4]</Column>
+                                                    <Row>8</Row>
+                                                </Layout>
+                                                <Text>'高度制御パラメータ（待機中のみ反映）'</Text>
+                                            </Label>
+                                            <Label name='HeightKpPosLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>9</Row>
+                                                </Layout>
+                                                <Text>'高さ位置 P [(m/s)/m]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightKpPosField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>9</Row>
+                                                </Layout>
+                                                <Limits>[0 10]</Limits>
+                                                <Value>0.5</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightKpVelLabel'>
+                                                <Layout>
+                                                    <Column>3</Column>
+                                                    <Row>9</Row>
+                                                </Layout>
+                                                <Text>'鉛直速度 P [PWM/(m/s)]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightKpVelField'>
+                                                <Layout>
+                                                    <Column>4</Column>
+                                                    <Row>9</Row>
+                                                </Layout>
+                                                <Limits>[0 300]</Limits>
+                                                <Value>45</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightKiVelLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>10</Row>
+                                                </Layout>
+                                                <Text>'鉛直速度 I [PWM/m]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightKiVelField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>10</Row>
+                                                </Layout>
+                                                <Limits>[0 100]</Limits>
+                                                <Value>2</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightFilterTimeLabel'>
+                                                <Layout>
+                                                    <Column>3</Column>
+                                                    <Row>10</Row>
+                                                </Layout>
+                                                <Text>'速度フィルター時定数 [s]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightFilterTimeField'>
+                                                <Layout>
+                                                    <Column>4</Column>
+                                                    <Row>10</Row>
+                                                </Layout>
+                                                <Limits>[0.02 1]</Limits>
+                                                <Value>0.1</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightMaxCorrectionLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>11</Row>
+                                                </Layout>
+                                                <Text>'最大補正量 [PWM]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightMaxCorrectionField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>11</Row>
+                                                </Layout>
+                                                <Limits>[0 100]</Limits>
+                                                <Value>35</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightLiftBaseLabel'>
+                                                <Layout>
+                                                    <Column>3</Column>
+                                                    <Row>11</Row>
+                                                </Layout>
+                                                <Text>'離陸基準 [PWM]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightLiftBaseField'>
+                                                <Layout>
+                                                    <Column>4</Column>
+                                                    <Row>11</Row>
+                                                </Layout>
+                                                <Limits>[0 255]</Limits>
+                                                <Value>150</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightHoverBaseLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>12</Row>
+                                                </Layout>
+                                                <Text>'ホバリング基準 [PWM]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightHoverBaseField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>12</Row>
+                                                </Layout>
+                                                <Limits>[0 255]</Limits>
+                                                <Value>150</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightMaxSpeedLabel'>
+                                                <Layout>
+                                                    <Column>3</Column>
+                                                    <Row>12</Row>
+                                                </Layout>
+                                                <Text>'最大鉛直速度 [m/s]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightMaxSpeedField'>
+                                                <Layout>
+                                                    <Column>4</Column>
+                                                    <Row>12</Row>
+                                                </Layout>
+                                                <Limits>[0.05 2]</Limits>
+                                                <Value>0.2</Value>
+                                            </NumericEditField>
+                                            <Label name='HeightLandingBaseLabel'>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>13</Row>
+                                                </Layout>
+                                                <Text>'着陸基準 [PWM]'</Text>
+                                            </Label>
+                                            <NumericEditField name='HeightLandingBaseField'>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>13</Row>
+                                                </Layout>
+                                                <Limits>[0 255]</Limits>
+                                                <Value>128</Value>
+                                            </NumericEditField>
+                                            <Button name='HeightApplyButton'>
+                                                <ButtonPushedFcn>heightApplyButtonPushed</ButtonPushedFcn>
+                                                <Enable>'off'</Enable>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>14</Row>
+                                                </Layout>
+                                                <Text>'高度設定を反映'</Text>
+                                            </Button>
+                                            <Label name='HeightTuningStatusLabel'>
+                                                <Layout>
+                                                    <Column>[2 4]</Column>
+                                                    <Row>14</Row>
+                                                </Layout>
+                                                <Text>'設定: 機体の接続待ち'</Text>
+                                            </Label>
+                                            <Label name='HeightAppliedLabel'>
+                                                <Layout>
+                                                    <Column>[1 4]</Column>
+                                                    <Row>15</Row>
+                                                </Layout>
+                                                <Text>'機体の適用値: 未受信'</Text>
+                                            </Label>
+                                        </Children>
+                                    </GridLayout>
+                                </Children>
+                            </Tab>
+                            <Tab name='HistoryTab'>
+                                <Title>'履歴・比較'</Title>
+                                <Children>
+                                    <GridLayout name='HistoryRootGrid'>
+                                        <ColumnSpacing>5</ColumnSpacing>
+                                        <ColumnWidth>{280, '1x'}</ColumnWidth>
+                                        <Padding>[4 4 4 4]</Padding>
+                                        <RowHeight>{'1x'}</RowHeight>
+                                        <Children>
+                                            <GridLayout name='HistorySidebarGrid'>
+                                                <ColumnSpacing>4</ColumnSpacing>
+                                                <Layout>
+                                                    <Column>1</Column>
+                                                    <Row>1</Row>
+                                                </Layout>
+                                                <Padding>[2 2 2 2]</Padding>
+                                                <RowHeight>{30, 30, 32, '1x', 58}</RowHeight>
+                                                <RowSpacing>4</RowSpacing>
+                                                <Children>
+                                                    <Label name='HistoryTitleLabel'>
+                                                        <FontWeight>'bold'</FontWeight>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Text>'過去の記録'</Text>
+                                                    </Label>
+                                                    <Button name='HistoryRefreshButton'>
+                                                        <ButtonPushedFcn>historyRefreshButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'一覧更新'</Text>
+                                                    </Button>
+                                                    <Button name='HistoryAddButton'>
+                                                        <ButtonPushedFcn>historyAddButtonPushed</ButtonPushedFcn>
+                                                        <Layout>
+                                                            <Column>2</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                        <Text>'MATを追加'</Text>
+                                                    </Button>
+                                                    <DropDown name='HistoryRangeDropDown'>
+                                                        <Items>{'最初の飛行', '全記録'}</Items>
+                                                        <ItemsData>{'firstFlight', 'all'}</ItemsData>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>3</Row>
+                                                        </Layout>
+                                                        <Value>'firstFlight'</Value>
+                                                        <ValueChangedFcn>historyRangeChanged</ValueChangedFcn>
+                                                    </DropDown>
+                                                    <ListBox name='HistoryList'>
+                                                        <Items>{'記録なし'}</Items>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>4</Row>
+                                                        </Layout>
+                                                        <Multiselect>'on'</Multiselect>
+                                                        <Value>'記録なし'</Value>
+                                                        <ValueChangedFcn>historySelectionChanged</ValueChangedFcn>
+                                                    </ListBox>
+                                                    <Label name='HistoryStatusLabel'>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>5</Row>
+                                                        </Layout>
+                                                        <Text>'記録を読み込み中'</Text>
+                                                        <WordWrap>'on'</WordWrap>
+                                                    </Label>
+                                                </Children>
+                                            </GridLayout>
+                                            <GridLayout name='HistoryMainGrid'>
+                                                <ColumnSpacing>4</ColumnSpacing>
+                                                <ColumnWidth>{'1x'}</ColumnWidth>
+                                                <Layout>
+                                                    <Column>2</Column>
+                                                    <Row>1</Row>
+                                                </Layout>
+                                                <Padding>[2 2 2 2]</Padding>
+                                                <RowHeight>{'1x', 120}</RowHeight>
+                                                <RowSpacing>4</RowSpacing>
+                                                <Children>
+                                                    <GridLayout name='HistoryChartGrid'>
+                                                        <ColumnSpacing>5</ColumnSpacing>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>1</Row>
+                                                        </Layout>
+                                                        <Padding>[2 2 12 2]</Padding>
+                                                        <RowHeight>{275, 275, 275, 275, 275}</RowHeight>
+                                                        <RowSpacing>8</RowSpacing>
+                                                        <Scrollable>'on'</Scrollable>
+                                                        <Children>
+                                                            <UIAxes name='HistoryHeightAxes'>
+                                                                <Layout>
+                                                                    <Column>1</Column>
+                                                                    <Row>1</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryVerticalSpeedAxes'>
+                                                                <Layout>
+                                                                    <Column>2</Column>
+                                                                    <Row>1</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryHeightErrorAxes'>
+                                                                <Layout>
+                                                                    <Column>1</Column>
+                                                                    <Row>2</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryVelocityErrorAxes'>
+                                                                <Layout>
+                                                                    <Column>2</Column>
+                                                                    <Row>2</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryControlAxes'>
+                                                                <Layout>
+                                                                    <Column>1</Column>
+                                                                    <Row>3</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryThrottleAxes'>
+                                                                <Layout>
+                                                                    <Column>2</Column>
+                                                                    <Row>3</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryMotorAxes'>
+                                                                <Layout>
+                                                                    <Column>1</Column>
+                                                                    <Row>4</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryValidityAxes'>
+                                                                <Layout>
+                                                                    <Column>2</Column>
+                                                                    <Row>4</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryXYAxes'>
+                                                                <Layout>
+                                                                    <Column>1</Column>
+                                                                    <Row>5</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                            <UIAxes name='HistoryStateAxes'>
+                                                                <Layout>
+                                                                    <Column>2</Column>
+                                                                    <Row>5</Row>
+                                                                </Layout>
+                                                            </UIAxes>
+                                                        </Children>
+                                                    </GridLayout>
+                                                    <Table name='HistorySummaryTable'>
+                                                        <ColumnName>{'記録'; 'フレーム'; '期間(s)'; 'ホバリング平均(cm)'; '高度範囲(cm)'; '欠落'; 'CRC'}</ColumnName>
+                                                        <Layout>
+                                                            <Column>1</Column>
+                                                            <Row>2</Row>
+                                                        </Layout>
+                                                    </Table>
+                                                </Children>
+                                            </GridLayout>
+                                        </Children>
+                                    </GridLayout>
+                                </Children>
+                            </Tab>
+                        </Children>
+                    </TabGroup>
+                </Children>
+            </GridLayout>
+        </Children>
+    </UIFigure>
+    <RunConfiguration>
+        <StartupFcn>startupFcn</StartupFcn>
+    </RunConfiguration>
+    <AppDetails>
+        <Version>1.0</Version>
+    </AppDetails>
+    <InternalData>
+        <AppId>6045714e-c100-4972-8d8f-120b58fc45dc</AppId>
+    </InternalData>
+    <!-- Thumbnail is used by file previewers. To change how the thumbnail is captured or stored, use the App Details dialog box in App Designer. -->
+    <Thumbnail autoCapture='true'>data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCACEANwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD2loFcuRdMm4YIBHy8Y49PWpQsflbRKH3DgsQf5VVa306aRzJZhnDAMxhJyeO+PcVbWztk+7BGPovvmgDKfSGYMRqsq723KQ4474HtUjaTJJCkaX8gKMSXDZJ68H/PatE2luQB5Efy9ML0pszW+n27zmPai8t5aZJyfQcnk0AVzpzm08jzzu2bfN/i6Yz9aqppbWtu8cupuS+CHlYZGMdP896sjWrNnCYnz7xNgdf8DSmTTtTkSJ4hM2DgSRHgd+ooAbaWJjgKi6+0AsTvY5P049Ks/ZT6r+VVoL+wt3e1hiljEZbKrAwXg4OOMHk1amvIoLdJ3EmxumEOemelADGt9ilmZFUDJJ4ApqxxsMrNCR0yCKY2pWc8YjkSUpLHna0LYYHPH19qlis7J4AUtUCON21kx1HcH6CgBfsp9Vpfsp9V/KrCqEUKowoGAB2FLQBU+zgkgPHkdR6Uv2fJwGTPXFTNBEz72iUt6kZojt4YjmONVOMZA7daAIvsp9V/KmPCsQzJJEg9WOKuVHNbw3C7Zo1kX0YZoAr+UgXcZYseuaUQBvuvGe/FSGytSmw28ZXgYK8cDA/SnxwRQ/6uNU428Dt6UARfZT6r+VNeARrud41X1bgVbqOaGK4jMc0ayIeSrDIoAqhYiwUTwlj0AYZNKqxMwVZ4WY9AGBNQr/ZouuLQiVCcN5J6jg4OPenWkemtMht7URyBdynySuB09KALH2U+q/lR9lPqv5VZooAqm32qWZkAHJJ7U3y027vNix65GKtuiyIyOoZWGCD0IqH7DalNht4yuc4K+2P5UARrAHBKvGwBxxzTJLY7hyvT0q3HDHCpWKNUBOSFGOabL94fSgCnNa3chJiuDGD0+QN/M1aWPCgNESQOTkc/rSC4Q3EcSzJuJ2snccdf8+tXfKH9+gDNkt52ikVHKsysEbj5Cehx0OKW0t54QonczEMSWwFyOwwK0PLGT89HlD+/QBXnUyKBF+6OeTtDZ4+tV/s9z3ucjdn/AFS5x6da0PKH9+jyxkfPQBFHtWNQ8RLAcnNRMjGbcFOz+5wMcfrVvyh/fqu7OJnREDBcc7sdfwoApRWt0t48sk5eAk4h2qMenOc8VJJBOy4Rih3Zzw3HpzUhdjPHHLEAGBIO/p+FEtwizJGJkD7gCh6nJH+NAFUWd4LgObgmMHJj2LyMnjOfTA/CpJ7a4ki2xSGJ9xO7huMcDmtPyh/fpPLGcb6AMe1sr2GXdPdGdMH5Sirzj1BrTUEKAeoHNTeUP79IIwR9+gCOipDGB/HS+UP79AEVFMlZ1m8uNQ/y7ic4qKR33xpLCNrtjO/p/nNAFiiop5NkLbZY4325Bc8D3ptg7zqwknhlKgHfEODkn39qAK15aXc4j+z3BgKlt5Cht+enXpipxFJ3U4246/xetXTEAD81L5Q/vUAZNrZ3kMTrPOZ3IG19oTae549aW4tLqVw0MzQqAAVCq2Tnnk0o8O2YuWm8653klv8AXHAy27+Yqy+k27mQmSbLpsP75unPv7mgCvDbXMcJSV/Mk4xJgL/Km3NpdSyboZ2hXA+UKreueT+H5VasNKgsIysUsrbguTI5boMDrT5GcSskaBgoGSWx1/CgDMNhqBKf6aQFGDiJfm6cnn6/nV1lYMcDaD0Gc0ks0isqPbgqRkkSdB+VSyAKwUdAMUAQoJftsRIg2b+Cv3+h6/59K1OfaspI8XsbfZUXL/63Iy3H+fyrUx/sigAGcnpSnOO1IByflFBHH3RQAozjtSHOR0oA4+6KCOR8ooAXn2qs8Epmd1MeGxwy5xxVjH+yKAOT8ooAq/ZpvNWRmjCoD8qrjPBqtMJftKkCDZuTk/f6itJh8p+UdKzJo83Sv9lQ/Mn73Iz1HGKANXn2pOdx6dKMf7Iox833R0oAXn2pFztHSjH+yKAOB8ooADnjp1pefakI6fKOtGP9kUAQSwyPPvQx/dAIYZ70w20zOhLRBVYEhV68j/CrWOT8oox/silbqFzFuo92qQttDHyHGHTKfiat6argyb44EbavER+Xq1V57F5tUhuSYzCkLRtGwOWz+mKm0uPy/MX7Ktv8q/uwwOOW70wNEg7TwOlLg+gpCOD8oox/sigAwd3QdKXB9BSY+b7oox/sigAAO0cDpVSXcly58ksCBggZ/oatgcD5RSY5HyigE7GZOkssyFYZVUKQcDgn3+X+tWJv9Yf896uY/wBkVTm+/QAyS3EjxSA4K8Hk9PbHQ+9SeSvq/wD38b/Go5J4I4yJJ0j4wTuAI4qe2AlgV2bJJPT60AQrBh5GZm2nGPnbjjnPNDRx7D+8I46mRsfzq0Yo2UgnIPBGaoy6Fpk9qbaSAGHcG27j14Oc/gKAHxpHsVTKWYAZ2yHr+dK8BMkZV2CgncC7ZPHbnis77Bp1neMyLCjoVAMkvJxyDy3qTUd/rslpMI4ooJ8x+ZxOo459+nHX3p2YrrY1/KT1f/v43+NNSAhpCzsQWyoDsMDA6880yzmW4QS7Y97IpOw5wT1Ge+MULDLHcIxupHVm27CBgdT/APWpDHyQbo2CMwYjgl2I/LNNkt2lSLcw81MZbkDtnj8Pwq95K+po8lfU0AVvJX1f/v43+NMEH70tubZtAA3tnPPvVvylzjJpfJX1NAFbyk9X/wC/jf40yODbGodmLDqVdgP51cMCkYJJBqEosZKqMAdhQBDJAW2bHYYYFsuxyPTrT/JX1f8A7+N/jT6KAIVgIldi7FCBtAdsj1yc05oQVIDODjg72/xqSigBkKukSrIwZwMEqMCqbyWdpcsk11FEZMFUaUqxJJ9+ck8VfqN9NtbiYTT20TyYA3MoJwORzQBBLJbeVKBcorLlSWmOFPvz70xL7TmcRrfxNJ02i45POOmfWrz2Nu+4GKMgnJBUHJquukWUcvmpZW4kH8SxjPXP86AHeR+93bm2bcY3tnOfXNOMS7T8zjjqZG/xqSigCCGJfJQGQuwABZXbBP50rQEyowdggB3Au2T6YOamooAZ5K+r/wDfxv8AGoUR40CyuHYdCBjirNRS/eH0oAzY5g+o3yQwrPKmwOhcDHy8dRx+Z61s2efsqcdz/M1hR3ckmpahDdSmC3iMYidAyk5Q5yTwfwrcsyPsqfN3P8zQBOM88d6BnJ4oBHPzd6ARk/NQBE1vE8jM0YJPU5pjWNs7AtboxA781YyNx+btRkbvvdqAIDBFAuI41QE84qGSRBPAhYBy+QPUf5NWZcYHOeagcDzYTjnzB/I0AXMj1FGR6ilooAbkbuo6UuR6ij+L8KWgBMj1FQScyGrFV5P9YaAG0UUUAM82PzfK8xfM/u55qVULc9vWqsrW+91Jj87HTjdWhnI49f60AIqqhpRkhe1HAY0DJC0AGDk4NAJ5470uOTg0gzzx3oABgjB/WmmNduRxxTgQR/jRj5OPSgCFl2tjOabT5fv/AIUygAqKX7w+lS1FL94fSgBzbvJ+RVZtvyqx4JptrPILddkaMuTgliO57Ypiwy+az/aX2Fflj2jCnjnP+etRC0vOc6i5Bz0iXj/P9KALcd3K+7bEnysVP7w9R/wGhbqVndREmVIB+c+n+7UKQXAUB7x2IJOQijIx0qOW0un3bdRlTJ4wi8cn29x+VAFoXcpmaPyk3KoJ+c9899vtQbuUTrH5SbipYfOegI77feorSCaCLbNdPcNx8zqB29qnoAjkumEkcckYXecKVJbn8uKpTXs9vMhuIUVF+cbSzE4OMcD3rRo5oABczEAiGPBGf9Yf/iaX7RN/zxj/AO/h/wDiaSigBv2uXzhH5Sbtu7756Z/3af8AaJv+eMf/AH8P/wATSUUAL9om/wCeMf8A38P/AMTVaC9S6kdQCHABIwcY+pAqxRQAUhIUEkgAckntS1Hcc20oJwNh5/CgCJ57Zyyq8bSFe3OR9a0eo49f61j289uLOOEOpcRDt2x64rY5I/H+tABwGPrigchc0cBj9KByFzQAY5ODQM8/WjHJxQM89+aAAEY5/WjHycelAIxzxRgbOPSgCKX7/wCFMp8v3/wplABUUv3h9KlqKX7w+lADUmErywruRkAG4j1HBFWLdTLCHZuST0HvWPBBPPql+JhLFCPL8qRAE3Dac89/6Vs2S4tV5PVu/uaAH+SMnk0eSM9TTwOTyaMfMOTQAwwgdzR5I/vGnkcdT1pce5oAzrnRLS8m86bzd5AHyyFRx9Kjl8O2My7WMwG8P8spHI6fzrUA+UcnpQB15PWgCva2MVpbx20Rby41wu45OPrUphHHJp+Pm6npQR05PWgBhhAB5NRzr5UJdeTkAA+5xU5Hynk9KbLEZIyobByCD16HNAFJpJlRmxGcAn7w/wAadBjygwVVJzkL06kf0qYwzMhHnIMgjIQ/400R+UAhbceST9STQAtFFFAEEs8eZIs/OBzx/Wr/ACR6c/1qlPKqLtOcsDjA44qR7sEERnPP3qALDOsZOT2/E1UknZxgZUe1RkluW5pPxIFAh6yyJ9181Kt2R99fyrkb6fxONXgeCwt2tlZlUBt2c8bmPGOCDj2NdFAZfJjM4VZto3hTlQe+Ce1FgNJJ42H3sfWn4BTI9O1ZxHqPyoWRt22Mnd3H+NAy5L9/8KZUKTu0pikR9wH39vy9uh/H9DU1ABUUv3h9KlqKX7w+lADmRZISjjKsuCPUVHHaoqAOFZucnGM8+lV0giF4Z/t8uSf9UZRtHGMY/wA80kVrDE0mdRncvwQ8445zx6elAFoW0QdjsHOOMdKQ2sZlRgqhQCCMdeneoJbJLtSUvbhRjGYpunX/AB/lVi2t/s0Xl+bLLzndK240AJJaxumFVVOQckZ6Gnm3ix9wVJRQBTmRbSxLi2a5eNR8kQwz9uBnFVLG5EzlZdOuYi8pC+YmNowOpH8616KAIPsqefvwuzbjbjvnrn+lK1rExXCgYbJ461NRQBBLaxvE6qqqzKQGIzg/TvThbxADKAmpaKAIIrVEQhgrHcTkDHBNLHCY5nZWHlsBhNvQ/WpqKACiiigBkqNIm1ZGjOQdy9aheB1RBGiSP0Z3O0njrxVmigCtJH5K797HkDBXd1OO1Id6ffXP+6c/p1qPbqgmnPm2xjLnyV2nIXAwG985qeGFjiW4SMzjI3IOMZOP50AMDKxxnB9OhpSwGAD16DuaeYC0xZ5N8Z6RsowDx/h+tOMEZRlAK7hjcp5H0PagCuSqyKkpaMt0VRknp1I6damFuskCJOiMVOcLkDP/AOo0+KIQx7AzNyTljk1UWyvFRR/aUhIGCTGvPJ/xx+FAF6imxhljVWbcwABb1PrTqACopfvD6VLUUv3h9KAKX9m2DM0hs4S7nezbeSc5z+dK2n2LszNZwlmJJJXqScn9aKKAJraCCzj2W0EcS+iLipvNPoKKKADzT6CjzT6CiigA80+go80+goooAPNPoKPNPoKKKADzT6CjzT6CiigA80+go80+goooAPNPoKPNPoKKKADzT6CjzT6CiigA80+go80+goooAPNPoKPNPoKKKADzT6CjzT6CiigA80+go80+goooAPNPoKjkkO4cDpRRQB//2Q==</Thumbnail>
+</MATLABApp>

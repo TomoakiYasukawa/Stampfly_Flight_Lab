@@ -1,0 +1,46 @@
+function stages=finalize_processing_stages()
+%FINALIZE_PROCESSING_STAGES Wire the bus control and preserve legacy outputs.
+root=stampfly_project_root();stages=load(fullfile(root,'tests','processing_stage_ids.mat')).stages;
+model='StampFly_Official_FlightTest400';scope='blk_38';
+controllerIndex=find(strcmp(stages.Control.Sources,'blk_92'),1);
+controllerCopy=stages.Control.Copies{controllerIndex};
+reorg.edit(model,stages.Control.ID,{reorg.wire([controllerCopy '.y5'],'blk_2223.u5','FlipPhase')});
+stages.ControlOutputs(2).Members(5).Endpoint='blk_92.y5';
+controlFields=reorg.outputMap(model,scope,stages.Control.ID,stages.ControlOutputs);
+feedback=controlFields.Groups.EstimatorFeedback;
+status=controlFields.Groups.FlightStatus;
+motor=controlFields.Groups.MotorCommand;
+contextSources={feedback.PreviousMode,feedback.AltitudeEnabled,feedback.AttitudeReset, ...
+    feedback.ParkingReset,feedback.FlipPhase};
+ops={};
+contextPorts=[1 2 4 5 6];
+for k=1:5,ops{end+1}=reorg.wire(contextSources{k},sprintf('blk_1778.u%d',contextPorts(k)));end
+ops=[ops,{reorg.wire(feedback.PreviousMode,'blk_1777.u1','PreviousMode'), ...
+    reorg.add('BusCreator','ControlAttitude','attitudeBus',struct('Inputs','2')), ...
+    reorg.add('BusCreator','ControlVerticalMotion','verticalBus',struct('Inputs','2')), ...
+    reorg.add('BusCreator','ControlInputs','flightBus',struct('Inputs','8')), ...
+    reorg.wire(stages.EstimationFields.Angles,'#attitudeBus.u1','Angles'), ...
+    reorg.wire(stages.EstimationFields.AngularRate,'#attitudeBus.u2','AngularRate'), ...
+    reorg.wire(stages.EstimationFields.Altitude,'#verticalBus.u1','Altitude'), ...
+    reorg.wire(stages.EstimationFields.Velocity,'#verticalBus.u2','Velocity'), ...
+    reorg.wire('#attitudeBus.y1',[stages.Control.ID '.u1'],'Attitude'), ...
+    reorg.wire('#verticalBus.y1',[stages.Control.ID '.u2'],'VerticalMotion')}];
+sources={'blk_46.y1','blk_47.y1','blk_48.y1','blk_49.y1','blk_529.y1','blk_45.y1','blk_50.y1',stages.EstimationFields.Flags};
+names={'Sticks','ArmButton','NewPacket','AHRSRequest','FlipButton','BatteryVoltage','Dt','Flags'};
+for k=1:8,ops{end+1}=reorg.wire(sources{k},sprintf('#flightBus.u%d',k),names{k});end
+ops{end+1}=reorg.wire('#flightBus.y1',[stages.Control.ID '.u3'],'FlightInputs');
+outputs={'blk_51','blk_52','blk_53','blk_54','blk_55','blk_56','blk_57','blk_58','blk_59','blk_60','blk_61','blk_62','blk_536','blk_537','blk_538'};
+endpoints={motor.Duty,motor.Counts,status.Mode,stages.EstimationFields.Angles, ...
+    stages.EstimationFields.AngularRate,stages.EstimationFields.Altitude,stages.EstimationFields.Velocity, ...
+    stages.EstimationFields.Quaternion,stages.EstimationFields.Flags,status.Diagnostics, ...
+    stages.EstimationFields.Diagnostics,status.PreviousMode,status.AltitudeEnabled, ...
+    status.Connected,status.FlipPhase};
+for k=1:15,ops{end+1}=reorg.wire(endpoints{k},[outputs{k} '.u1']);end
+for k=1:numel(stages.Control.Sources),ops{end+1}=struct('op','delete','target',stages.Control.Sources{k});end
+% Unused correction field selectors are now folded into the main bus links.
+for sid=[1769 1770 1771],ops{end+1}=struct('op','delete','target',['blk_' num2str(sid)]);end
+reorg.edit(model,scope,ops);
+stages.ControlFields=controlFields;
+save(fullfile(root,'tests','processing_stage_ids.mat'),'stages');save_system(model);
+disp(model_check(model,scope,'["all"]'));
+end

@@ -1,93 +1,60 @@
-# Stampfly_Flight_Lab
+# StampFly 公式制御の Simulink 移植
 
+M5Stack の公式飛行制御を、学生が機能ごとに編集できる Simulink モデルへ移植したプロジェクトです。制御周期は **400 Hz（2.5 ms）**、モーター PWM は **150 kHz 指定／8 bit**。下向き ToF を使う自動離陸・高度保持を含み、前向き ToF は無効、Optical Flow は未実装です。
 
+2026-10-15 に現在のモデルから生成したファームウェアを StampFly へ書き込み、`digest matched` を確認しました。**機体モデルは実モーター出力が有効です。** 現版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/reorganized_flight_deployment.json) を参照してください。
 
-## Getting started
+## 開き方
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+MATLAB の現在のフォルダーをこのリポジトリの直下にして実行します。
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://insidelabs-git.mathworks.com/jp-cse-group/stampfly_flight_lab.git
-git branch -M main
-git push -uf origin main
+```matlab
+run('config/startup.m');
+open_system('StampFly_Official_FlightTest400.slx');
+app = StampFlyIMUApp;
 ```
 
-## Integrate with your tools
+受信機モデルは `open_system('M5Stamp_IMU_Rx.slx')` で開きます。モデルとアプリの起動時にもパスとキャッシュ保存先を設定します。アプリの `StampFlyIMUApp.xml` は `.m` と同じく直下に置いてください。離着陸と操縦には公式 JoyStick、記録には受信機とロガーアプリを使います。シリアル接続はアプリ上で選択します。
 
-* [Set up project integrations](https://insidelabs-git.mathworks.com/jp-cse-group/stampfly_flight_lab/-/settings/integrations)
+## モデルと検証
 
-## Collaborate with your team
+最上位では、各センサー、センサー補正、姿勢・高度推定、飛行制御、モーター書き込みを分離しています。主要ブロックの入力・出力はそれぞれ最大 4 ポートで、関連信号はバスにまとめて直接配線しています。ロギング・LED・JoyStick などの補助経路では Goto/From を使います。
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+飛行モードを扱う 4 個の Stateflow Chart は状態と遷移で記述し、Chart 内の MATLAB Function は 0 個です。数値計算には Simulink ブロックと独立した MATLAB Function を使います。モデル内の説明は日本語です。
 
-## Test and Deploy
+最初の飛行成功モデルとの比較では、3 シナリオ・36,000 周期について 15 出力の値・型・サイズがすべて一致しました。結果は `tests/final_pipeline_equivalence.mat`、整理後の機体・受信機モデルのコンパイル確認は [検証記録](docs/project_layout_verification.json) に保存しています。
 
-Use the built-in continuous integration in GitLab.
+```matlab
+run('config/startup.m');
+open_system('StampFly_Official_FlightTest400.slx');
+equivalence = verify_final_pipeline();
+buildReport = build_reorganized_flight_model();
+```
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+ビルドは書き込みを行いません。生成物は `build/model_reorganization/`、書き込み済み版は `firmware/current/`、前回の飛行成功版は `firmware/previous_successful/` にあります。[ファームウェアの説明](firmware/README.md) を参照してください。
 
-***
+## フォルダー
 
-# Editing this README
+| 場所 | 内容 |
+|---|---|
+| 直下 | アプリ `.m`・`.xml`、機体モデル、受信機モデル |
+| `code/`、`src/` | MATLAB アルゴリズム・System object、低レベルの機器ドライバー |
+| `config/` | パス設定、キャッシュ設定、パーティション設定 |
+| `scripts/` | 起動、ビルド、検証、解析、モデル編集履歴 |
+| `models/`、`libraries/` | 代替・ベンチ・再生モデル、既存の学生用ライブラリー |
+| `tests/` | 比較入力、検証結果、検証用モデル、参照コード |
+| `docs/`、`resources/` | 説明・書き込み記録、表示用リソース |
+| `firmware/` | 書き込み済み版と前回成功版 |
+| `official_sources/`、`third_party/` | 公式ソースと依存ソース、各ライセンス |
+| `archive/`、`tools/` | 以前のモデル・説明、補助ツール |
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+キャッシュは `build/cache/`、通常のコード生成は `build/codegen/` に保存します。`build/`、`logs/`、`recordings/`、個体別の `backups/` と生成中間ファイルは Git 管理から除外しています。`scripts/model_edit/` は過去のモデル構造を対象にした処理も含むため、現在のモデルへ一括実行しないでください。学生用ライブラリーは今回の最終モデルに合わせた更新をまだ行っていません。
 
-## Suggestions for a good README
+## 参照元とライセンス
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- [公式ファームウェア・操作ガイド](https://docs.m5stack.com/en/guide/stampfly/firmware)
+- [M5StampFly 公式ソース](https://github.com/m5stack/M5StampFly)
+- [StampFlyController 公式ソース](https://github.com/m5stack/Atom-JoyStick/tree/main/examples/StampFlyController)
+- [移植の説明](docs/official_simulink.md)、[第三者ソースの注意事項](docs/THIRD_PARTY_NOTICES.md)
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+保存した公式ソースのコミットは M5StampFly `fa7b6a59c7f297d398d381840184451dce137c48`、Atom-JoyStick `e9f53fbd8a2edd25aedf987aac2ae40a52e6bea0` です。各ソースに付属するライセンスと著作権表示を保持しています。

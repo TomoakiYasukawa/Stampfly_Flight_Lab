@@ -1,0 +1,9 @@
+function q=eulerQuaternion(a)
+%EULERQUATERNION Body roll/pitch/yaw to the copied logger's scalar-first form.
+%#codegen
+c=cos(a*single(.5));s=sin(a*single(.5));
+q=[c(1)*c(2)*c(3)+s(1)*s(2)*s(3); ...
+   s(1)*c(2)*c(3)-c(1)*s(2)*s(3); ...
+   c(1)*s(2)*c(3)+s(1)*c(2)*s(3); ...
+   c(1)*c(2)*s(3)-s(1)*s(2)*c(3)];
+end

@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-14",
+  "devices": [
+    {
+      "device": "StampFly",
+      "port": "COM4",
+      "mac": "70:AF:09:DF:A6:C4",
+      "flash_size": 8388608,
+      "firmware": "stampfly_firmware_v1.1.0_20240812.bin",
+      "firmware_sha256": "0138cc333d05790f8804fabae223f4c7eb40d162ad1d23d8c8daead6412d4359",
+      "bootloader_matches": true,
+      "partition_table_matches": true,
+      "app_matches": true,
+      "changed_header_sectors": [
+        "0x9000"
+      ],
+      "changed_header_byte_count": 2171,
+      "backup": "backups\\StampFly_COM4_before_official_20261014.bin",
+      "backup_size": 8388608,
+      "backup_sha256": "18178b2432c46b1a919d5561b572d09dbad474db207bdde7fa29020523e7ebc4"
+    },
+    {
+      "device": "JoyStick",
+      "port": "COM6",
+      "mac": "48:CA:43:B6:5B:30",
+      "flash_size": 8388608,
+      "firmware": "StampFlyController_V1.2.0_20260610.bin",
+      "firmware_sha256": "8235beaecf1b0703584f603f4e3bb952c95620a85e34bc13a230b06d16204886",
+      "bootloader_matches": true,
+      "partition_table_matches": true,
+      "app_matches": true,
+      "changed_header_sectors": [
+        "0x9000"
+      ],
+      "changed_header_byte_count": 62,
+      "backup": "backups\\JoyStick_COM6_before_official_20261014.bin",
+      "backup_size": 8388608,
+      "backup_sha256": "df9246f5e0e43918b8ee0e9e7451d010190ffccf79d73a5282359cf75dbf9f7b"
+    }
+  ],
+  "pairing_status": "user confirmed Press to Fly on the JoyStick operation screen after USB reconnect",
+  "telemetry_status": "user confirmed ALT changed to approximately 0.2-0.3M when lifting StampFly",
+  "user_observations": ["StampFly battery and propellers removed during flashing", "StampFly blue flashing while USB powered", "JoyStick operation screen shows Press to Fly", "JoyStick ALT changed to approximately 0.2-0.3M when lifting StampFly", "User reports completing a flight test"],
+  "flight_test": "performed by user; flight details and telemetry log were not provided"
+}

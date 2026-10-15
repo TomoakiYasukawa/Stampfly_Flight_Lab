@@ -1,0 +1,13 @@
+{
+  "simulink/systems/system_92.xml": {
+    "same_blocks": true,
+    "same_connections": true
+  },
+  "simulink/systems/system_root.xml": {
+    "same_blocks": true,
+    "same_connections": true
+  },
+  "configuration_unchanged": true,
+  "outside_scope_chart_scripts_labels_unchanged": true,
+  "outside_scope_chart_count": 12
+}
