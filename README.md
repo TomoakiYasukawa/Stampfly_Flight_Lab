@@ -2,7 +2,7 @@
 
 M5Stack の公式飛行制御を、学生が機能ごとに編集できる Simulink モデルへ移植したプロジェクトです。制御周期は **400 Hz（2.5 ms）**、モーター PWM は **150 kHz 指定／8 bit**。下向き ToF を使う自動離陸・高度保持を含み、前向き ToF は無効、Optical Flow は未実装です。
 
-2026-10-15 に現在のモデルから生成したファームウェアを StampFly へ書き込み、`digest matched` を確認しました。**機体モデルは実モーター出力が有効です。** 現版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/reorganized_flight_deployment.json) を参照してください。
+2026-10-15 にファームウェアを StampFly へ書き込み、`digest matched` を確認しました。その後の制御ブロック・配線の整理は保存モデルに反映済みで、再書き込みは行っていません。**機体モデルは実モーター出力が有効です。** 書き込み済み版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/reorganized_flight_deployment.json) を参照してください。
 
 ## 開き方
 
@@ -23,6 +23,8 @@ app = StampFlyIMUApp;
 飛行モードを扱う 4 個の Stateflow Chart は状態と遷移で記述し、Chart 内の MATLAB Function は 0 個です。数値計算には Simulink ブロックと独立した MATLAB Function を使います。モデル内の説明は日本語です。
 
 最初の飛行成功モデルとの比較では、3 シナリオ・36,000 周期について 15 出力の値・型・サイズがすべて一致しました。結果は `tests/final_pipeline_equivalence.mat`、整理後の機体・受信機モデルのコンパイル確認は [検証記録](docs/project_layout_verification.json) に保存しています。
+
+`FlightControl400`と`TakeoffHoverControl400`も機能別に分割し、直接配線と名前付きバスで整理しました。この整理前後も3シナリオ・36,000周期・15出力が許容差0で一致し、機体モデルのコンパイルが成功しています。専用PIDブロックは周期変動・リセット時などに差があったため、本番のPIDは維持しています。[制御の読み方とPID比較](docs/control_layout_and_pid.md)を参照してください。
 
 ```matlab
 run('config/startup.m');
