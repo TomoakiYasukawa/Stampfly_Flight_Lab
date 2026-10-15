@@ -1,10 +1,10 @@
 # StampFly の現在の状態（2026-10-15）
 
-当日のモデル整理版を、USB 接続・バッテリーなしの機体へ書き込み、独立した照合で `digest matched` を確認しました。その後の`FlightControl400`・`TakeoffHoverControl400`の分割と配線整理は保存モデルに反映済みですが、再書き込みは行っていません。現在の保存モデルと機体内のファームウェアは同じ更新時点ではありません。
+`FlightControl400`・`TakeoffHoverControl400` の分割と配線整理を含む最新の保存モデルをビルドし、USB 接続・バッテリーなしの機体へ再書き込みしました。独立した照合で `digest matched` を確認しています。現在の保存モデルと機体内のファームウェアは同じ更新版です。
 
 ## 機体に入っている版
 
-`firmware/current/StampFly_Official_FlightTest400.bin`。SHA256 は `4F8FDE9013CD943AAB884ADE2F9F7E2532B55E086B510BB405D92E823B0190B2`。生成元は直下の `StampFly_Official_FlightTest400.slx`、ビルド出力は `build/model_reorganization/` です。COM4 の StampFly へアプリ領域だけを書き込み、照合に成功しました。記録は `docs/reorganized_flight_deployment.json`。この新版の実飛行と実機処理時間の測定はまだ行っていません。
+`firmware/current/StampFly_Official_FlightTest400.bin`。SHA256 は `276049CBB0723367D9B74944E5B491F468ED289DA0A66C580672CA63510EA49B`。生成元は直下の `StampFly_Official_FlightTest400.slx`、モデルの SHA256 は `C0A492B6953C7844E05034AE93C7B90B815EA1E961A8EA488D46FA2DDA9E1BE8`、ビルド出力は `build/model_reorganization/` です。COM4 の StampFly へアプリ領域だけを書き込み、照合に成功しました。記録は `docs/control_layout_flight_deployment.json` と `docs/reorganized_flight_deployment.json`。この更新版の実飛行と実機処理時間の測定はまだ行っていません。直前に機体へ入っていた版は `firmware/history/before_control_layout_20261015_175607/` に保存しました。
 
 前回の飛行成功版は `firmware/previous_successful/StampFly_Official_FlightTest400.bin`、SHA256 は `5A3D486B4152BB3328E481755A2E93826A5616160FB5929266D73AB4EAFC7C14` です。この旧版ではユーザーから実飛行成功とロガー正常動作の報告を受けています。旧版の USB ベンチ確認では、400 Hz タスクの最大実行時間 1994 µs、周期超過・取りこぼし 0、PWM 読み戻し 150094 Hz／8 bit、待機中のモーター実出力 0、JoyStick 受信を確認しました。150 kHz 指定との差は LEDC の分周量子化によるものです。外部計測器での PWM 波形測定は行っていません。
 
@@ -25,7 +25,7 @@
 
 最終ビルドの出力先は `build/model_reorganization/`、再実行は `build_reorganized_flight_model` です。成功時に `tests/reorganized_flight_build.mat` と `docs/reorganized_flight_build.json` を保存します。この処理は書き込みを行いません。学生用ライブラリーへの反映と追加レイアウト調整は、ユーザーの「作業はそこそこで終了」に合わせて保留しています。
 
-その後、指定された飛行制御部分を高度・姿勢角・角速度・モーター配分・飛行指令・診断へ分割し、日本語の入出力説明とレイアウトを整えました。整理開始時の保存モデルとの比較は3シナリオ・36,000周期・15出力すべて一致、機体モデルのコンパイルも成功しています。4個のStateflow Chartと内部MATLAB Function 0個を維持しています。PID専用ブロックの候補は周期変動・リセット時に非等価となり、本番PIDは元の構成を残しています。[詳細と比較結果](control_layout_and_pid.md)を参照してください。この変更の生成・書き込み・実飛行は行っていません。
+その後、指定された飛行制御部分を高度・姿勢角・角速度・モーター配分・飛行指令・診断へ分割し、日本語の入出力説明とレイアウトを整えました。整理開始時の保存モデルとの比較は3シナリオ・36,000周期・15出力すべて一致、機体モデルのコンパイルも成功しています。4個のStateflow Chartと内部MATLAB Function 0個を維持しています。PID専用ブロックの候補は周期変動・リセット時に非等価となり、本番PIDは元の構成を残しています。[詳細と比較結果](control_layout_and_pid.md)を参照してください。この更新版は ESP32-S3 ビルド、COM4 への書き込み、独立した digest 照合まで完了しました。実飛行は行っていません。
 
 ## 下向き ToF と Optical Flow
 

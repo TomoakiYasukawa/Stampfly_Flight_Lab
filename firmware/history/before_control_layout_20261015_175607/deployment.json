@@ -1,0 +1,24 @@
+{
+  "recorded_at_utc": "2026-10-15T03:59:08.700143+00:00",
+  "device": {
+    "port_at_flash": "COM4",
+    "mac": "70:AF:09:DF:A6:C4"
+  },
+  "model": "StampFly_Official_FlightTest400.slx",
+  "firmware": "firmware/current/StampFly_Official_FlightTest400.bin",
+  "firmware_sha256": "4f8fde9013cd943aab884ade2f9f7e2532b55e086b510bb405d92e823b0190b2",
+  "app_offset": "0x10000",
+  "app_backup": "backups\\StampFly_COM4_before_reorganized_20261015_125908_app0.bin",
+  "motor_output_enabled": true,
+  "usb_only_confirmed_by_user": true,
+  "flash_verified": true,
+  "equivalence_samples": 36000,
+  "equivalence_outputs": 15,
+  "logger_port_untouched": "COM9",
+  "flash_log": "logs/reorganized_flight_flash.log",
+  "verify_log": "logs/reorganized_flight_verify.log",
+  "build_firmware": "build/model_reorganization/StampFly_Official_FlightTest400.bin",
+  "verification_result": "digest matched",
+  "physical_flight_verified": false,
+  "physical_timing_measured": false
+}

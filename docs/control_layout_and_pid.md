@@ -2,7 +2,7 @@
 
 `StampFly_Official_FlightTest400/FlightControl400` と、その中の `TakeoffHoverControl400` を整理しました。制御の演算・単精度・状態・1周期遅延・保持・リセットは維持し、関連信号をバスにまとめています。専用PIDブロックへの直接置き換えは等価にならなかったため、本番のPIDは既存のSimulinkブロック構成を残しました。
 
-今回、機体・JoyStick・受信機への書き込みは行っていません。保存モデルは、機体に書き込み済みのモデルより新しくなっています。
+整理後の保存モデルを ESP32-S3 用にビルドし、2026-10-15 に USB 接続・バッテリーなしの COM4 の機体へ再書き込みしました。独立した照合も成功しています。記録は [control_layout_flight_deployment.json](control_layout_flight_deployment.json) です。
 
 ## ブロックの読み方
 
@@ -112,6 +112,6 @@ verify_pid_block400();
 
 ## 機体に入っているファームウェア
 
-今回の変更はまだ書き込んでいません。機体に入っている版は `firmware/current/StampFly_Official_FlightTest400.bin`、SHA256は `4f8fde9013cd943aab884ade2f9f7e2532b55e086b510bb405d92e823b0190b2` です。JoyStickは公式 `StampFlyController_V1.2.0_20260610.bin` のままです。
+今回の変更を含む最新の保存モデルが機体に入っています。配布用の版は `firmware/current/StampFly_Official_FlightTest400.bin`、SHA256は `276049cbb0723367d9b74944e5b491f468ed289da0a66c580672ca63510ea49b` です。400 Hz、PWM 150 kHz 指定／8 bit のビルドに成功し、COM4 のアプリ領域へ書き込んで `digest matched` を確認しました。JoyStickは公式 `StampFlyController_V1.2.0_20260610.bin` のままです。今回の更新版の実飛行は未実施です。
 
 参考：[MathWorks Discrete PID Controller](https://www.mathworks.com/help/releases/R2026b/simulink/slref/discretepidcontroller.html)、`code/+official/pidStep.m`、`official_sources/M5StampFly/src/pid.cpp`。

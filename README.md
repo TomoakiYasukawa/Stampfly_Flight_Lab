@@ -2,7 +2,7 @@
 
 M5Stack の公式飛行制御を、学生が機能ごとに編集できる Simulink モデルへ移植したプロジェクトです。制御周期は **400 Hz（2.5 ms）**、モーター PWM は **150 kHz 指定／8 bit**。下向き ToF を使う自動離陸・高度保持を含み、前向き ToF は無効、Optical Flow は未実装です。
 
-2026-10-15 にファームウェアを StampFly へ書き込み、`digest matched` を確認しました。その後の制御ブロック・配線の整理は保存モデルに反映済みで、再書き込みは行っていません。**機体モデルは実モーター出力が有効です。** 書き込み済み版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/reorganized_flight_deployment.json) を参照してください。
+2026-10-15 に、制御ブロック・配線を整理した最新の保存モデルをビルドし、COM4 の StampFly へ再書き込みしました。独立した照合で `digest matched` を確認しています。**機体モデルは実モーター出力が有効です。** この更新版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/control_layout_flight_deployment.json) を参照してください。
 
 ## 開き方
 
