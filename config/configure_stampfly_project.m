@@ -11,8 +11,21 @@ existing=folders(cellfun(@isfolder,folders));
 addpath(existing{:});
 cacheFolder=fullfile(root,'build','cache');
 codegenFolder=fullfile(root,'build','codegen');
-Simulink.fileGenControl('set','CacheFolder',cacheFolder, ...
-    'CodeGenFolder',codegenFolder,'createDir',true);
+% InitFcn also runs during slbuild. Keep the build's already-selected folders:
+% changing file generation settings while a build is active is not allowed.
+current=Simulink.fileGenControl('getConfig');
+buildFolder=replace(string(fullfile(root,'build')),'\','/');
+cacheCurrent=replace(string(current.CacheFolder),'\','/');
+codegenCurrent=replace(string(current.CodeGenFolder),'\','/');
+insideCache=strcmpi(cacheCurrent,buildFolder) || startsWith(cacheCurrent,buildFolder+"/",'IgnoreCase',true);
+insideCodegen=strcmpi(codegenCurrent,buildFolder) || startsWith(codegenCurrent,buildFolder+"/",'IgnoreCase',true);
+if ~(insideCache && insideCodegen)
+    Simulink.fileGenControl('set','CacheFolder',cacheFolder, ...
+        'CodeGenFolder',codegenFolder,'createDir',true);
+else
+    cacheFolder=current.CacheFolder;
+    codegenFolder=current.CodeGenFolder;
+end
 paths=struct('ProjectFolder',string(root),'ModelsFolder',string(fullfile(root,'models')), ...
     'LibraryFolder',string(fullfile(root,'libraries')),'CacheFolder',string(cacheFolder), ...
     'CodeGenFolder',string(codegenFolder));
