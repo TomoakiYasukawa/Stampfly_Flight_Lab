@@ -1,6 +1,6 @@
 {
   "Model": "StampFly_Official_FlightTest400",
-  "ModelFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\models\\StampFly_Official_FlightTest400.slx",
+  "ModelFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\StampFly_Official_FlightTest400.slx",
   "Step": 0.0025,
   "PWMHz": 150000,
   "PWMBits": 8,
@@ -8,8 +8,8 @@
   "ChartPaths": [
     "StampFly_Official_FlightTest400/FlightControl400/OfficialFlightSupervisor",
     "StampFly_Official_FlightTest400/FlightControl400/OfficialFlipSequence",
-    "StampFly_Official_FlightTest400/FlightControl400/TakeoffHoverControl400/FinalizeFlightMode",
-    "StampFly_Official_FlightTest400/FlightControl400/TakeoffHoverControl400/TakeoffLandingCommand"
+    "StampFly_Official_FlightTest400/FlightControl400/TakeoffHoverControl400/FlightCommand400/FinalizeFlightMode",
+    "StampFly_Official_FlightTest400/FlightControl400/TakeoffHoverControl400/FlightCommand400/TakeoffLandingCommand"
   ],
   "EmbeddedMATLABFunctionCount": 0,
   "MotorOutputEnabled": true,
@@ -18,9 +18,6 @@
   "Flashed": false,
   "BuildFolder": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\model_reorganization",
   "FirmwareFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\model_reorganization\\StampFly_Official_FlightTest400.bin",
-  "BuildSeconds": 180.1678085,
-  "PhysicalTimingMeasured": false,
-  "SavedModelFile": "StampFly_Official_FlightTest400.slx",
-  "DeploymentRecord": "docs/reorganized_flight_deployment.json",
-  "RecordNote": "Build-time record, before relocating the model to the project root. Flashed=false applies only to this build action; the later deployment is verified in DeploymentRecord."
+  "BuildSeconds": 224.7230648,
+  "PhysicalTimingMeasured": false
 }
