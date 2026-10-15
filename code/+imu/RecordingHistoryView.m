@@ -136,7 +136,8 @@ classdef RecordingHistoryView
             errors = strings(0,1);
             for k = 1:numel(selected)
                 try
-                    logs{end+1,1} = imu.readRecordingHistory(selected(k),mode); %#ok<AGROW>
+                    logs{end+1,1} = imu.readRecordingHistory( ...
+                        selected(k),mode,5000,double(app.ExpectedBuildID)); %#ok<AGROW>
                 catch err
                     errors(end+1,1) = string(err.message); %#ok<AGROW>
                 end

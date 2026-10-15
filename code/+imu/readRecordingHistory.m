@@ -1,10 +1,11 @@
-function log = readRecordingHistory(filePath, rangeMode, maxPoints)
+function log = readRecordingHistory(filePath, rangeMode, maxPoints, expectedBuildID)
 %READRECORDINGHISTORY Read the columns needed by the history viewer.
 % The file is read through matfile, so rawFrames are never loaded.
 arguments
     filePath (1,1) string
     rangeMode (1,1) string {mustBeMember(rangeMode,["firstFlight","all"])} = "firstFlight"
     maxPoints (1,1) double {mustBeInteger,mustBePositive} = 5000
+    expectedBuildID (1,1) double {mustBeInteger,mustBeNonnegative} = 0
 end
 if ~isfile(filePath)
     error('imu:HistoryFileMissing','MAT file not found: %s',filePath);
@@ -55,6 +56,27 @@ end
 [rows,order] = sort([baseRows extraRows]);
 sample = [sample;extraSample];
 sample = sample(order,:);
+buildColumn = find(columns == "BuildID",1);
+if expectedBuildID == 0 && isfield(info,'Config') && ...
+        isfield(info.Config,'ExpectedBuildID')
+    expectedBuildID = double(info.Config.ExpectedBuildID);
+end
+foreignFrames = 0;
+if expectedBuildID ~= 0 && ~isempty(buildColumn)
+    % 過去に別ビルドが混在した記録も、対象の時刻・値だけを表示する。
+    versionColumn = find(columns == "Version",1);
+    selectedBuild = sample(:,buildColumn) == expectedBuildID;
+    if ~isempty(versionColumn)
+        selectedBuild = selectedBuild | sample(:,versionColumn) < 7;
+    end
+    foreignFrames = nnz(~selectedBuild);
+    sample = sample(selectedBuild,:);
+    rows = rows(selectedBuild);
+    if isempty(rows)
+        error('imu:HistoryBuildMissing','No frames for BuildID %.0f: %s', ...
+            expectedBuildID,filePath);
+    end
+end
 
     function values = col(name)
         columnIndex = find(columns == name,1);
@@ -175,6 +197,8 @@ else
 end
 log.MissingFrames = localInfoNumber(info,'MissingFrames');
 log.CRCRejected = localInfoNumber(info,'CRCRejected');
+log.ExpectedBuildID = expectedBuildID;
+log.ExcludedOtherBuildPoints = foreignFrames;
 end
 
 function time = localDeviceTime(rawTime,hostTime,rows)

@@ -108,7 +108,6 @@ classdef StampFlyIMUApp < matlab.apps.App
         HistoryTitleLabel               matlab.ui.control.Label
     end
 
-
     properties (Access = private)
         AccelData
         AccelLines
@@ -116,6 +115,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         CRCErrorCount = 0
         DrawClock
         FlightCommandSequence = 'uint16(0)'
+        ForeignFrameCount = 0
         FrameCount = 0
         GroundTracker
         GyroData
@@ -141,6 +141,8 @@ classdef StampFlyIMUApp < matlab.apps.App
         PendingTuningRetries = ""
         PendingTuningSequence = ""
         PendingTuningValues = ""
+        PlotTimeline
+        PlotWindowSeconds = 10
         PoseView
         PrevSequence
         RecentTimes
@@ -155,6 +157,10 @@ classdef StampFlyIMUApp < matlab.apps.App
         ToFLine
         TuningCommandSequence = ""
         XYData
+    end
+
+    properties (Access = public)
+        ExpectedBuildID = 1401
     end
 
     methods (Access = private)
@@ -327,18 +333,25 @@ classdef StampFlyIMUApp < matlab.apps.App
                 app.HeightLandingBaseField.Value]);
         end
 
-        function recordSample(app, sample)
-            if ~isempty(app.TimeData) && sample.TimeSeconds < app.TimeData(end)
-                app.TimeData = zeros(0,1);
-                app.AccelData = zeros(0,3);
-                app.GyroData = zeros(0,3);
-                app.ToFData = zeros(0,1);
-                app.HeightData = zeros(0,1);
-                app.XYData = zeros(0,2);
-                app.MagData = zeros(0,3);
-                app.MotorData = zeros(0,4);
+        function [accepted,positionENU,heightNow] = recordSample(app, sample)
+            nowSeconds = toc(app.StartClock);
+            [time,restarted,accepted] = app.PlotTimeline.advance( ...
+                sample.TimeSeconds,sample.Sequence,nowSeconds);
+            positionENU = [NaN NaN NaN];
+            heightNow = NaN;
+            if ~accepted, return; end
+            if restarted
                 app.PrevSequence = NaN;
                 app.GroundTracker.reset();
+                % 再起動前後を線で結ばず、直近の履歴は残す。
+                app.TimeData(end+1,1) = time;
+                app.AccelData(end+1,:) = NaN;
+                app.GyroData(end+1,:) = NaN;
+                app.ToFData(end+1,1) = NaN;
+                app.HeightData(end+1,1) = NaN;
+                app.XYData(end+1,:) = NaN;
+                app.MagData(end+1,:) = NaN;
+                app.MotorData(end+1,:) = NaN;
             end
             if ~isnan(app.PrevSequence)
                 gap = mod(double(sample.Sequence) - app.PrevSequence, 65536);
@@ -348,7 +361,7 @@ classdef StampFlyIMUApp < matlab.apps.App
             end
             app.PrevSequence = double(sample.Sequence);
             app.FrameCount = app.FrameCount + 1;
-            app.TimeData(end+1,1) = sample.TimeSeconds;
+            app.TimeData(end+1,1) = time;
             app.AccelData(end+1,:) = double(sample.Acceleration);
             app.GyroData(end+1,:) = double(sample.AngularVelocity);
             app.ToFData(end+1,1) = double(sample.ToFDistanceM);
@@ -359,7 +372,9 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.MagData(end+1,:) = double(sample.MagneticFieldUT);
             app.MotorData(end+1,:) = double(sample.MotorCommands);
             if ~sample.MagValid, app.MagData(end,:) = NaN; end
-            keep = max(1, numel(app.TimeData)-499):numel(app.TimeData);
+            % 受信レートに依存せず10秒を保持し、左端をまたぐ1点も残す。
+            first = find(app.TimeData >= time-app.PlotWindowSeconds,1);
+            keep = max(1,first-1):numel(app.TimeData);
             app.TimeData = app.TimeData(keep);
             app.AccelData = app.AccelData(keep,:);
             app.GyroData = app.GyroData(keep,:);
@@ -368,77 +383,75 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.XYData = app.XYData(keep,:);
             app.MagData = app.MagData(keep,:);
             app.MotorData = app.MotorData(keep,:);
-            nowSeconds = toc(app.StartClock);
             app.RecentTimes(end+1,1) = nowSeconds;
             app.RecentTimes = app.RecentTimes(app.RecentTimes >= nowSeconds-1);
-            if toc(app.DrawClock) >= 0.08
-                app.StatusLabel.Text = '受信中';
-                app.RateLabel.Text = sprintf('受信: %d Hz',numel(app.RecentTimes));
-                app.FrameLabel.Text = sprintf('フレーム: %d', app.FrameCount);
-                app.ErrorLabel.Text = sprintf('欠落: %d / CRC: %d', ...
-                    app.MissingCount, app.CRCErrorCount);
-                app.LatestLabel.Text = sprintf(['a [m/s²] = %.2f, %.2f, %.2f    ' ...
-                    'ω [rad/s] = %.3f, %.3f, %.3f    IMU有効: %d'], ...
-                    double(sample.Acceleration), double(sample.AngularVelocity), ...
-                    sample.IMUValid);
-                if sample.Version >= 2
-                    if sample.ToFValid
-                        heightText = sprintf('%.3f m',double(sample.ToFDistanceM));
-                    else
-                        heightText = sprintf('無効 (状態 %d)',sample.ToFRangeStatus);
-                    end
-                    if isfinite(heightNow)
-                        correctedText = sprintf('%.3f m',heightNow);
-                    else
-                        correctedText = '無効';
-                    end
-                    if sample.Version >= 4
-                        xyCaption = '補正EN';
-                        title(app.PathAxes,'補正XY軌跡 (東・北)');
-                        xlabel(app.PathAxes,'東 E [m]');
-                        ylabel(app.PathAxes,'北 N [m]');
-                        app.MotionLabel.Tooltip = sprintf('補正Δ E %.4f / N %.4f m', ...
-                            double(sample.FlowCorrectedDeltaENM));
-                    else
-                        xyCaption = '相対XY';
-                        app.MotionLabel.Tooltip = '';
-                    end
-                    app.MotionLabel.Text = sprintf(['ToF: %s / 高さ: %s    ' ...
-                        '%s: %.3f, %.3f m    生Flow: %.0f, %.0f count    ' ...
-                        'Flow読取: %d / Flow採用: %d / Q: %d / 露光: %d'], ...
-                        heightText,correctedText,xyCaption,double(sample.XYDisplacementM), ...
-                        double(sample.FlowDelta),sample.FlowStatus, ...
-                        sample.FlowUsed, ...
-                        sample.FlowQuality,sample.FlowShutter);
+        end
+
+        function refreshMonitor(app,sample,positionENU,heightNow)
+            app.StatusLabel.Text = '受信中';
+            app.RateLabel.Text = sprintf('受信: %d Hz',numel(app.RecentTimes));
+            app.FrameLabel.Text = sprintf('フレーム: %d', app.FrameCount);
+            app.ErrorLabel.Text = sprintf('欠落: %d / CRC: %d / 対象外: %d', ...
+                app.MissingCount, app.CRCErrorCount,app.ForeignFrameCount);
+            app.LatestLabel.Text = sprintf(['a [m/s²] = %.2f, %.2f, %.2f    ' ...
+                'ω [rad/s] = %.3f, %.3f, %.3f    IMU有効: %d'], ...
+                double(sample.Acceleration), double(sample.AngularVelocity), ...
+                sample.IMUValid);
+            if sample.Version >= 2
+                if sample.ToFValid
+                    heightText = sprintf('%.3f m',double(sample.ToFDistanceM));
                 else
-                    app.MotionLabel.Text = 'SFI1受信中: ToF・Flowデータなし';
+                    heightText = sprintf('無効 (状態 %d)',sample.ToFRangeStatus);
                 end
-                if sample.Version >= 3
-                    app.AttitudeLabel.Text = sprintf([ ...
-                        'BMM150 [uT]: %.1f, %.1f, %.1f    ' ...
-                        '読取: %d / 新規: %d    姿勢有効: %d'], ...
-                        double(sample.MagneticFieldUT),sample.MagValid, ...
-                        sample.MagFresh,sample.OrientationValid);
-                    app.PoseView.update(sample.Orientation, ...
-                        sample.OrientationValid,positionENU);
+                if isfinite(heightNow)
+                    correctedText = sprintf('%.3f m',heightNow);
                 else
-                    app.AttitudeLabel.Text = 'SFI1/SFI2: 磁気・姿勢データなし';
-                    app.PoseView.update([1 0 0 0],false);
+                    correctedText = '無効';
                 end
-                if sample.BatteryValid
-                    if sample.BatteryVoltageV <= 3.34
-                        app.BatteryLabel.Text = sprintf('電池 %.2f V / 要充電',double(sample.BatteryVoltageV));
-                        app.BatteryLabel.FontColor = [0.8 0.12 0.12];
-                    else
-                        app.BatteryLabel.Text = sprintf('電池 %.2f V',double(sample.BatteryVoltageV));
-                        app.BatteryLabel.FontColor = [0.15 0.15 0.15];
-                    end
+                if sample.Version >= 4
+                    xyCaption = '補正EN';
+                    title(app.PathAxes,'補正XY軌跡 (東・北)');
+                    xlabel(app.PathAxes,'東 E [m]');
+                    ylabel(app.PathAxes,'北 N [m]');
+                    app.MotionLabel.Tooltip = sprintf('補正Δ E %.4f / N %.4f m', ...
+                        double(sample.FlowCorrectedDeltaENM));
                 else
-                    app.BatteryLabel.Text = '電池: 未取得';
-                    app.BatteryLabel.FontColor = [0.4 0.4 0.4];
+                    xyCaption = '相対XY';
+                    app.MotionLabel.Tooltip = '';
                 end
-                app.updatePlots();
-                app.DrawClock = tic;
+                app.MotionLabel.Text = sprintf(['ToF: %s / 高さ: %s    ' ...
+                    '%s: %.3f, %.3f m    生Flow: %.0f, %.0f count    ' ...
+                    'Flow読取: %d / Flow採用: %d / Q: %d / 露光: %d'], ...
+                    heightText,correctedText,xyCaption,double(sample.XYDisplacementM), ...
+                    double(sample.FlowDelta),sample.FlowStatus, ...
+                    sample.FlowUsed, ...
+                    sample.FlowQuality,sample.FlowShutter);
+            else
+                app.MotionLabel.Text = 'SFI1受信中: ToF・Flowデータなし';
+            end
+            if sample.Version >= 3
+                app.AttitudeLabel.Text = sprintf([ ...
+                    'BMM150 [uT]: %.1f, %.1f, %.1f    ' ...
+                    '読取: %d / 新規: %d    姿勢有効: %d'], ...
+                    double(sample.MagneticFieldUT),sample.MagValid, ...
+                    sample.MagFresh,sample.OrientationValid);
+                app.PoseView.update(sample.Orientation, ...
+                    sample.OrientationValid,positionENU);
+            else
+                app.AttitudeLabel.Text = 'SFI1/SFI2: 磁気・姿勢データなし';
+                app.PoseView.update([1 0 0 0],false);
+            end
+            if sample.BatteryValid
+                if sample.BatteryVoltageV <= 3.34
+                    app.BatteryLabel.Text = sprintf('電池 %.2f V / 要充電',double(sample.BatteryVoltageV));
+                    app.BatteryLabel.FontColor = [0.8 0.12 0.12];
+                else
+                    app.BatteryLabel.Text = sprintf('電池 %.2f V',double(sample.BatteryVoltageV));
+                    app.BatteryLabel.FontColor = [0.15 0.15 0.15];
+                end
+            else
+                app.BatteryLabel.Text = '電池: 未取得';
+                app.BatteryLabel.FontColor = [0.4 0.4 0.4];
             end
         end
 
@@ -456,6 +469,12 @@ classdef StampFlyIMUApp < matlab.apps.App
 
         function resetData(app)
             app.ByteBuffer = zeros(0,1,'uint8');
+            if isempty(app.PlotTimeline)
+                app.PlotTimeline = imu.LivePlotTimeline();
+            else
+                app.PlotTimeline.reset();
+            end
+            app.ForeignFrameCount = 0;
             app.FlightStateLabel.Text = '飛行状態: 未受信';
             app.FlightStateDetailLabel.Text = '機体状態: 未受信';
                     app.PendingTuningSequence = NaN;
@@ -481,14 +500,21 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.CRCErrorCount = 0;
             app.MissingCount = 0;
             app.StartClock = tic;
-            app.DrawClock = tic;
+            app.DrawClock = [];
             app.RateLabel.Text = '受信: 0 Hz';
             app.FrameLabel.Text = 'フレーム: 0';
-            app.ErrorLabel.Text = '欠落: 0 / CRC: 0';
+            app.ErrorLabel.Text = '欠落: 0 / CRC: 0 / 対象外: 0';
+            app.FrameLabel.Tooltip = sprintf('対象 BuildID: %.0f',double(app.ExpectedBuildID));
             app.LatestLabel.Text = '最新値: 受信待機中';
             app.MotionLabel.Text = 'ToF・Optical flow: データを待機中';
             app.AttitudeLabel.Text = '磁気・姿勢: データ待機中';
             if ~isempty(app.PoseView), app.PoseView.reset(); end
+            for line = [app.AccelLines app.GyroLines app.ToFLine app.HeightLine ...
+                    app.MagLines app.MotorLines app.PathLine]
+                if isgraphics(line)
+                    set(line,'XData',nan,'YData',nan);
+                end
+            end
         end
 
         function sendFlightCommand(app,~)
@@ -520,7 +546,7 @@ classdef StampFlyIMUApp < matlab.apps.App
                 app.LastFlightState = sample.FlightState;
                 name = app.flightStateName(sample.FlightState);
                 app.FlightStateLabel.Text = '飛行状態: ' + string(name);
-                app.FlightStateDetailLabel.Text = sprintf('公式状態: %s    実モーター出力: ゼロ固定',name);
+                app.FlightStateDetailLabel.Text = sprintf('公式状態: %s    操作: JoyStick',name);
                 if ~isnan(app.PendingFlightSequence) && double(sample.AcceptedCommandSequence) == app.PendingFlightSequence
                     app.FlightCommandStatusLabel.Text = sprintf('機体が指令 %d を受理',app.PendingFlightSequence);
                     app.PendingFlightSequence = NaN;
@@ -542,24 +568,19 @@ classdef StampFlyIMUApp < matlab.apps.App
         function updatePlots(app)
             if isempty(app.TimeData), return; end
             for k = 1:3
-                app.AccelLines(k).XData = app.TimeData;
-                app.AccelLines(k).YData = app.AccelData(:,k);
-                app.GyroLines(k).XData = app.TimeData;
-                app.GyroLines(k).YData = app.GyroData(:,k);
+                set(app.AccelLines(k),'XData',app.TimeData,'YData',app.AccelData(:,k));
+                set(app.GyroLines(k),'XData',app.TimeData,'YData',app.GyroData(:,k));
             end
             for k = 1:4
-                app.MotorLines(k).XData = app.TimeData;
-                app.MotorLines(k).YData = app.MotorData(:,k);
+                set(app.MotorLines(k),'XData',app.TimeData,'YData',app.MotorData(:,k));
             end
-            right = max(10, app.TimeData(end));
-            xlim(app.AccelAxes, [right-10 right]);
-            xlim(app.GyroAxes, [right-10 right]);
-            xlim(app.MotorAxes, [right-10 right]);
-            app.ToFLine.XData = app.TimeData;
-            app.ToFLine.YData = app.ToFData;
-            app.HeightLine.XData = app.TimeData;
-            app.HeightLine.YData = app.HeightData;
-            xlim(app.ToFAxes,[right-10 right]);
+            right = max(app.PlotWindowSeconds, app.TimeData(end));
+            xlim(app.AccelAxes, [right-app.PlotWindowSeconds right]);
+            xlim(app.GyroAxes, [right-app.PlotWindowSeconds right]);
+            xlim(app.MotorAxes, [right-app.PlotWindowSeconds right]);
+            set(app.ToFLine,'XData',app.TimeData,'YData',app.ToFData);
+            set(app.HeightLine,'XData',app.TimeData,'YData',app.HeightData);
+            xlim(app.ToFAxes,[right-app.PlotWindowSeconds right]);
             tofValues = [app.ToFData;app.HeightData];
             tofValues = tofValues(isfinite(tofValues));
             if ~isempty(tofValues)
@@ -570,14 +591,12 @@ classdef StampFlyIMUApp < matlab.apps.App
                 ylim(app.ToFAxes,[bottom max(high+padding,bottom+0.05)]);
             end
             for k = 1:3
-                app.MagLines(k).XData = app.TimeData;
-                app.MagLines(k).YData = app.MagData(:,k);
+                set(app.MagLines(k),'XData',app.TimeData,'YData',app.MagData(:,k));
             end
-            xlim(app.MagAxes,[right-10 right]);
+            xlim(app.MagAxes,[right-app.PlotWindowSeconds right]);
             valid = all(isfinite(app.XYData),2);
             xy = app.XYData(valid,:);
-            app.PathLine.XData = xy(:,1);
-            app.PathLine.YData = xy(:,2);
+            set(app.PathLine,'XData',xy(:,1),'YData',xy(:,2));
             if ~isempty(xy)
                 low = min(xy,[],1);
                 high = max(xy,[],1);
@@ -599,7 +618,13 @@ classdef StampFlyIMUApp < matlab.apps.App
     methods (Access = public)
 
         function processBytes(app, bytes)
+            if isempty(app.PlotTimeline)
+                app.resetData(); % 開いたままコードを更新した場合も表示状態を初期化する。
+            end
             app.ByteBuffer = [app.ByteBuffer; uint8(bytes(:))];
+            latestSample = [];
+            latestPosition = [NaN NaN NaN];
+            latestHeight = NaN;
             while numel(app.ByteBuffer) >= 4
                 first = app.ByteBuffer(1:4);
                 if isequal(first,uint8('SFI1').')
@@ -673,12 +698,36 @@ classdef StampFlyIMUApp < matlab.apps.App
                     continue
                 end
                 app.ByteBuffer(1:frameBytes) = [];
+                % 同じチャンネルの別ビルドを時刻・欠落・記録へ混ぜない。
+                if sample.Version >= 7 && app.ExpectedBuildID ~= 0 && ...
+                        double(sample.BuildID) ~= double(app.ExpectedBuildID)
+                    app.ForeignFrameCount = app.ForeignFrameCount + 1;
+                    continue
+                end
                 app.captureFrame(sample,candidate);
-                app.updateFlightLink(sample);
-                app.updateTuningLink(sample);
-                app.recordSample(sample);
-                app.LastReceivedClock = tic;
+                [accepted,positionENU,heightNow] = app.recordSample(sample);
+                if accepted
+                    latestSample = sample;
+                    latestPosition = positionENU;
+                    latestHeight = heightNow;
+                    app.LastReceivedClock = tic;
+                end
+            end
+            % バイト列の処理を終えてから1回描画する。描画中の再入も抑える。
+            if ~isempty(latestSample)
                 app.updateLedHeartbeat();
+            end
+            if isempty(app.DrawClock) || toc(app.DrawClock) >= 0.08
+                app.ErrorLabel.Text = sprintf('欠落: %d / CRC: %d / 対象外: %d', ...
+                    app.MissingCount,app.CRCErrorCount,app.ForeignFrameCount);
+                if ~isempty(latestSample)
+                    app.updateFlightLink(latestSample);
+                    app.updateTuningLink(latestSample);
+                    app.refreshMonitor(latestSample,latestPosition,latestHeight);
+                    app.updatePlots();
+                    app.DrawClock = tic;
+                    drawnow limitrate nocallbacks;
+                end
             end
         end
 
@@ -692,7 +741,8 @@ classdef StampFlyIMUApp < matlab.apps.App
             end
             config = struct('Port',string(app.PortDropDown.Value), ...
                 'BaudRate',app.BaudField.Value, ...
-                'RadioChannel',app.ChannelField.Value);
+                'RadioChannel',app.ChannelField.Value, ...
+                'ExpectedBuildID',app.ExpectedBuildID);
             writer = imu.MatRecordingWriter(string(outputFolder),config);
             app.RecordingWriter = writer;
             app.RecordingActive = true;
