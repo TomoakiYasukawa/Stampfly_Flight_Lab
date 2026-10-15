@@ -66,10 +66,13 @@ extern "C" int __wrap_mw_osTimerDelete(mw_timer_t* def) {
 }
 // Wrap the generated step at the call in ert_main.c to measure the entire
 // task, including outputs, status queues and Unit Delay state updates.
-#if defined(OFFICIAL_BENCH_PROFILE) || defined(OFFICIAL_FLIGHT_TEST_PROFILE)
+#if defined(OFFICIAL_BENCH_PROFILE) || defined(OFFICIAL_FLIGHT_TEST_PROFILE) || defined(OFFICIAL_PID_BLOCK_TEST_PROFILE)
 #if defined(OFFICIAL_BENCH_PROFILE)
 #define OFFICIAL_REAL_STEP __real_StampFly_Official_Bench400_step
 #define OFFICIAL_WRAP_STEP __wrap_StampFly_Official_Bench400_step
+#elif defined(OFFICIAL_PID_BLOCK_TEST_PROFILE)
+#define OFFICIAL_REAL_STEP __real_StampFly_PIDBlock_FlightTest400_step
+#define OFFICIAL_WRAP_STEP __wrap_StampFly_PIDBlock_FlightTest400_step
 #else
 #define OFFICIAL_REAL_STEP __real_StampFly_Official_FlightTest400_step
 #define OFFICIAL_WRAP_STEP __wrap_StampFly_Official_FlightTest400_step

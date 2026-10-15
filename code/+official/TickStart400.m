@@ -21,6 +21,9 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             elseif contains(c.getBuildDir(),'StampFly_Official_FlightTest400')
                 b.addDefines('OFFICIAL_FLIGHT_TEST_PROFILE');
                 b.addLinkFlags('-Wl,--wrap=StampFly_Official_FlightTest400_step');
+            elseif contains(c.getBuildDir(),'StampFly_PIDBlock_FlightTest400')
+                b.addDefines('OFFICIAL_PID_BLOCK_TEST_PROFILE');
+                b.addLinkFlags('-Wl,--wrap=StampFly_PIDBlock_FlightTest400_step');
             end
         end
     end

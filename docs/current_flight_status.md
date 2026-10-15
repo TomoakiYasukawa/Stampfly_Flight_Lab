@@ -1,14 +1,23 @@
 # StampFly の現在の状態（2026-10-15）
 
-`FlightControl400`・`TakeoffHoverControl400` の分割と配線整理を含む最新の保存モデルをビルドし、USB 接続・バッテリーなしの機体へ再書き込みしました。独立した照合で `digest matched` を確認しています。現在の保存モデルと機体内のファームウェアは同じ更新版です。
+現在の機体は、専用PIDによる実飛行比較用の `StampFly_PIDBlock_FlightTest400.slx` です。元の実装モデルをプロジェクト直下へコピーし、7個のPIDを専用ブロックへ変更して、USB 接続・バッテリーなしの COM4 へ書き込みました。独立した照合で `digest matched` を確認しています。元の `StampFly_Official_FlightTest400.slx` は比較基準として保持しています。
 
-## 機体に入っている版
+## 現在のPID比較版
+
+- モデル：`StampFly_PIDBlock_FlightTest400.slx`、SHA256 `D1B34E0CBA9E7BED896A805BCB9FEEB5C190D5414A5E499629ADF1B5B4F9AB51`。
+- 機体内のファームウェア：`firmware/pid_experiment/StampFly_PIDBlock_FlightTest400.bin`、SHA256 `235C4E34099E0A53B848499929E9B61C006B55AEF7F2DF52DC25BD475E15AB98`。記録は `docs/pid_flight_deployment.json`。
+- 全モデルのコンパイル、固定Dtの12,000周期比較、ESP32-S3ビルドに成功しました。8 bitモーター指令は比較入力の全周期で一致しています。周期変動・リセットの既知の差を含むため、実飛行の等価性を意味しません。
+- USBで6秒間受信した待機中の確認では、400 Hzタスク最大1,426 µs、周期超過・取りこぼし0、PWM読み戻し150,094 Hz／8 bit、実出力0でした。JoyStickの受信パケットは0で、この確認では通信・飛行を検証していません。
+
+比較版の実飛行はまだ行っていません。[実験の説明](pid_flight_experiment.md)を参照してください。
+
+## 直前の比較基準版
 
 `firmware/current/StampFly_Official_FlightTest400.bin`。SHA256 は `276049CBB0723367D9B74944E5B491F468ED289DA0A66C580672CA63510EA49B`。生成元は直下の `StampFly_Official_FlightTest400.slx`、モデルの SHA256 は `C0A492B6953C7844E05034AE93C7B90B815EA1E961A8EA488D46FA2DDA9E1BE8`、ビルド出力は `build/model_reorganization/` です。COM4 の StampFly へアプリ領域だけを書き込み、照合に成功しました。記録は `docs/control_layout_flight_deployment.json` と `docs/reorganized_flight_deployment.json`。この更新版の実飛行と実機処理時間の測定はまだ行っていません。直前に機体へ入っていた版は `firmware/history/before_control_layout_20261015_175607/` に保存しました。
 
 前回の飛行成功版は `firmware/previous_successful/StampFly_Official_FlightTest400.bin`、SHA256 は `5A3D486B4152BB3328E481755A2E93826A5616160FB5929266D73AB4EAFC7C14` です。この旧版ではユーザーから実飛行成功とロガー正常動作の報告を受けています。旧版の USB ベンチ確認では、400 Hz タスクの最大実行時間 1994 µs、周期超過・取りこぼし 0、PWM 読み戻し 150094 Hz／8 bit、待機中のモーター実出力 0、JoyStick 受信を確認しました。150 kHz 指定との差は LEDC の分周量子化によるものです。外部計測器での PWM 波形測定は行っていません。
 
-## 今回の保存モデル
+## 比較基準モデルの構成
 
 直下の `StampFly_Official_FlightTest400.slx`。
 

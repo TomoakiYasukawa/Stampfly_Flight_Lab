@@ -2,7 +2,7 @@
 
 M5Stack の公式飛行制御を、学生が機能ごとに編集できる Simulink モデルへ移植したプロジェクトです。制御周期は **400 Hz（2.5 ms）**、モーター PWM は **150 kHz 指定／8 bit**。下向き ToF を使う自動離陸・高度保持を含み、前向き ToF は無効、Optical Flow は未実装です。
 
-2026-10-15 に、制御ブロック・配線を整理した最新の保存モデルをビルドし、COM4 の StampFly へ再書き込みしました。独立した照合で `digest matched` を確認しています。**機体モデルは実モーター出力が有効です。** この更新版の実飛行と実機処理時間の測定は未実施です。[現在の状態](docs/current_flight_status.md) と [書き込み記録](docs/control_layout_flight_deployment.json) を参照してください。
+2026-10-15 に、機体へ専用PIDの比較版 `StampFly_PIDBlock_FlightTest400.slx` を書き込み、独立した照合で `digest matched` を確認しました。元の `StampFly_Official_FlightTest400.slx` は比較基準として保存しています。**両モデルは実モーター出力が有効です。** 比較版の実飛行は未実施です。[現在の状態](docs/current_flight_status.md)、[PID飛行比較](docs/pid_flight_experiment.md)、[書き込み記録](docs/pid_flight_deployment.json) を参照してください。
 
 ## 開き方
 
@@ -15,6 +15,8 @@ app = StampFlyIMUApp;
 ```
 
 受信機モデルは `open_system('M5Stamp_IMU_Rx.slx')` で開きます。モデルとアプリの起動時にもパスとキャッシュ保存先を設定します。アプリの `StampFlyIMUApp.xml` は `.m` と同じく直下に置いてください。離着陸と操縦には公式 JoyStick、記録には受信機とロガーアプリを使います。シリアル接続はアプリ上で選択します。
+
+現在の機体のPID比較版は `open_system('StampFly_PIDBlock_FlightTest400.slx')` で開きます。7個のPIDを専用ブロックへ置換し、ゲイン・実測Dt・単精度・400 Hz設定を引き継いでいます。元版との厳密等価性を求める変更ではありません。
 
 ## モデルと検証
 

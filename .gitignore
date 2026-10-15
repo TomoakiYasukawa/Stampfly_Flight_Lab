@@ -1,5 +1,5 @@
 # Simulink caches and generated code stay local.
-build/
+/build/
 slprj/
 **/slprj/
 *.slxc
