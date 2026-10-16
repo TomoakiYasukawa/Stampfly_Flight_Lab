@@ -11,11 +11,12 @@
 | IMU版の階層整理 | Supervisorを最上位へ移し、推定・飛行状態・時刻・ログを整理。ユーザーが「飛行試験OKです。」と報告 | [整理前後の検証](imu_readability_verification.json)、[書き込み](imu_readability_aircraft_deployment.json) |
 | 標準高度Kalman版 | 単体・全体比較、ビルド、書き込みを実施。ユーザーが「実飛行テスト、問題なしです」と報告。飛行ログなし | [比較用解説](kf_flight_model.md)、[検証](kf_flight_verification.json)、[書き込み](kf_aircraft_deployment.json) |
 | 現行IMU版の再整理 | 元の高度MATLAB Functionを採用。ToFのMode入力削除、XYZベクトル化、余分な階層削除、日本語説明、配置と配布構成を整理。機体・受信機ビルドと配布用コピーのモデル・アプリ起動を確認 | [変更と検証結果](../imu_cleanup_validation.md)、[比較](../imu_cleanup_verification.json) |
+| 再整理IMU版の書き込み | 検証済みBINをCOM4の機体へ書き込み・照合。USB机上確認でCRCエラー・待機PWMはゼロ。実飛行は未実施 | [書き込み](../imu_cleanup_aircraft_deployment.json)、[USB確認](../imu_cleanup_usb_startup.json) |
 
 標準高度Kalman版は、予測・補正・特殊な待機リセットを標準ブロックへ合わせる周辺処理が増えました。基礎教材で読みやすいMATLAB Function版を採用し、KF版は追加配線修正を行わず、実飛行したモデルとBINを **[archive/kf400](../../archive/kf400/README.md)** に保存しています。
 
 **今回の再整理後モデルは、過去の飛行成功モデルと別の保存版です。** 比較・ビルドの結果と、実機書き込み・飛行の確認はそれぞれの記録で区別します。旧版の飛行成功を今回の再整理版の飛行試験として扱いません。
 
-これまでの最終書き込みはKF版（Revision 1801、CH 3）でした。この整理作業では機体へ再書き込みしていません。過去のIMU成功BINは `firmware/history/imu400_readability/`、新しい生成物は`firmware/current/`で識別します。同じRevisionの場合もモデルとBINのSHA-256で版を確認します。
+最新の書き込みは再整理後のIMU版（Revision 1701、CH 3）です。直前のKF版（Revision 1801）は書き込み前に読み出し・照合してバックアップしました。過去のIMU成功BINは `firmware/history/imu400_readability/`、今回の書き込みBINは`firmware/current/`で識別します。同じRevisionの場合もモデルとBINのSHA-256で版を確認します。
 
 `README_before_imu_cleanup.md`、`imu_model_before_cleanup.md`、`firmware_before_cleanup.md`は編集前の説明を保存したものです。当時の「現在」・「未飛行」などの表現はその時点の記録であり、最新状態はこのページと個別JSONを参照してください。移動前の場所は[移動一覧](../imu_distribution_moves.json)で確認できます。

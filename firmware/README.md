@@ -13,4 +13,6 @@
 
 今回の生成物と過去の成功版を混同しないよう、モデル・BINのSHA-256をmanifestで確認します。機体への最新の書き込み履歴は [docs/history/README.md](../docs/history/README.md) にまとめています。過去の成功報告は各保存版の結果です。
 
+現行IMU版は[機体へ書き込み・USB机上確認済み](../docs/imu_cleanup_aircraft_deployment.json)です。実飛行は未実施です。`manifest.json`の確認フラグはビルドした時点の記録で、実機の確認結果は書き込み記録に保存しています。
+
 通常の生成コードはGit管理外の`build/`、機体から読み出したバックアップは`backups/`です。以前の詳しい版情報は [firmware_before_cleanup.md](../docs/history/firmware_before_cleanup.md) に保存しています。

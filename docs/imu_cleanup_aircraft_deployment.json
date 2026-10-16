@@ -1,0 +1,236 @@
+{
+  "recorded_at_utc": "2026-10-16T22:08:55.971146+00:00",
+  "device": "aircraft",
+  "port_at_flash": "COM4",
+  "mac": "70:AF:09:DF:A6:C4",
+  "model": "StampFly_IMU400.slx",
+  "model_sha256": "3e2547aeb792d8e340f9975993f871000265b75186b1a046c50ced3a59d40ebc",
+  "source_commit": "e982acfe936a9a4f789083a02c941bdfa45ddbe3",
+  "firmware": "firmware/current/StampFly_IMU400.bin",
+  "firmware_sha256": "4f3f84b25f389132a8a1b7a00f60d09ca21044c559d96f0c0f40378ea492a402",
+  "firmware_bytes": 986528,
+  "build_id": 1401,
+  "firmware_revision": 1701,
+  "radio_channel": 3,
+  "control_hz": 400,
+  "pwm_requested_hz": 150000,
+  "pwm_bits": 8,
+  "motor_output_enabled": true,
+  "corrected_angular_velocity_to_pid": true,
+  "altitude_kalman_implementation": "MATLAB Function",
+  "raw_tof_mode_independent": true,
+  "app_offset": "0x10000",
+  "written_regions": [
+    "application"
+  ],
+  "app_backup": "backups/StampFly_COM4_before_imu_cleanup_20261017_070806.bin",
+  "backup_bytes": 1310720,
+  "backup_sha256": "6d6faa83c41a5403aafcebdf412da836c2dd4ccefd3aa7d53a26383c3a22829e",
+  "backup_read_and_verified_before_flash": true,
+  "bootloader_and_partition_table_verified": true,
+  "prior_kf_image_matched": true,
+  "previous_deployment_record": "docs/history/kf_aircraft_deployment.json",
+  "previous_firmware": "archive/kf400/firmware/StampFly_KF400.bin",
+  "previous_firmware_sha256": "3a44dc01f9b3f4ed0ec832977fa473a202781f625103a5fb22dec6911e89de61",
+  "flash_completed": true,
+  "flash_verified": true,
+  "verification_result": "digest matched",
+  "usb_only_confirmed_by_user": true,
+  "flight_commands_sent": false,
+  "physical_flight_tested": false,
+  "usb_startup_verified": true,
+  "build_record": "docs/imu_cleanup_build.json",
+  "verification_record": "docs/imu_cleanup_verification.json",
+  "backup_log": "logs/imu_cleanup_backup.log",
+  "flash_log": "logs/imu_cleanup_flash.log",
+  "verify_log": "logs/imu_cleanup_verify.log",
+  "usb_startup": {
+    "Port": "COM4",
+    "BaudRate": 921600,
+    "CaptureSeconds": 15.0,
+    "CapturedBytes": 478886,
+    "Frames": {
+      "SFI8": 751,
+      "SFIX": 751,
+      "SFIY": 750
+    },
+    "CRCErrors": {
+      "SFI8": 0,
+      "SFIX": 0,
+      "SFIY": 0
+    },
+    "BuildIDs": [
+      1401
+    ],
+    "FirmwareRevisions": [
+      1701
+    ],
+    "ObservedModes": [
+      3
+    ],
+    "ReservedFieldsZero": true,
+    "MaximumAppliedPWMCount": 0,
+    "FiniteFilteredSensorsAndQuaternion": true,
+    "FiniteAltitudeAndVelocity": true,
+    "FiniteSensorDiagnosticsAndBias": true,
+    "FiniteControlDiagnostics": true,
+    "HeightRange": [
+      0.09812697768211365,
+      0.11088445782661438
+    ],
+    "VerticalVelocityRange": [
+      -0.008,
+      -0.003
+    ],
+    "AltitudeBiasRange": [
+      0.0,
+      0.0
+    ],
+    "QuaternionNormRange": [
+      0.9999998915868757,
+      1.0000002205960228
+    ],
+    "UnitQuaternions": true,
+    "FirmwareTimeSpanSeconds": 15.0,
+    "TaskTiming": [
+      {
+        "n": 400,
+        "mean_us": 1611,
+        "max_us": 2258,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1617,
+        "max_us": 2323,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1619,
+        "max_us": 2561,
+        "over": 1,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1614,
+        "max_us": 2340,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1611,
+        "max_us": 2328,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1614,
+        "max_us": 2332,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1615,
+        "max_us": 2339,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1619,
+        "max_us": 2533,
+        "over": 1,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1609,
+        "max_us": 2320,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1618,
+        "max_us": 2331,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1611,
+        "max_us": 2335,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1618,
+        "max_us": 2532,
+        "over": 1,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1617,
+        "max_us": 2326,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1622,
+        "max_us": 2321,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1618,
+        "max_us": 2322,
+        "over": 0,
+        "missed": 0
+      }
+    ],
+    "TaskTimingSummary": {
+      "SampleCount": 6000,
+      "StepBudgetMicroseconds": 2500,
+      "MeanMicroseconds": 1615.5333333333333,
+      "MaximumMicroseconds": 2561,
+      "DeadlineExceededCount": 3,
+      "MissedTickCount": 0,
+      "AllObservedTasksWithinBudget": false
+    },
+    "CaptureFile": "logs/imu_cleanup400_startup_COM4.bin",
+    "FlightCommandsSent": false,
+    "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+    "Passed": true,
+    "RawToFDiagnostics": {
+      "ObservedMode": 3,
+      "MeasurementLines": 15,
+      "ValidSamplesIncreased": true,
+      "ValidSampleIncrease": 350,
+      "DistanceMmRange": [
+        99,
+        110
+      ],
+      "AllMeasurementsReady": true,
+      "MeasurementErrors": 0,
+      "DriverErrors": 0,
+      "AllDriverStatesReady": true,
+      "BusErrorCodes": [
+        0
+      ],
+      "StartupModes0And1Captured": false
+    }
+  },
+  "hardware_timing_measured": true,
+  "startup_modes_0_and_1_verified": false
+}
