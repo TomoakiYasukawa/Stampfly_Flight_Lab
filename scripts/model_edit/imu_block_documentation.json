@@ -1,0 +1,123 @@
+{
+  "Systems": {
+    "official.BottomToFSource": {
+      "Title": "StampFly 下向き ToF センサー",
+      "Description": "初期化完了後は飛行モードに依存せず距離を取得します。距離 [mm]、Fresh、未使用の前方距離、Status、Info を出力します。I2C 読み出しは core0 の非同期処理で、400 Hz の制御は待ちません。推定側の校正・待機条件は別に管理します。"
+    },
+    "basic.Joystick400": {
+      "Title": "StampFly 操縦指令受信",
+      "Description": "公式 Atom JoyStick の指令を ESP-NOW で受信します。Stick6 は [Roll, Pitch, Yaw, Thrust, 制御モード, 高度モード]。アーム、通信状態、姿勢リセット、新パケット、エラーも出力します。Flip 用ボタンは無視します。Channel は自分専用の 1～13 にし、機体のログ送信・受信機と揃えます。"
+    },
+    "official.Battery400": {
+      "Title": "StampFly 電池電圧",
+      "Description": "機体の電池電圧 [V] と今回の読み出し成功 ReadValid を出力します。ToF・磁気と I2C の排他制御を共有し、使用中は待たずに前回値を返します。SampleTime は制御周期 0.0025 秒です。"
+    },
+    "official.LogTransport50": {
+      "Title": "StampFly ログ送信",
+      "Description": "通常・操縦指令・追加センサーの 3 パケットを 50 Hz で ESP-NOW と USB の送信キューへ渡します。Queued はキュー投入成功、USBDrops は USB の欠落数です。到達は受信側で確認します。Channel を操縦指令受信ブロック・ログ受信機と同じ専用番号に設定します。"
+    },
+    "official.MotorPWM400": {
+      "Title": "StampFly モーター PWM 出力",
+      "Description": "入力 Counts4 は [FR, FL, RR, RL] の 8 bit PWM カウントです。Enable と AllowMotorOutput が有効なとき実機へ適用し、実適用値と状態を返します。機体用は 150 kHz 指定です。これは回転数の測定値ではありません。"
+    },
+    "official.TimingEnd400": {
+      "Title": "StampFly 周期の処理時間",
+      "Description": "周期開始時刻からこの地点までの時間・周期間隔・平均・最大・超過などを記録します。IMU の Fresh、実適用 PWM、ログへの信号依存で計測位置を固定しています。全タスクの処理時間は生成 step のラッパーが別途計測します。"
+    },
+    "official.TickStart400": {
+      "Title": "StampFly 400 Hz 周期開始",
+      "Description": "2500 μs の GPTimer で制御タスクを起動し、開始時刻 [μs]、実測 dt [s]、タイマー診断を返します。モデルの Fixed-step も 0.0025 秒に揃えます。生成された step の計測設定はモデル名 StampFly_IMU400 に対応しています。"
+    },
+    "official.StatusWrite400": {
+      "Title": "StampFly LED・ブザー出力",
+      "Description": "RGB 色 2 個、ブザー周波数 [Hz]、再起動要求を機体の出力キューへ渡します。LED・音の更新は別タスクで実行します。再起動要求は機体の再起動に直結するので、状態判定ブロックからの信号を接続します。"
+    },
+    "official.UserButton400": {
+      "Title": "StampFly 機体ボタン",
+      "Description": "StampS3 の GPIO0 ボタンを読み、押下中は uint8(1) を出力します。操縦用 JoyStick のボタンとは別です。押下時間と解放の判定は StatusIndicators で行います。"
+    },
+    "official.RadioTelemetryWrite40": {
+      "Title": "StampFly JoyStick への状態返信",
+      "Description": "公式の 27 float 値とゲイン表、高度モード、飛行モード、前方距離を 40 Hz で JoyStick へ返信します。公式 120 byte 形式を保ちます。Sent は送信要求の結果です。"
+    },
+    "basic.ExtendedLogger50": {
+      "Title": "StampFly ログパケット作成",
+      "Description": "生センサー、推定、制御、追加センサーの名前付きバスを 50 Hz のログへ変換します。SFI8・SFIX・SFIY の項目順、型、CRC を保ちます。BuildID はプログラムの識別番号で、機体固有の ID ではありません。送信は後段の LogTransport50 が行います。"
+    },
+    "stampfly.BMI270IMU": {
+      "Title": "StampFly BMI270 IMU",
+      "Description": "SPI 接続の加速度 [m/s²]、角速度 [rad/s]、温度 [°C]、新規サンプル Status を出力します。XYZ はセンサー座標です。機体座標への変換は後段で行います。ODR は 400 Hz、レンジは ±8 g・±2000 deg/s。PC シミュレーションは 0 を返すため、検証には再生入力を使います。"
+    },
+    "stampfly.BMM150": {
+      "Title": "StampFly 磁気センサー",
+      "Description": "BMM150 の補償済み磁場 XYZ [μT]、有効性・Fresh・エラー、診断を出力します。新規測定は約 30 Hz、モデルは 400 Hz で最新値を受け取ります。ToF・電池と I2C 排他を共有します。磁気は表示・記録用です。"
+    },
+    "stampfly.PMW3901MB": {
+      "Title": "StampFly 光学フローセンサー",
+      "Description": "SPI の Motion Burst から 2 軸の差分カウント、品質 Raw8、診断 Info4、巡回する累積 Totals2 を 400 Hz で取得します。カウントは距離・速度そのものではありません。距離換算は後段の FlowDistance50 で行います。"
+    },
+    "imu.FlowDistance50": {
+      "Title": "StampFly 光学フローの距離換算",
+      "Description": "400 Hz の累積カウント差を 50 Hz で集計し、姿勢・ToF・角速度を使って平らな床上の [東, 北] 移動距離 [m] に換算します。不適切な区間は位置を保持します。385 count/rad は校正前の初期値です。出力は表示・記録専用です。"
+    },
+    "imu.M5Receiver": {
+      "Title": "M5StampS3 ログ受信機",
+      "Description": "StampFly の ESP-NOW ログを USB シリアルへ転送します。別の M5StampS3 に書き込むモデルです。Channel は機体と同じ専用 CH、BaudRate は通常 921600。アプリからの CH 変更は再起動まで有効です。FramesForwarded と現在の RadioChannel を出力します。"
+    },
+    "fusion.internal.simulink.imufilter": {
+      "Title": "IMU Filter：姿勢・ジャイロバイアス推定",
+      "Description": "加速度 [m/s²] と角速度 [rad/s] を使い、クォータニオン姿勢とバイアス補正済み角速度を推定します。NED、400 Hz、Decimation=1。磁気は使わないため絶対方位を固定しません。設定画面のノイズ行列は IMUFlight に定義します。"
+    }
+  },
+  "Subsystems": {
+    "IMUSensor": "BMI270 の生加速度・角速度を XYZ のままバスへまとめます。センサー座標であり、単位は m/s²・rad/s。温度と Fresh は名前付き Goto でログへ公開します。",
+    "BottomRangeSensor": "下向き ToF の初期化完了後は Mode に依存せず取得します。距離 [mm] と Fresh を BottomRange バスへまとめ、Status と診断は Goto で公開します。Fresh は 400 Hz の読み出しではなく新しい測定結果の到着を示します。前方センサーは未使用です。",
+    "BatterySensor": "電池電圧 [V] と読み出し有効性を取得します。I2C 使用中は前回値を保持し、ReadValid=0 を公開します。",
+    "SensorCorrection": "センサー座標から機体 XYZ へ変換し、800 周期の静止校正とフィルターを行います。加速度 XYZ・角速度 XYZ の順を維持し、ToF の保持・外れ値処理と鉛直加速度もまとめます。推定用の前処理は Mode 0, 1 で保持します。",
+    "IMUAxisConversion": "センサー XYZ を機体 [Y, X, -Z] へ変換します。加速度を m/s² から g 基準へ換算し、角速度は rad/s を保ちます。この座標変換はセンサーの取り付けと既存制御の定義に必要です。",
+    "IMUFiltering": "加速度と校正後角速度の XYZ ベクトルを時定数 3 ms で低域フィルターに通します。Z 加速度の校正差分は 100 ms で処理します。Mode 0, 1 の保持、待機への移行時リセット、実測 dt と既存の演算順序を維持します。",
+    "AccelLowpassXYZ": "加速度 XYZ の各成分へ同じ一次低域フィルターを適用します。状態と Reset の初期値は 3 要素です。式は s*T/(T+dt) + u*dt/(T+dt)。Enable=0 で保持します。",
+    "GyroLowpassXYZ": "バイアス補正後の角速度 XYZ を成分ごとに平滑化します。順序と単位 rad/s を保ち、時定数 3 ms、実測 dt、Reset・Enable 条件を使います。",
+    "VerticalDeltaLowpass": "校正後の加速度 Z 差分を時定数 100 ms で平滑化します。高度推定で使う従来の g 基準を保ちます。",
+    "VerticalAcceleration": "校正後の Z 加速度差分の符号を反転し、上向きの鉛直加速度を作ります。100 ms の平滑化とモードによる保持・リセットを行います。高度 Kalman は従来の g 基準の数値を受けます。",
+    "VerticalLowpass": "鉛直加速度の一次低域フィルターです。実測 dt、時定数 100 ms、Enable と Reset の条件を使って前回値を更新します。",
+    "AttitudeAltitudeEstimation": "IMU Filter で姿勢・補正済み角速度、MATLAB Function の AltitudeKalman で高度・鉛直速度を推定します。状態フラグと推定診断をまとめ、ログ用 Goto をこの階層から公開します。",
+    "IMUAttitude": "機体 XYZ と推定器座標の変換、標準 IMU Filter、制御用の姿勢と角速度への変換をまとめます。停止中の保持と再開時リセットを行います。",
+    "FusionState": "Mode 0, 1 では IMU Filter の予測・補正を実行せず状態を保持する Enabled subsystem です。停止中のリセットは FilterInputs が記憶し、再開時に内部へ渡します。",
+    "UpdateWhenReady": "標準 IMU Filter の状態へ再開時のリセットを適用する Resettable subsystem です。外側の Enabled 境界と役割が異なるため、この階層を保ちます。",
+    "JoystickCommand": "公式 JoyStick から通常飛行の指令を受信し、操縦バスと診断を公開します。Flip 用押し込みボタンは使用しません。専用 Channel は内部の BasicJoystick で設定します。",
+    "CommandPreparation": "操縦指令、電池電圧、実測 dt、センサーフラグを名前付きバスへまとめます。Stateflow と飛行制御へ同じ入力を渡し、ログ用の観測も公開します。",
+    "EstimatorContext": "前周期のモード、高度制御許可、姿勢・待機リセットを 1 周期保持して推定器へ渡します。状態更新順序と代数ループ回避に必要な遅延です。",
+    "FlightControl": "最上位 Stateflow の指令と姿勢・高度を受け、離着陸、7 個の PID、モーター配分を計算します。出力は Duty・PWM Counts、飛行状態、次周期の推定器コンテキストです。状態ログもこの階層に含みます。",
+    "PreviousCycle": "前周期の推力・指令・モードなどを保持し、制御と次周期フィードバックへ渡します。Unit Delay は既存の更新順序を保つために必要です。",
+    "TakeoffHoverControl": "離着陸・高度制御・姿勢制御・角速度制御・モーター配分を機能別にまとめます。高度→速度、角度→角速度の二重ループを読みます。",
+    "FlightCommand": "スティック、高度目標、離着陸カウンター、共通推力とモードを決めます。低推力条件に応じた制御ループの許可・リセットも生成します。",
+    "ControlGating": "共通推力と飛行分岐から、全体・高度・角度・鉛直速度 PID の実行条件とリセットを決めます。制御の積分状態を校正・待機中に進めないための条件です。",
+    "AltitudeControl": "高度誤差を高度 PID で目標鉛直速度へ変換し、鉛直速度 PID で共通推力を補正します。自動高度と着陸降下を選び、平滑化と推力制限を行います。",
+    "AttitudeControl": "Stabilize の Roll/Pitch 角度誤差を角度 PID へ渡して角速度目標を作ります。Sport は直接角速度目標を使い、Yaw の指令は角度ループを通しません。",
+    "BodyRateControl": "Roll/Pitch/Yaw の目標と推定角速度との差を各 PID で処理し、モーターに加える 3 軸の補正を作ります。角速度は機体 XYZ、rad/s です。",
+    "AltitudePID": "高度 PID：高度誤差→鉛直速度目標。Enabled subsystem が状態更新を許可し、低推力 Reset が積分・微分状態を初期化します。内部 DedicatedPID は Ideal・離散・台形積分/微分・外部 dt です。P=0.38、I=0.1、D=0.5、N=16。",
+    "VerticalSpeedPID": "鉛直速度 PID：速度誤差→基準推力の補正。Enabled 境界・外部 Reset・実測 dt と既存係数を保持します。内部の DedicatedPID で係数を設定します。",
+    "RollAnglePID": "Roll 角度 PID：角度誤差 [rad]→Roll 角速度目標 [rad/s]。Stabilize 時の Enabled 境界と低推力 Reset を保ちます。",
+    "PitchAnglePID": "Pitch 角度 PID：角度誤差 [rad]→Pitch 角速度目標 [rad/s]。Stabilize 時の Enabled 境界と低推力 Reset を保ちます。",
+    "RollRatePID": "Roll 角速度 PID：角速度誤差 [rad/s]→Roll のモーター補正。積分状態は Enable と Reset で管理し、実測 dt を入力します。",
+    "PitchRatePID": "Pitch 角速度 PID：角速度誤差 [rad/s]→Pitch のモーター補正。積分状態は Enable と Reset で管理し、実測 dt を入力します。",
+    "YawRatePID": "Yaw 角速度 PID：角速度誤差 [rad/s]→Yaw のモーター補正。Yaw の絶対角度制御は行わず、スティックの角速度目標を使います。",
+    "MotorAllocation": "共通推力と 3 軸の補正を [FR, FL, RR, RL] の 4 モーターへ配分します。3 ms 平滑化、Duty 0～0.95 の制限、floor(255*Duty) の量子化を行います。",
+    "MotorMixerFilter8bit": "4 モーターの符号付き配分、平滑化、飽和、8 bit 変換を一連の処理として示します。モーター順 [FR, FL, RR, RL] は出力・ログでも同じです。",
+    "MotorWrite": "8 bit の Counts を実機モーターへ適用します。順序 [FR, FL, RR, RL]、GPIO [42, 5, 41, 10]、150 kHz 指定です。実適用 Counts と PWM 診断を Goto で公開します。",
+    "DataLogging50": "生センサー・推定・制御・追加センサーを名前付き From で取得し、50 Hz の SFI8/SFIX/SFIY ログを生成して送信します。型・順序・CRC は維持します。Channel は RadioUSBTransport50 の設定画面で操縦側と揃えます。",
+    "JoystickFeedback40": "公式 JoyStick の画面へ姿勢・高度・電池・制御状態を 40 Hz で返信します。通常ログとは別の公式 120 byte 形式です。",
+    "LEDAndBuzzer": "飛行状態・電池・通信・姿勢リセット要求から LED と音を決め、出力キューへ渡します。機体ボタンの押下・解放による再起動もここで扱います。",
+    "TickStart": "400 Hz 周期の開始時刻、実測 dt、タイマー診断を取得し、秒への時刻変換と Goto 公開をこの階層でまとめます。",
+    "CycleTiming": "ログとモーター適用後の処理時間・周期間隔を観測します。制御値を変更せず、計測位置を信号依存で固定します。",
+    "SystemDiagnostics": "各機能の診断 From を型付き名前付きバスへまとめます。50 Hz/40 Hz の値を必要な箇所で保持し、全体の診断出力へ渡します。",
+    "FlightDiagnostics": "高度目標、推力、角度・角速度目標、3 軸補正、配分前値をログの既存 17 要素順序へまとめます。制御の判断は行いません。",
+    "OpticalFlowSensor": "PMW3901 の生 2 軸差分・品質・診断・累積カウントを取得します。表示・記録専用で、水平位置制御へは戻しません。",
+    "MagnetometerSensor": "BMM150 の磁場 XYZ [μT] と有効性・Fresh・診断を取得します。センサー座標を保ってログへ渡し、姿勢推定・制御には使いません。",
+    "OpticalFlowDistance50": "生の累積光学フロー、姿勢、角速度、下向き ToF から平面上の東・北移動距離を 50 Hz で作ります。回転補償と品質判定を行い、無効な区間は位置を保持します。385 count/rad は初期値です。",
+    "OfficialFlightSupervisor": "最上位の飛行状態管理です。前周期 Mode、操縦ボタン、新パケット、異常フラグ、姿勢リセットを受け、校正・待機・飛行・着陸の分岐と推定器リセットを決めます。",
+    "TakeoffLandingCommand": "離陸・着陸、0.5 m の初期高度目標、0.05～1.8 m の高さ設定、基準推力と電圧トリムを状態として管理する Stateflow です。",
+    "FinalizeFlightMode": "離着陸カウンターと制御状態から、周期末のモード・接続状態などを確定します。次周期に渡すモードと最上位の分岐を区別します。"
+  }
+}

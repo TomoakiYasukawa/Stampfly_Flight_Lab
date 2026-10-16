@@ -30,4 +30,13 @@ classdef Joystick400 < matlab.System & coder.ExternalDependency
         function varargout=isOutputFixedSizeImpl(~),varargout=repmat({true},1,6);end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 操縦指令受信', ...
+                'Text','公式 Atom JoyStick の指令を ESP-NOW で受信します。Stick6 は [Roll, Pitch, Yaw, Thrust, 制御モード, 高度モード]。アーム、通信状態、姿勢リセット、新パケット、エラーも出力します。Flip 用ボタンは無視します。Channel は自分専用の 1～13 にし、機体のログ送信・受信機と揃えます。','ShowSourceLink',true);
+        end
+    end
+
 end

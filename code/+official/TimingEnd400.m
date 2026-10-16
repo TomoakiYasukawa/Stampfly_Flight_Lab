@@ -31,4 +31,13 @@ classdef TimingEnd400 < matlab.System & coder.ExternalDependency
         function f=isOutputFixedSizeImpl(~),f=true;end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 周期の処理時間', ...
+                'Text','周期開始時刻からこの地点までの時間・周期間隔・平均・最大・超過などを記録します。IMU の Fresh、実適用 PWM、ログへの信号依存で計測位置を固定しています。全タスクの処理時間は生成 step のラッパーが別途計測します。','ShowSourceLink',true);
+        end
+    end
+
 end

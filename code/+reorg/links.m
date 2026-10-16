@@ -1,7 +1,7 @@
 function result=links(model,scope)
 %LINKS Read direct connections at one level, retaining explicit signal names.
 if strcmp(scope,'root'),parent=model;else,parent=reorg.path(model,scope);end
-blocks=find_system(parent,'SearchDepth',1,'Type','Block');
+blocks=find_system(parent,'SearchDepth',1,'LookUnderMasks','all','Type','Block');
 result=struct('Src',{},'SrcPort',{},'Dst',{},'DstPort',{},'Name',{});
 for k=1:numel(blocks)
     if strcmp(blocks{k},parent),continue;end

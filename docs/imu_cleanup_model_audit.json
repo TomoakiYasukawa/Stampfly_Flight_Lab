@@ -1,0 +1,29 @@
+{
+  "Models": [
+    {
+      "Model": "StampFly_IMU400",
+      "FullUpdatePassed": true,
+      "CheckedScopes": 77,
+      "ConnectionIssues": [],
+      "MATLABFunctionCount": 14,
+      "JapaneseFunctionComments": true,
+      "CustomSystemHeaders": 15,
+      "MaskedSubsystemPortLabels": 48
+    },
+    {
+      "Model": "M5Stamp_IMU_Rx",
+      "FullUpdatePassed": true,
+      "CheckedScopes": 1,
+      "ConnectionIssues": [],
+      "MATLABFunctionCount": 0,
+      "JapaneseFunctionComments": true,
+      "CustomSystemHeaders": 1,
+      "MaskedSubsystemPortLabels": 0
+    }
+  ],
+  "Passed": true,
+  "RawToFHasNoModeInput": true,
+  "RawToFStep": 0.0025,
+  "PhysicalFlightTested": false,
+  "Flashed": false
+}

@@ -64,4 +64,13 @@ classdef FlowDistance50 < matlab.System
         function varargout=isOutputFixedSizeImpl(~),varargout={true,true,true};end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 光学フローの距離換算', ...
+                'Text','400 Hz の累積カウント差を 50 Hz で集計し、姿勢・ToF・角速度を使って平らな床上の [東, 北] 移動距離 [m] に換算します。不適切な区間は位置を保持します。385 count/rad は校正前の初期値です。出力は表示・記録専用です。','ShowSourceLink',true);
+        end
+    end
+
 end

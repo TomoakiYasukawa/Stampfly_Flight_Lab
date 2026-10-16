@@ -1,0 +1,92 @@
+{
+  "Purpose": "過去の機体・比較・再生モデルの保存。現行の機体モデルは StampFly_IMU400.slx。",
+  "Models": [
+    {
+      "Model": "StampFly_Basic400.slx",
+      "OriginalPath": "StampFly_Basic400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Basic400.slx",
+      "SHA256": "a24794d51ecef266a95f58c272160bc5ddfa95fca1a7fd7d59fc3f18bd9236b1",
+      "Bytes": 921992,
+      "Callbacks": {
+        "PostLoadFcn": "run(fullfile(fileparts(get_param('StampFly_Basic400','FileName')),'config','startup.m'));",
+        "InitFcn": "init_basic;"
+      }
+    },
+    {
+      "Model": "StampFly_PIDBlock_FlightTest400.slx",
+      "OriginalPath": "StampFly_PIDBlock_FlightTest400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_PIDBlock_FlightTest400.slx",
+      "SHA256": "d8e1231ab67ae1626679d1bd63fe8ec5e2f719fec46632616e2e47c4b8efa60e",
+      "Bytes": 1005978,
+      "Callbacks": {
+        "PostLoadFcn": "run(fullfile(fileparts(get_param('StampFly_Official_FlightTest400','FileName')),'config','startup.m'));",
+        "InitFcn": "init_official;"
+      }
+    },
+    {
+      "Model": "StampFly_Official_FlightTest400.slx",
+      "OriginalPath": "StampFly_Official_FlightTest400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Official_FlightTest400.slx",
+      "SHA256": "c0a492b6953c7844e05034ae93c7b90b815ea1e961a8ea488d46fa2dda9e1be8",
+      "Bytes": 1016947,
+      "Callbacks": {
+        "PostLoadFcn": "run(fullfile(fileparts(get_param('StampFly_Official_FlightTest400','FileName')),'config','startup.m'));",
+        "InitFcn": "init_official;"
+      }
+    },
+    {
+      "Model": "PIDBlockComparison400.slx",
+      "OriginalPath": "models/PIDBlockComparison400.slx",
+      "ArchivedPath": "archive/aircraft/PIDBlockComparison400.slx",
+      "SHA256": "32dcf4b1864d7de5284abd508eeb797a45caaddbc8d360b8cc59d946b94140d7",
+      "Bytes": 57878,
+      "Callbacks": {}
+    },
+    {
+      "Model": "StampFly_Official_Bench400.slx",
+      "OriginalPath": "models/StampFly_Official_Bench400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Official_Bench400.slx",
+      "SHA256": "31417f2cd71a73454d9a63bc2c6b77b9e1c3e30690284275b77d2a885a84bb63",
+      "Bytes": 958759,
+      "Callbacks": {
+        "InitFcn": "init_official;"
+      }
+    },
+    {
+      "Model": "StampFly_Official_EstimatorReplay400.slx",
+      "OriginalPath": "models/StampFly_Official_EstimatorReplay400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Official_EstimatorReplay400.slx",
+      "SHA256": "d18cabfc589e3da910e37eb0d9493cb33b3e4f7ddfe5cf0894108824f9b6239a",
+      "Bytes": 53333,
+      "Callbacks": {}
+    },
+    {
+      "Model": "StampFly_Official_FlightSim400.slx",
+      "OriginalPath": "models/StampFly_Official_FlightSim400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Official_FlightSim400.slx",
+      "SHA256": "aedc0eae4892246889e0b4ad3d84d0577d05529c9f8b549df852b04c8cf982b5",
+      "Bytes": 740049,
+      "Callbacks": {
+        "InitFcn": "init_official;"
+      }
+    },
+    {
+      "Model": "StampFly_Official_FullReplay400.slx",
+      "OriginalPath": "models/StampFly_Official_FullReplay400.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_Official_FullReplay400.slx",
+      "SHA256": "3757713881f53c46465f18ebf21451782775c5c39de3fdd7a8551518eaffa589",
+      "Bytes": 484002,
+      "Callbacks": {}
+    },
+    {
+      "Model": "StampFly_PWM400_Probe.slx",
+      "OriginalPath": "models/StampFly_PWM400_Probe.slx",
+      "ArchivedPath": "archive/aircraft/StampFly_PWM400_Probe.slx",
+      "SHA256": "3ee94f31bc08320d38b300b87b9fd0ea98a96d2d8ff02a1663aa170cdd33c8db",
+      "Bytes": 50078,
+      "Callbacks": {
+        "InitFcn": "init_official;"
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "Model": "StampFly_IMU400",
+  "ModelSHA256": "2f83a78a97d656741d2230512bb150f9d2b0814713dec011a13d27f52cbf86bf",
+  "BuildPassed": true,
+  "BuildAction": "Build",
+  "Step": 0.0025,
+  "PWMHz": 150000,
+  "PWMBits": 8,
+  "PIDCount": 7,
+  "MotorOutputEnabled": true,
+  "BuildID": 1401,
+  "FirmwareRevision": 1701,
+  "RadioChannel": 3,
+  "CorrectedAngularVelocityToPID": true,
+  "FirmwareFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\readability\\firmware\\StampFly_IMU400.bin",
+  "FirmwareSHA256": "d6fa440fcfb5cc5e6d9b15b0d590a15f42edeeb6b1ff68126fb94c161d60deab",
+  "FirmwareBytes": 986400,
+  "BuildFiles": [
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\readability\\firmware\\StampFly_IMU400.bin",
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\readability\\firmware\\StampFly_IMU400.bootloader.bin",
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\readability\\firmware\\StampFly_IMU400.partitions.bin"
+  ],
+  "BuildSeconds": 125.4989101,
+  "Flashed": true,
+  "PhysicalFlightTested": true,
+  "VerificationRecord": "docs/history/imu_readability_verification.json",
+  "DeploymentRecord": "docs/history/imu_readability_aircraft_deployment.json",
+  "PhysicalFlightTest": {
+    "reported_at_utc": "2026-10-16T12:26:10+00:00",
+    "reported_by": "user",
+    "result": "success",
+    "user_assessment": "飛行試験OKです。",
+    "flight_log_received": false,
+    "flight_log_analyzed": false,
+    "note": "Success is based on the user report for the deployed reorganized IMU400 firmware. No flight log has been supplied for numerical analysis."
+  }
+}

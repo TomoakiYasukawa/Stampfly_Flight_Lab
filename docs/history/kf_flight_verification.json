@@ -1,0 +1,584 @@
+{
+  "Model": "archive/kf400/StampFly_KF400.slx",
+  "ModelSHA256": "7b4bfddfafad0d0a53b8b4ec998ce1f5f3be061954af273ab40c8e1d08045a0a",
+  "BaselineModelSHA256": "2f83a78a97d656741d2230512bb150f9d2b0814713dec011a13d27f52cbf86bf",
+  "Outputs": [
+    "Duty",
+    "Counts",
+    "Mode",
+    "Angles",
+    "AngularRate",
+    "Altitude",
+    "Velocity",
+    "Quaternion",
+    "SensorFlags",
+    "ControlDiagnostics",
+    "SensorDiagnostics",
+    "PreviousMode",
+    "AltitudeEnabled",
+    "Connected",
+    "FeedbackMode",
+    "FeedbackAltitudeEnabled",
+    "FeedbackAttitudeReset",
+    "FeedbackParkingReset",
+    "FilteredAcceleration",
+    "FilteredGyro",
+    "VerticalDelta",
+    "VerticalAcceleration",
+    "FilteredRange",
+    "RawRange",
+    "Offsets",
+    "CalibrationSamples",
+    "PublishedAngles",
+    "PublishedQuaternion",
+    "PublishedRate",
+    "PublishedAltitude",
+    "PublishedVelocity",
+    "PublishedMode",
+    "PublishedPreviousMode",
+    "PublishedAltitudeEnabled",
+    "PublishedConnected",
+    "PublishedControlDiagnostics"
+  ],
+  "Samples": 36000,
+  "ExactEquivalenceRequired": false,
+  "PhysicalFlightTested": false,
+  "Flashed": false,
+  "Passed": true,
+  "Cases": {
+    "BootTakeoffHoverLanding": {
+      "Samples": 12000,
+      "MismatchCounts": [
+        27166,
+        9,
+        0,
+        0,
+        0,
+        5787,
+        10999,
+        0,
+        0,
+        40715,
+        10896,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5787,
+        10999,
+        0,
+        0,
+        0,
+        0,
+        40715
+      ],
+      "MaxErrors": [
+        5.446374416351318e-06,
+        1,
+        0,
+        0,
+        0,
+        2.07461416721344e-05,
+        0.003944307565689087,
+        0,
+        0,
+        2.1338462829589844e-05,
+        0.04277510568499565,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2.07461416721344e-05,
+        0.003944307565689087,
+        0,
+        0,
+        0,
+        0,
+        2.1338462829589844e-05
+      ],
+      "TypesMatch": true,
+      "SizesMatch": true,
+      "Finite": true,
+      "Modes": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "UnchangedSignalsIdentical": true,
+      "EstimatorErrors": [
+        2.07461416721344e-05,
+        0.003944307565689087
+      ],
+      "MaximumPWMCountDifference": 1,
+      "MaximumDutyDifference": 5.446374416351318e-06
+    },
+    "ModeAndFlip": {
+      "Samples": 12000,
+      "MismatchCounts": [
+        36162,
+        9,
+        0,
+        0,
+        0,
+        6020,
+        10994,
+        0,
+        0,
+        56448,
+        10894,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6020,
+        10994,
+        0,
+        0,
+        0,
+        0,
+        56448
+      ],
+      "MaxErrors": [
+        1.0516494512557983e-05,
+        1,
+        0,
+        0,
+        0,
+        2.07461416721344e-05,
+        0.021436750888824463,
+        0,
+        0,
+        5.6236982345581055e-05,
+        0.04277510568499565,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2.07461416721344e-05,
+        0.021436750888824463,
+        0,
+        0,
+        0,
+        0,
+        5.6236982345581055e-05
+      ],
+      "TypesMatch": true,
+      "SizesMatch": true,
+      "Finite": true,
+      "Modes": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "UnchangedSignalsIdentical": true,
+      "EstimatorErrors": [
+        2.07461416721344e-05,
+        0.021436750888824463
+      ],
+      "MaximumPWMCountDifference": 1,
+      "MaximumDutyDifference": 1.0516494512557983e-05
+    },
+    "SensorTimingAndInterruptions": {
+      "Samples": 12000,
+      "MismatchCounts": [
+        24444,
+        190,
+        0,
+        0,
+        0,
+        5272,
+        10956,
+        0,
+        0,
+        45391,
+        10870,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5272,
+        10956,
+        0,
+        0,
+        0,
+        0,
+        45391
+      ],
+      "MaxErrors": [
+        0.0004215836524963379,
+        1,
+        0,
+        0,
+        0,
+        2.0936131477355957e-05,
+        0.003898113965988159,
+        0,
+        0,
+        0.001590728759765625,
+        0.04518109653145075,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2.0936131477355957e-05,
+        0.003898113965988159,
+        0,
+        0,
+        0,
+        0,
+        0.001590728759765625
+      ],
+      "TypesMatch": true,
+      "SizesMatch": true,
+      "Finite": true,
+      "Modes": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "UnchangedSignalsIdentical": true,
+      "EstimatorErrors": [
+        2.0936131477355957e-05,
+        0.003898113965988159
+      ],
+      "MaximumPWMCountDifference": 1,
+      "MaximumDutyDifference": 0.0004215836524963379
+    }
+  },
+  "Structure": {
+    "ComparedBlocks": 778,
+    "ParametersAlgorithmsAndWiringIdentical": true,
+    "Supervisor": {
+      "AtRoot": true,
+      "StateCount": 8,
+      "TransitionCount": 14,
+      "StatesTransitionsDataAndPrioritiesIdentical": true
+    },
+    "Timing": {
+      "ClockAndPriorityPreserved": true,
+      "TimeConversionAndPublishedTagsPreserved": true
+    }
+  },
+  "Logging": {
+    "CompleteSavedLoggerCompared": true,
+    "RevisionNormalizedInHarness": true,
+    "NonzeroFlowMagneticAndToFVerified": true,
+    "PacketBytes": [
+      190,
+      190,
+      246
+    ],
+    "CRCsValid": true,
+    "ReservedFlipFieldsZero": true,
+    "Passed": true
+  },
+  "PIDCount": 7,
+  "Component": {
+    "Model": "StampFly_KF400",
+    "ModelSHA256": "7b4bfddfafad0d0a53b8b4ec998ce1f5f3be061954af273ab40c8e1d08045a0a",
+    "SourceModel": "StampFly_IMU400",
+    "SourceModelSHA256": "2f83a78a97d656741d2230512bb150f9d2b0814713dec011a13d27f52cbf86bf",
+    "ActualSavedBlocksCompared": true,
+    "SampleTime": 0.0025,
+    "Outputs": [
+      "Height",
+      "Velocity",
+      "Bias"
+    ],
+    "Samples": 48004,
+    "Cases": {
+      "BootWaitFlyLandRelaunch": {
+        "Samples": 12001,
+        "MaxAbsoluteErrors": [
+          0.005610764026641846,
+          2.1213607788085938,
+          22.904541015625
+        ],
+        "RMSErrors": [
+          0.00033529059142854673,
+          0.0605130660544772,
+          1.1024073494413245
+        ],
+        "ExactMismatchCounts": [
+          6705,
+          10744,
+          10203
+        ],
+        "Finite": true,
+        "TypesAndSizesMatch": true
+      },
+      "StartActiveVariableDt": {
+        "Samples": 12001,
+        "MaxAbsoluteErrors": [
+          7.748603820800781e-07,
+          0.0006391704082489014,
+          0.0016160458326339722
+        ],
+        "RMSErrors": [
+          7.248006358415443e-08,
+          6.226023932690836e-06,
+          4.5641817864984076e-05
+        ],
+        "ExactMismatchCounts": [
+          6187,
+          11671,
+          11878
+        ],
+        "Finite": true,
+        "TypesAndSizesMatch": true
+      },
+      "HeldToFAndAcceleration": {
+        "Samples": 12001,
+        "MaxAbsoluteErrors": [
+          2.0802021026611328e-05,
+          0.0024747252464294434,
+          0.0839347243309021
+        ],
+        "RMSErrors": [
+          1.5929032663165214e-06,
+          9.20726964980088e-05,
+          0.002869253628649314
+        ],
+        "ExactMismatchCounts": [
+          7925,
+          11825,
+          11803
+        ],
+        "Finite": true,
+        "TypesAndSizesMatch": true
+      },
+      "ResetDuringHold": {
+        "Samples": 12001,
+        "MaxAbsoluteErrors": [
+          3.248453140258789e-06,
+          0.0013706907629966736,
+          0.0041830092668533325
+        ],
+        "RMSErrors": [
+          4.145063228498954e-07,
+          1.99943573088144e-05,
+          0.00018566809048201825
+        ],
+        "ExactMismatchCounts": [
+          6630,
+          10624,
+          10757
+        ],
+        "Finite": true,
+        "TypesAndSizesMatch": true
+      }
+    },
+    "Passed": true,
+    "PhysicalFlightTested": false,
+    "Flashed": false,
+    "MaxAbsoluteErrors": [
+      0.005610764026641846,
+      2.1213607788085938,
+      22.904541015625
+    ],
+    "ModeHoldAndPublicReset": true,
+    "DoubleReferenceRecord": "docs/history/kf_altitude_numerics.json",
+    "MaximumErrorsVsDouble": [
+      5.97726312778768e-07,
+      0.00022016143654468578,
+      0.0025340901200365806
+    ],
+    "NumericalAcceptanceBounds": [
+      1e-05,
+      0.0005,
+      0.005
+    ],
+    "NumericalAccuracyPassed": true
+  },
+  "AllComparisonsCompleted": true,
+  "NumericalAssessment": {
+    "Bounds": {
+      "HeightVsDouble": 1e-05,
+      "VelocityVsDouble": 0.0005,
+      "BiasVsDouble": 0.005,
+      "IntegratedHeightVsBaseline": 0.0001,
+      "IntegratedDutyVsBaseline": 0.00196078431372549,
+      "IntegratedPWMCountsVsBaseline": 1,
+      "LandingBaseDutyVsBaseline": 0.00196078431372549
+    },
+    "MaximumErrorsVsDouble": [
+      5.97726312778768e-07,
+      0.00022016143654468578,
+      0.0025340901200365806
+    ],
+    "MaximumIntegratedHeightDifference": 2.0936131477355957e-05,
+    "MaximumIntegratedDutyDifference": 0.0004215836524963379,
+    "MaximumIntegratedPWMCountDifference": 1,
+    "CaseDetails": {
+      "BootTakeoffHoverLanding": {
+        "Altitude": {
+          "MaximumDifference": 2.07461416721344e-05,
+          "AtSeconds": 2.7675,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 2.07461416721344e-05,
+          "RMSPerTick": 4.837594982705201e-07
+        },
+        "Velocity": {
+          "MaximumDifference": 0.003944307565689087,
+          "AtSeconds": 2.765,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 0.003944307565689087,
+          "RMSPerTick": 7.515449289103501e-05
+        },
+        "Duty": {
+          "MaximumDifference": 5.446374416351318e-06,
+          "AtSeconds": 3.0625,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 5.446374416351318e-06,
+          "RMSPerTick": 8.439694049529387e-07
+        },
+        "SensorDiagnosticsOnlyBiasChanged": true,
+        "MaximumLandingBaseDutyDifference": 0,
+        "ControlDiagnosticsOnlyVerticalControlAndMotorMixChanged": true
+      },
+      "ModeAndFlip": {
+        "Altitude": {
+          "MaximumDifference": 2.07461416721344e-05,
+          "AtSeconds": 2.7675,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 2.07461416721344e-05,
+          "RMSPerTick": 8.560780436653627e-07
+        },
+        "Velocity": {
+          "MaximumDifference": 0.021436750888824463,
+          "AtSeconds": 22.75,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 0.021436750888824463,
+          "RMSPerTick": 0.00021998507783829165
+        },
+        "Duty": {
+          "MaximumDifference": 1.0516494512557983e-05,
+          "AtSeconds": 23.052500000000002,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 1.0516494512557983e-05,
+          "RMSPerTick": 1.4947614975447145e-06
+        },
+        "SensorDiagnosticsOnlyBiasChanged": true,
+        "MaximumLandingBaseDutyDifference": 0,
+        "ControlDiagnosticsOnlyVerticalControlAndMotorMixChanged": true
+      },
+      "SensorTimingAndInterruptions": {
+        "Altitude": {
+          "MaximumDifference": 2.0936131477355957e-05,
+          "AtSeconds": 2.7675,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 2.0936131477355957e-05,
+          "RMSPerTick": 4.6973543375720735e-07
+        },
+        "Velocity": {
+          "MaximumDifference": 0.003898113965988159,
+          "AtSeconds": 2.765,
+          "Mode": 2,
+          "MaximumDuringFlightOrLanding": 0.003898113965988159,
+          "RMSPerTick": 7.377707277610152e-05
+        },
+        "Duty": {
+          "MaximumDifference": 0.0004215836524963379,
+          "AtSeconds": 14.86,
+          "Mode": 5,
+          "MaximumDuringFlightOrLanding": 0.0004215836524963379,
+          "RMSPerTick": 7.538953145023628e-05
+        },
+        "SensorDiagnosticsOnlyBiasChanged": true,
+        "MaximumLandingBaseDutyDifference": 0.0004693269729614258,
+        "ControlDiagnosticsOnlyVerticalControlAndMotorMixChanged": true
+      }
+    },
+    "ComponentStressDifferenceReason": "The direct unfiltered altitude step after PARKING amplifies subtractive covariance roundoff in the original single implementation. The standard block uses a Joseph covariance update and tracks the double equations.",
+    "AcceptanceRationale": "State timing, update gating and retained-state covariance resets match the original equations. New estimates satisfy the stated double-reference bounds. Integrated height error is below 0.1 mm; computed duty differs by less than half an 8-bit PWM count and quantized outputs by at most one count. Unchanged inputs, attitude, mode transitions and horizontal control terms match exactly.",
+    "Scope": "Offline estimator and actual saved controller/log blocks; physical flight not tested",
+    "Passed": true
+  }
+}

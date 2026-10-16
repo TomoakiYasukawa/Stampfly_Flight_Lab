@@ -44,4 +44,13 @@ classdef PMW3901MB < matlab.System & coder.ExternalDependency
         function varargout=isOutputFixedSizeImpl(~),varargout={true,true,true,true};end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 光学フローセンサー', ...
+                'Text','SPI の Motion Burst から 2 軸の差分カウント、品質 Raw8、診断 Info4、巡回する累積 Totals2 を 400 Hz で取得します。カウントは距離・速度そのものではありません。距離換算は後段の FlowDistance50 で行います。','ShowSourceLink',true);
+        end
+    end
+
 end

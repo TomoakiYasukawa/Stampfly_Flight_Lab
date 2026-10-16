@@ -45,4 +45,13 @@ classdef BMM150 < matlab.System & coder.ExternalDependency
         end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 磁気センサー', ...
+                'Text','BMM150 の補償済み磁場 XYZ [μT]、有効性・Fresh・エラー、診断を出力します。新規測定は約 30 Hz、モデルは 400 Hz で最新値を受け取ります。ToF・電池と I2C 排他を共有します。磁気は表示・記録用です。','ShowSourceLink',true);
+        end
+    end
+
 end

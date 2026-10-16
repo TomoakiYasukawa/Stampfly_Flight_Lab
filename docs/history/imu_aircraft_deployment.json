@@ -1,0 +1,217 @@
+{
+  "recorded_at_utc": "2026-10-16T09:45:39.737418+00:00",
+  "device": "aircraft",
+  "port_at_flash": "COM4",
+  "mac": "70:AF:09:DF:A6:C4",
+  "model": "StampFly_IMU400.slx",
+  "model_sha256": "87db6f66963d1e79d75742ff981da0e8171d6776d920b50e258ef0a27722820d",
+  "firmware": "firmware/history/imu400/StampFly_IMU400.bin",
+  "firmware_sha256": "12c1dc6a8b5cfb897d1649a048ee25e7d59bdf898f43e7299b4bf8a08bfac40f",
+  "firmware_bytes": 986656,
+  "build_id": 1401,
+  "firmware_revision": 1701,
+  "control_hz": 400,
+  "pwm_requested_hz": 150000,
+  "pwm_bits": 8,
+  "radio_channel": 3,
+  "motor_output_enabled": true,
+  "corrected_angular_velocity_to_pid": true,
+  "app_offset": "0x10000",
+  "written_regions": [
+    "application"
+  ],
+  "app_backup": "backups/StampFly_COM4_before_imu400_20261016_184523.bin",
+  "rollback_firmware": "firmware/history/basic400/StampFly_Basic400.bin",
+  "rollback_sha256": "fccc066a953f4cf17f1e8c986948fe901ee26577aeddd401eef60175b423a7de",
+  "rollback_verified_before_flash": true,
+  "flash_verified": true,
+  "verification_result": "digest matched",
+  "usb_only_confirmed_by_user": true,
+  "physical_flight_tested": true,
+  "flight_commands_sent": false,
+  "flash_log": "logs/imu400_flash.log",
+  "verify_log": "logs/imu400_verify.log",
+  "usb_startup": {
+    "Port": "COM4",
+    "BaudRate": 921600,
+    "CaptureSeconds": 15,
+    "CapturedBytes": 478894,
+    "Frames": {
+      "SFI8": 750,
+      "SFIX": 751,
+      "SFIY": 751
+    },
+    "CRCErrors": {
+      "SFI8": 0,
+      "SFIX": 0,
+      "SFIY": 0
+    },
+    "BuildIDs": 1401,
+    "FirmwareRevisions": 1701,
+    "ObservedModes": 3,
+    "ReservedFieldsZero": true,
+    "MaximumAppliedPWMCount": 0,
+    "FiniteFilteredSensorsAndQuaternion": true,
+    "QuaternionNormRange": [
+      0.9999999078529039,
+      1.0000002005015225
+    ],
+    "FirmwareTimeSpanSeconds": 14.980000000000018,
+    "TaskTiming": [
+      {
+        "n": 400,
+        "mean_us": 1606,
+        "max_us": 2197,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1614,
+        "max_us": 2240,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1620,
+        "max_us": 2484,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1611,
+        "max_us": 2243,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1612,
+        "max_us": 2237,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1621,
+        "max_us": 2247,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1614,
+        "max_us": 2505,
+        "over": 1,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1614,
+        "max_us": 2258,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1615,
+        "max_us": 2250,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1616,
+        "max_us": 2244,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1615,
+        "max_us": 2499,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1608,
+        "max_us": 2244,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1610,
+        "max_us": 2248,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1608,
+        "max_us": 2248,
+        "over": 0,
+        "missed": 0
+      },
+      {
+        "n": 400,
+        "mean_us": 1609,
+        "max_us": 2552,
+        "over": 1,
+        "missed": 0
+      }
+    ],
+    "CaptureFile": "logs/imu400_startup_COM4.bin",
+    "FlightCommandsSent": false,
+    "Passed": true,
+    "UnitQuaternions": true,
+    "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+    "TaskTimingSummary": {
+      "SampleCount": 6000,
+      "StepBudgetMicroseconds": 2500,
+      "MeanMicroseconds": 1612.8666666666666,
+      "MaximumMicroseconds": 2552,
+      "DeadlineExceededCount": 2,
+      "MissedTickCount": 0,
+      "AllObservedTasksWithinBudget": false
+    }
+  },
+  "usb_startup_verified": true,
+  "flash_completed": true,
+  "project_files_registered": [
+    "StampFly_IMU400.slx",
+    "code/model_algorithms/IMUFilterInputs.m",
+    "code/model_algorithms/IMUFlightOutputs.m",
+    "scripts/setup/init_imu_flight.m",
+    "archive/maintenance/scripts/model_edit/create_imu_flight400.m",
+    "archive/maintenance/scripts/verification/verify_imu_flight400.m",
+    "archive/maintenance/scripts/verification/verify_imu_control400.m",
+    "archive/maintenance/scripts/build/build_imu_flight400.m",
+    "docs/history/imu_flight_model.md",
+    "docs/history/imu_flight_structure.json",
+    "docs/history/imu_flight_verification.json",
+    "docs/history/imu_flight_build.json",
+    "firmware/history/imu400/StampFly_IMU400.bin",
+    "firmware/history/imu400/StampFly_IMU400.bootloader.bin",
+    "firmware/history/imu400/StampFly_IMU400.partitions.bin",
+    "archive/maintenance/tools/deploy_imu_firmware.py",
+    "tools/capture_imu_startup.py",
+    "docs/history/imu_aircraft_deployment.json",
+    "docs/history/imu_usb_startup.json",
+    "docs/history/imu_project_registration.json",
+    "docs/history/imu_control_verification.json"
+  ],
+  "project_checks_passed": true,
+  "physical_flight_test": {
+    "reported_at_utc": "2026-10-16T10:06:57.202853+00:00",
+    "reported_by": "user",
+    "result": "success",
+    "user_assessment": "実機飛行しました。問題ありません。",
+    "flight_log_received": false,
+    "flight_log_analyzed": false,
+    "note": "Flight success is based on user report. No flight log was provided in this session."
+  }
+}

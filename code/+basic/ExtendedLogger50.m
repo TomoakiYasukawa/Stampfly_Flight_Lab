@@ -60,4 +60,13 @@ classdef ExtendedLogger50 < matlab.System
         function varargout=isOutputFixedSizeImpl(~),varargout={true,true,true};end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',.02);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly ログパケット作成', ...
+                'Text','生センサー、推定、制御、追加センサーの名前付きバスを 50 Hz のログへ変換します。SFI8・SFIX・SFIY の項目順、型、CRC を保ちます。BuildID はプログラムの識別番号で、機体固有の ID ではありません。送信は後段の LogTransport50 が行います。','ShowSourceLink',true);
+        end
+    end
+
 end

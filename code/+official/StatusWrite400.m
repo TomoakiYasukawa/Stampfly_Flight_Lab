@@ -16,4 +16,13 @@ classdef StatusWrite400 < matlab.System & coder.ExternalDependency
   function n=getNumOutputsImpl(~),n=0;end
   function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',.0025);end
  end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly LED・ブザー出力', ...
+                'Text','RGB 色 2 個、ブザー周波数 [Hz]、再起動要求を機体の出力キューへ渡します。LED・音の更新は別タスクで実行します。再起動要求は機体の再起動に直結するので、状態判定ブロックからの信号を接続します。','ShowSourceLink',true);
+        end
+    end
+
 end

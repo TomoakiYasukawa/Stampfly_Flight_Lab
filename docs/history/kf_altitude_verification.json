@@ -1,0 +1,117 @@
+{
+  "Model": "StampFly_KF400",
+  "ModelSHA256": "7b4bfddfafad0d0a53b8b4ec998ce1f5f3be061954af273ab40c8e1d08045a0a",
+  "SourceModel": "StampFly_IMU400",
+  "SourceModelSHA256": "2f83a78a97d656741d2230512bb150f9d2b0814713dec011a13d27f52cbf86bf",
+  "ActualSavedBlocksCompared": true,
+  "SampleTime": 0.0025,
+  "Outputs": [
+    "Height",
+    "Velocity",
+    "Bias"
+  ],
+  "Samples": 48004,
+  "Cases": {
+    "BootWaitFlyLandRelaunch": {
+      "Samples": 12001,
+      "MaxAbsoluteErrors": [
+        0.005610764026641846,
+        2.1213607788085938,
+        22.904541015625
+      ],
+      "RMSErrors": [
+        0.00033529059142854673,
+        0.0605130660544772,
+        1.1024073494413245
+      ],
+      "ExactMismatchCounts": [
+        6705,
+        10744,
+        10203
+      ],
+      "Finite": true,
+      "TypesAndSizesMatch": true
+    },
+    "StartActiveVariableDt": {
+      "Samples": 12001,
+      "MaxAbsoluteErrors": [
+        7.748603820800781e-07,
+        0.0006391704082489014,
+        0.0016160458326339722
+      ],
+      "RMSErrors": [
+        7.248006358415443e-08,
+        6.226023932690836e-06,
+        4.5641817864984076e-05
+      ],
+      "ExactMismatchCounts": [
+        6187,
+        11671,
+        11878
+      ],
+      "Finite": true,
+      "TypesAndSizesMatch": true
+    },
+    "HeldToFAndAcceleration": {
+      "Samples": 12001,
+      "MaxAbsoluteErrors": [
+        2.0802021026611328e-05,
+        0.0024747252464294434,
+        0.0839347243309021
+      ],
+      "RMSErrors": [
+        1.5929032663165214e-06,
+        9.20726964980088e-05,
+        0.002869253628649314
+      ],
+      "ExactMismatchCounts": [
+        7925,
+        11825,
+        11803
+      ],
+      "Finite": true,
+      "TypesAndSizesMatch": true
+    },
+    "ResetDuringHold": {
+      "Samples": 12001,
+      "MaxAbsoluteErrors": [
+        3.248453140258789e-06,
+        0.0013706907629966736,
+        0.0041830092668533325
+      ],
+      "RMSErrors": [
+        4.145063228498954e-07,
+        1.99943573088144e-05,
+        0.00018566809048201825
+      ],
+      "ExactMismatchCounts": [
+        6630,
+        10624,
+        10757
+      ],
+      "Finite": true,
+      "TypesAndSizesMatch": true
+    }
+  },
+  "Passed": true,
+  "PhysicalFlightTested": false,
+  "Flashed": false,
+  "MaxAbsoluteErrors": [
+    0.005610764026641846,
+    2.1213607788085938,
+    22.904541015625
+  ],
+  "ModeHoldAndPublicReset": true,
+  "DoubleReferenceRecord": "docs/history/kf_altitude_numerics.json",
+  "MaximumErrorsVsDouble": [
+    5.97726312778768e-07,
+    0.00022016143654468578,
+    0.0025340901200365806
+  ],
+  "NumericalAcceptanceBounds": [
+    1e-05,
+    0.0005,
+    0.005
+  ],
+  "NumericalAccuracyPassed": true
+}

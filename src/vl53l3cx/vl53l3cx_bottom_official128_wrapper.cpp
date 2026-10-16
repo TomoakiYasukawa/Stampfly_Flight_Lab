@@ -619,6 +619,13 @@ extern "C" void official_tof_step(uint8_t mode,int16_t bottom[1],uint8_t newData
     }
 }
 
+extern "C" void official_tof_source_step(int16_t bottom[1],uint8_t newData[1],int16_t front[1],uint8_t status[1]) {
+    // The active model samples continuously. Initialization readiness, minimum
+    // interval, interrupt readiness, mutex, and worker-busy guards remain in
+    // official_tof_step. Keep the old API for archived implementation models.
+    official_tof_step(uint8_t(2),bottom,newData,front,status);
+}
+
 #else
 
 extern "C" void vl53l3cx_bottom_official128_setup(void)
@@ -651,6 +658,9 @@ extern "C" void official_tof_setup(void) {}
 extern "C" void official_tof_info(uint32_t info[4]) {for(int i=0;i<4;++i)info[i]=0;}
 extern "C" void official_tof_step(uint8_t,int16_t b[1],uint8_t n[1],int16_t f[1],uint8_t s[1]) {
     b[0]=0;n[0]=0;f[0]=0;s[0]=0;
+}
+extern "C" void official_tof_source_step(int16_t b[1],uint8_t n[1],int16_t f[1],uint8_t s[1]) {
+    official_tof_step(uint8_t(2),b,n,f,s);
 }
 
 #endif

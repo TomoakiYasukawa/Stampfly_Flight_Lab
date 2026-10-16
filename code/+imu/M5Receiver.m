@@ -54,4 +54,13 @@ classdef M5Receiver < matlab.System & coder.ExternalDependency
             st = createSampleTime(obj,'Type','Discrete','SampleTime',0.01);
         end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','M5StampS3 ログ受信機', ...
+                'Text','StampFly の ESP-NOW ログを USB シリアルへ転送します。別の M5StampS3 に書き込むモデルです。Channel は機体と同じ専用 CH、BaudRate は通常 921600。アプリからの CH 変更は再起動まで有効です。FramesForwarded と現在の RadioChannel を出力します。','ShowSourceLink',true);
+        end
+    end
+
 end

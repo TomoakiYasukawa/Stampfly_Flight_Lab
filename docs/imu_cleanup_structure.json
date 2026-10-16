@@ -1,0 +1,275 @@
+{
+  "Model": "StampFly_IMU400.slx",
+  "CompletedStages": [
+    "tof",
+    "vectors",
+    "wrappers",
+    "pid",
+    "names"
+  ],
+  "BlockMap": {
+    "blk_3185": "blk_4186",
+    "blk_3188": "blk_4187",
+    "blk_3187": "blk_4188",
+    "blk_3274": "blk_4193",
+    "blk_3275": "blk_4194",
+    "blk_3204": "blk_4195",
+    "blk_3203": "blk_4196",
+    "blk_3206": "blk_4197",
+    "blk_3226": "blk_4198",
+    "blk_3227": "blk_4199",
+    "blk_3228": "blk_4200",
+    "blk_3229": "blk_4201",
+    "blk_3230": "blk_4202",
+    "blk_3097": "blk_4203",
+    "blk_3098": "blk_4204",
+    "blk_3099": "blk_4205",
+    "blk_3100": "blk_4206",
+    "blk_3031": "blk_4207",
+    "blk_3032": "blk_4208",
+    "blk_3033": "blk_4209",
+    "blk_3060": "blk_4210",
+    "blk_3061": "blk_4211",
+    "blk_3063": "blk_4212",
+    "blk_3064": "blk_4213",
+    "blk_3065": "blk_4214",
+    "blk_2250": "blk_4215",
+    "blk_2251": "blk_4216",
+    "blk_3865": "blk_4217",
+    "blk_3871": "blk_4217",
+    "blk_3881": "blk_4225",
+    "blk_3887": "blk_4225",
+    "blk_3897": "blk_4233",
+    "blk_3903": "blk_4233",
+    "blk_3913": "blk_4241",
+    "blk_3919": "blk_4241",
+    "blk_3929": "blk_4249",
+    "blk_3935": "blk_4249",
+    "blk_3945": "blk_4257",
+    "blk_3951": "blk_4257",
+    "blk_3961": "blk_4265",
+    "blk_3967": "blk_4265"
+  },
+  "BottomToFSource": "blk_4187",
+  "BottomRangeBus": "blk_4186",
+  "VectorFilters": {
+    "Acceleration": "blk_2755",
+    "AngularRate": "blk_2806",
+    "VerticalDelta": "blk_2857",
+    "GyroBias": "blk_4189",
+    "AccelZ": "blk_4191",
+    "AccelBias": "blk_4190"
+  },
+  "RenamedBlocks": [
+    {
+      "ID": "blk_2231",
+      "Before": "AttitudeAltitudeEstimation400",
+      "After": "AttitudeAltitudeEstimation"
+    },
+    {
+      "ID": "blk_3171",
+      "Before": "BatterySensor400",
+      "After": "BatterySensor"
+    },
+    {
+      "ID": "blk_3178",
+      "Before": "BottomRangeSensor400",
+      "After": "BottomRangeSensor"
+    },
+    {
+      "ID": "blk_3213",
+      "Before": "CommandPreparation400",
+      "After": "CommandPreparation"
+    },
+    {
+      "ID": "blk_3121",
+      "Before": "CycleTiming400",
+      "After": "CycleTiming"
+    },
+    {
+      "ID": "blk_3073",
+      "Before": "Diagnostics400",
+      "After": "SystemDiagnostics"
+    },
+    {
+      "ID": "blk_3131",
+      "Before": "EstimatorContext400",
+      "After": "EstimatorContext"
+    },
+    {
+      "ID": "blk_2274",
+      "Before": "FlightControl400",
+      "After": "FlightControl"
+    },
+    {
+      "ID": "blk_3161",
+      "Before": "IMUSensor400",
+      "After": "IMUSensor"
+    },
+    {
+      "ID": "blk_3198",
+      "Before": "JoystickCommand400",
+      "After": "JoystickCommand"
+    },
+    {
+      "ID": "blk_3049",
+      "Before": "LEDAndBuzzer400",
+      "After": "LEDAndBuzzer"
+    },
+    {
+      "ID": "blk_3983",
+      "Before": "MagnetometerSensor400",
+      "After": "MagnetometerSensor"
+    },
+    {
+      "ID": "blk_3265",
+      "Before": "MotorWrite400",
+      "After": "MotorWrite"
+    },
+    {
+      "ID": "blk_3979",
+      "Before": "OpticalFlowSensor400",
+      "After": "OpticalFlowSensor"
+    },
+    {
+      "ID": "blk_4181",
+      "Before": "PublishLogMagneticField400",
+      "After": "PublishLogMagneticField"
+    },
+    {
+      "ID": "blk_4180",
+      "Before": "PublishLogOpticalFlow400",
+      "After": "PublishLogOpticalFlow"
+    },
+    {
+      "ID": "blk_2721",
+      "Before": "SensorCorrection400",
+      "After": "SensorCorrection"
+    },
+    {
+      "ID": "blk_4169",
+      "Before": "TickStart400",
+      "After": "TickStart"
+    },
+    {
+      "ID": "blk_4119",
+      "Before": "IMUAttitude400",
+      "After": "IMUAttitude"
+    },
+    {
+      "ID": "blk_3175",
+      "Before": "Battery400",
+      "After": "Battery"
+    },
+    {
+      "ID": "blk_3125",
+      "Before": "TimingEnd400",
+      "After": "TimingEnd"
+    },
+    {
+      "ID": "blk_4057",
+      "Before": "HoldFlowDistance400",
+      "After": "HoldFlowDistance"
+    },
+    {
+      "ID": "blk_4184",
+      "Before": "ReadLogMagneticField400",
+      "After": "ReadLogMagneticField"
+    },
+    {
+      "ID": "blk_4183",
+      "Before": "ReadLogOpticalFlow400",
+      "After": "ReadLogOpticalFlow"
+    },
+    {
+      "ID": "blk_4203",
+      "Before": "Hold400_13",
+      "After": "Hold_13"
+    },
+    {
+      "ID": "blk_4204",
+      "Before": "Hold400_14",
+      "After": "Hold_14"
+    },
+    {
+      "ID": "blk_4205",
+      "Before": "Hold400_18",
+      "After": "Hold_18"
+    },
+    {
+      "ID": "blk_3794",
+      "Before": "PreviousCycle400",
+      "After": "PreviousCycle"
+    },
+    {
+      "ID": "blk_2297",
+      "Before": "TakeoffHoverControl400",
+      "After": "TakeoffHoverControl"
+    },
+    {
+      "ID": "blk_3312",
+      "Before": "AltitudeControl400",
+      "After": "AltitudeControl"
+    },
+    {
+      "ID": "blk_3421",
+      "Before": "AttitudeControl400",
+      "After": "AttitudeControl"
+    },
+    {
+      "ID": "blk_3529",
+      "Before": "BodyRateControl400",
+      "After": "BodyRateControl"
+    },
+    {
+      "ID": "blk_3822",
+      "Before": "FlightCommand400",
+      "After": "FlightCommand"
+    },
+    {
+      "ID": "blk_3744",
+      "Before": "FlightDiagnostics400",
+      "After": "FlightDiagnostics"
+    },
+    {
+      "ID": "blk_3674",
+      "Before": "MotorAllocation400",
+      "After": "MotorAllocation"
+    },
+    {
+      "ID": "blk_3834",
+      "Before": "ControlGating400",
+      "After": "ControlGating"
+    },
+    {
+      "ID": "blk_3165",
+      "Before": "BMI270_400",
+      "After": "BMI270_"
+    },
+    {
+      "ID": "blk_4195",
+      "Before": "BasicJoystick400",
+      "After": "BasicJoystick"
+    },
+    {
+      "ID": "blk_4212",
+      "Before": "StatusIndicators400",
+      "After": "StatusIndicators"
+    },
+    {
+      "ID": "blk_4213",
+      "Before": "StatusWrite400",
+      "After": "StatusWrite"
+    },
+    {
+      "ID": "blk_4214",
+      "Before": "UserButton400",
+      "After": "UserButton"
+    },
+    {
+      "ID": "blk_4173",
+      "Before": "CycleClock400",
+      "After": "CycleClock"
+    }
+  ]
+}

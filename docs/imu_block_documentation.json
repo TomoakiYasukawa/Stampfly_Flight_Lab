@@ -1,0 +1,2930 @@
+{
+  "Model": "StampFly_IMU400",
+  "DocumentedBlockCount": 487,
+  "Blocks": [
+    {
+      "ID": "blk_3294",
+      "Name": "AppliedPWMCountsTap",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2231",
+      "Name": "AttitudeAltitudeEstimation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2236",
+      "Name": "AltitudeKalman",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2236::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2236::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2237",
+      "Name": "AttitudeBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4149",
+      "Name": "AttitudeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2238",
+      "Name": "CalibrationFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4215",
+      "Name": "CountToSingle",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2240",
+      "Name": "EstimatorContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2241",
+      "Name": "FilteredIMUFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2242",
+      "Name": "HeightInputsFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4119",
+      "Name": "IMUAttitude",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4129",
+      "Name": "FilterInputs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4129::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4129::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4138",
+      "Name": "FlightOutputs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4138::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4138::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4130",
+      "Name": "FusionState",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4140",
+      "Name": "UpdateWhenReady",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3297",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4216",
+      "Name": "PackDiagnostics8",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4150",
+      "Name": "PublishAttitudeAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4151",
+      "Name": "PublishAttitudeQuaternion",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4152",
+      "Name": "PublishEstimatedAltitude",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4153",
+      "Name": "PublishFilteredAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4154",
+      "Name": "PublishVerticalVelocity",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2253",
+      "Name": "SensorFlags",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2253::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2253::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2254",
+      "Name": "SensorStatusBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2255",
+      "Name": "VerticalMotionBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4155",
+      "Name": "VerticalMotionFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3171",
+      "Name": "BatterySensor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3175",
+      "Name": "Battery",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3177",
+      "Name": "PublishBatteryReadValid",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3176",
+      "Name": "PublishBatteryVoltage",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3178",
+      "Name": "BottomRangeSensor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4186",
+      "Name": "BottomRangeBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4187",
+      "Name": "BottomToFSource",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3300",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3193",
+      "Name": "PublishBottomDistanceMm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3194",
+      "Name": "PublishBottomRangeFresh",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3195",
+      "Name": "PublishBottomRangeStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3196",
+      "Name": "PublishBottomToFDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3197",
+      "Name": "PublishUnusedFrontRangeMm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3213",
+      "Name": "CommandPreparation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4198",
+      "Name": "CommandTapBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3234",
+      "Name": "CommandTapFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4199",
+      "Name": "ControlInputs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3301",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4200",
+      "Name": "JoystickCommandFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3237",
+      "Name": "PublishAttitudeResetRequest",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3236",
+      "Name": "PublishJoystickSticks",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3239",
+      "Name": "PublishSensorDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3238",
+      "Name": "PublishSensorFlags",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4201",
+      "Name": "SensorStatusFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4202",
+      "Name": "SensorTapBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3235",
+      "Name": "SensorTapFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3121",
+      "Name": "CycleTiming",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3128",
+      "Name": "ReadAppliedPWMCounts",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3126",
+      "Name": "ReadCycleStartUs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3127",
+      "Name": "ReadIMUSampleFresh",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3129",
+      "Name": "ReadPWMStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3130",
+      "Name": "ReadUSBFrameDrops",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3125",
+      "Name": "TimingEnd",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2963",
+      "Name": "DataLogging50",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4019",
+      "Name": "CommandsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4009",
+      "Name": "EstimatesBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4034",
+      "Name": "ExtraSensorsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3304",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4033",
+      "Name": "MotorOutputEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4036",
+      "Name": "PreviousCycleTiming",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3996",
+      "Name": "RadioUSBTransport50",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3997",
+      "Name": "RawSensorsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4025",
+      "Name": "ReadAltitudeEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4021",
+      "Name": "ReadAppliedPWMCounts",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4010",
+      "Name": "ReadAttitudeAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4017",
+      "Name": "ReadAttitudeQuaternion",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4006",
+      "Name": "ReadBatteryReadValid",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4005",
+      "Name": "ReadBatteryVoltage",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4002",
+      "Name": "ReadBottomDistanceMm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4003",
+      "Name": "ReadBottomRangeFresh",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4004",
+      "Name": "ReadBottomRangeStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4007",
+      "Name": "ReadBottomToFDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4013",
+      "Name": "ReadControlDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4030",
+      "Name": "ReadCycleStartUs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4035",
+      "Name": "ReadCycleTiming",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4011",
+      "Name": "ReadEstimatedAltitude",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4015",
+      "Name": "ReadFilteredAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4016",
+      "Name": "ReadFilteredAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4028",
+      "Name": "ReadFlightMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4000",
+      "Name": "ReadIMUSampleFresh",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4008",
+      "Name": "ReadIMUTemperature",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4024",
+      "Name": "ReadJoystickConnected",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4023",
+      "Name": "ReadJoystickPacketError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4032",
+      "Name": "ReadJoystickPilot",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4031",
+      "Name": "ReadJoystickSticks",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4185",
+      "Name": "ReadLogFlowDistance50",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4184",
+      "Name": "ReadLogMagneticField",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4183",
+      "Name": "ReadLogOpticalFlow",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4020",
+      "Name": "ReadMotorDuty",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4022",
+      "Name": "ReadPWMStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4027",
+      "Name": "ReadPreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3998",
+      "Name": "ReadRawAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3999",
+      "Name": "ReadRawAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4029",
+      "Name": "ReadSamplePeriod",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4037",
+      "Name": "ReadSchedulerStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4014",
+      "Name": "ReadSensorDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4018",
+      "Name": "ReadSensorFlags",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4001",
+      "Name": "ReadTimeSeconds",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4012",
+      "Name": "ReadVerticalVelocity",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3995",
+      "Name": "TelemetryPacker50",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3131",
+      "Name": "EstimatorContext",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3140",
+      "Name": "CorrectionContextInternal",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3141",
+      "Name": "EstimatorContextInternal",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3139",
+      "Name": "EstimatorFeedbackFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3302",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2274",
+      "Name": "FlightControl",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2281",
+      "Name": "AttitudeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3793",
+      "Name": "ControlStatusFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4156",
+      "Name": "FlightDiagnosticFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2284",
+      "Name": "FlightInputsFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2285",
+      "Name": "FlightStatusBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4157",
+      "Name": "FlightStatusFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3298",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2292",
+      "Name": "OverG",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3815",
+      "Name": "PreviousControlStateBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3794",
+      "Name": "PreviousCycle",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3802",
+      "Name": "AHRSResetMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3803",
+      "Name": "AltFlagMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3804",
+      "Name": "AltFlagUInt8",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3812",
+      "Name": "ControlStateFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3806",
+      "Name": "EstimatorFeedbackBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3808",
+      "Name": "ModeMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3809",
+      "Name": "ParkingResetMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3813",
+      "Name": "SupervisorResetFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3816",
+      "Name": "PreviousSupervisorResetBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4158",
+      "Name": "PublishAltitudeEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4159",
+      "Name": "PublishControlDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4160",
+      "Name": "PublishFlightMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4161",
+      "Name": "PublishJoystickConnected",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4162",
+      "Name": "PublishPreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2294",
+      "Name": "RangeFlag",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4165",
+      "Name": "SupervisorFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3792",
+      "Name": "TakeoffFlightContextBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2297",
+      "Name": "TakeoffHoverControl",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3312",
+      "Name": "AltitudeControl",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3414",
+      "Name": "AltitudeCommandFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3415",
+      "Name": "AltitudeContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3321",
+      "Name": "AltitudeError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4217",
+      "Name": "AltitudePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4223",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3412",
+      "Name": "HeldThrustMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3365",
+      "Name": "SelectVerticalReference",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3365::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3365::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3410",
+      "Name": "ThrustCorrectionLimits",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3410::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3410::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3411",
+      "Name": "ThrustFilterMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3416",
+      "Name": "ThrustStateBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3413",
+      "Name": "VerticalEstimateFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3366",
+      "Name": "VerticalSpeedError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4225",
+      "Name": "VerticalSpeedPID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4231",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3421",
+      "Name": "AttitudeControl",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3430",
+      "Name": "AngleTargets",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3526",
+      "Name": "AttitudeContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3431",
+      "Name": "EstimatedAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3523",
+      "Name": "LastRateReference",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3525",
+      "Name": "PilotAndModeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3478",
+      "Name": "PitchAngleError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4241",
+      "Name": "PitchAnglePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4247",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3432",
+      "Name": "ResetPreviousAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3434",
+      "Name": "RollAngleError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4233",
+      "Name": "RollAnglePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4239",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3522",
+      "Name": "SelectRateReference",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3522::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3522::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3429",
+      "Name": "StickToAngleRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3429::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3429::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3524",
+      "Name": "UnusedYaw",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3527",
+      "Name": "AttitudePilotContextBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3529",
+      "Name": "BodyRateControl",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3539",
+      "Name": "EstimatedRates",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3584",
+      "Name": "PitchRateError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4257",
+      "Name": "PitchRatePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4263",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3672",
+      "Name": "RateContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3540",
+      "Name": "RollRateError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4249",
+      "Name": "RollRatePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4255",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3538",
+      "Name": "TargetRates",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3628",
+      "Name": "YawRateError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4265",
+      "Name": "YawRatePID",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4271",
+      "Name": "ZeroInitialCondition",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3863",
+      "Name": "CommandStatusFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3756",
+      "Name": "ControlReferencesBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3789",
+      "Name": "ControlStatusBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3822",
+      "Name": "FlightCommand",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3862",
+      "Name": "CommandStatusBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3834",
+      "Name": "ControlGating",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3838",
+      "Name": "CommandModeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3839",
+      "Name": "ControlContextBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3840",
+      "Name": "ControlEnableReset",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3840::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3840::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3841",
+      "Name": "ModeContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3842",
+      "Name": "ThrustStateFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3833",
+      "Name": "FinalizeFlightMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3845",
+      "Name": "FlightCommandBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3849",
+      "Name": "FlightContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3846",
+      "Name": "ModeContextBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3848",
+      "Name": "PilotInputFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3847",
+      "Name": "SharedControlContextBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3832",
+      "Name": "TakeoffLandingCommand",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3861",
+      "Name": "TimingAndThrustFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3851",
+      "Name": "Zero",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3744",
+      "Name": "FlightDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3751",
+      "Name": "ControlDiagnosticPack",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3751::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3751::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3753",
+      "Name": "ControlReferencesFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3752",
+      "Name": "FlightCommandFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3754",
+      "Name": "MotorDiagnosticsFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3307",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3819",
+      "Name": "MeasuredStateFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3674",
+      "Name": "MotorAllocation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3740",
+      "Name": "MotorCommandBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3739",
+      "Name": "MotorContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3738",
+      "Name": "MotorEffortFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3681",
+      "Name": "MotorMixerFilter8bit",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3692",
+      "Name": "AddThrust1",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3693",
+      "Name": "AddThrust2",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3694",
+      "Name": "AddThrust3",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3695",
+      "Name": "AddThrust4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3697",
+      "Name": "AxisMix1",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3698",
+      "Name": "AxisMix2",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3699",
+      "Name": "AxisMix3",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3700",
+      "Name": "AxisMix4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3701",
+      "Name": "BeforeWhenActive",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3702",
+      "Name": "DutyFilterMemory",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3703",
+      "Name": "DutyLimit",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3704",
+      "Name": "DutyTo8bit",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3705",
+      "Name": "FilterDenominator",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3706",
+      "Name": "FilterRecurrence",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3707",
+      "Name": "FilterTime",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3709",
+      "Name": "HoldWhenInactive",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3710",
+      "Name": "InputTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3711",
+      "Name": "InputTimesDt",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3713",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3714",
+      "Name": "MixVector4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3716",
+      "Name": "NormalizeDuty1",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3717",
+      "Name": "NormalizeDuty2",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3718",
+      "Name": "NormalizeDuty3",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3719",
+      "Name": "NormalizeDuty4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3720",
+      "Name": "OverGStop",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3721",
+      "Name": "OverGZero",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3722",
+      "Name": "ParkingMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3723",
+      "Name": "PreviousFilter",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3724",
+      "Name": "PreviousTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3725",
+      "Name": "PreviousTimesT",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3726",
+      "Name": "QuarterTorque1",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3727",
+      "Name": "QuarterTorque2",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3728",
+      "Name": "QuarterTorque3",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3729",
+      "Name": "QuarterTorque4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3732",
+      "Name": "UInt8Counts",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3733",
+      "Name": "Zero4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3734",
+      "Name": "ZeroWhenInactive",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3757",
+      "Name": "MotorDiagnosticsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3741",
+      "Name": "MotorEffortBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3864",
+      "Name": "TimingAndThrustBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3791",
+      "Name": "TakeoffMeasuredStateBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3790",
+      "Name": "TakeoffPilotInputBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2714",
+      "Name": "VerticalMotionFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4163",
+      "Name": "FlightStateFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3161",
+      "Name": "IMUSensor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3165",
+      "Name": "BMI270",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3299",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3169",
+      "Name": "PublishIMUSampleFresh",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3170",
+      "Name": "PublishIMUTemperature",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3167",
+      "Name": "PublishRawAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3168",
+      "Name": "PublishRawAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3166",
+      "Name": "RawIMUInternal",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3198",
+      "Name": "JoystickCommand",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4195",
+      "Name": "BasicJoystick",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4196",
+      "Name": "JoystickCommandBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3212",
+      "Name": "PublishJoystickPacketError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3978",
+      "Name": "PublishJoystickPilot",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4197",
+      "Name": "RadioDiagnosticsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3210",
+      "Name": "RadioDiagnosticsFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3211",
+      "Name": "RawRadioAgeUnused",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3011",
+      "Name": "JoystickFeedback40",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3305",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4207",
+      "Name": "OfficialHeaderGains20",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4208",
+      "Name": "OfficialJoyTelemetry40",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4209",
+      "Name": "OfficialTelemetryValues",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4209::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4209::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3035",
+      "Name": "ReadAltitudeEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3040",
+      "Name": "ReadAttitudeAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3044",
+      "Name": "ReadBatteryVoltage",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3042",
+      "Name": "ReadControlDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3046",
+      "Name": "ReadEstimatedAltitude",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3041",
+      "Name": "ReadFilteredAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3036",
+      "Name": "ReadFlightMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3045",
+      "Name": "ReadMotorDuty",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3043",
+      "Name": "ReadRawAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3039",
+      "Name": "ReadSamplePeriod",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3047",
+      "Name": "ReadSensorDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3038",
+      "Name": "ReadTimeSeconds",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3037",
+      "Name": "ReadUnusedFrontRangeMm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3048",
+      "Name": "ReadVerticalVelocity",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3049",
+      "Name": "LEDAndBuzzer",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4210",
+      "Name": "ControlMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4211",
+      "Name": "LowVoltageCount",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3069",
+      "Name": "ReadAltitudeEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3072",
+      "Name": "ReadAttitudeResetRequest",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3071",
+      "Name": "ReadJoystickPacketError",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3066",
+      "Name": "ReadJoystickSticks",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3068",
+      "Name": "ReadPreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3067",
+      "Name": "ReadSensorFlags",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4212",
+      "Name": "StatusIndicators",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4212::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4212::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4213",
+      "Name": "StatusWrite",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4214",
+      "Name": "UserButton",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3983",
+      "Name": "MagnetometerSensor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3990",
+      "Name": "DeviceRead",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3992",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3991",
+      "Name": "SensorDataBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_973",
+      "Name": "ModelExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3265",
+      "Name": "MotorWrite",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3303",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3278",
+      "Name": "MotorCommandFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4193",
+      "Name": "MotorOutputEnabled",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4194",
+      "Name": "PWM150kHz8bit",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3280",
+      "Name": "PublishAppliedPWMCounts",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3279",
+      "Name": "PublishMotorDuty",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3281",
+      "Name": "PublishPWMStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4166",
+      "Name": "OfficialFlightSupervisor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4038",
+      "Name": "OpticalFlowDistance50",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4047",
+      "Name": "AttitudeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4054",
+      "Name": "DistanceData",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4046",
+      "Name": "FlowFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4053",
+      "Name": "GroundMotionDistance",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4049",
+      "Name": "IMUFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4055",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4051",
+      "Name": "MillimetersToMeters",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4052",
+      "Name": "PoseAndRange4",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4048",
+      "Name": "RangeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4050",
+      "Name": "RangeToSingle",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3979",
+      "Name": "OpticalFlowSensor",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3987",
+      "Name": "DeviceRead",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3989",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3988",
+      "Name": "SensorDataBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3295",
+      "Name": "PWMStatusTap",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_825",
+      "Name": "PublishCycleTiming",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_735",
+      "Name": "PublishJoystickTelemetrySent",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4182",
+      "Name": "PublishLogFlowDistance50",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4181",
+      "Name": "PublishLogMagneticField",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4180",
+      "Name": "PublishLogOpticalFlow",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_731",
+      "Name": "PublishLoggerLEDMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_729",
+      "Name": "PublishLoggerRadioQueued",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_727",
+      "Name": "PublishUSBFrameDrops",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2721",
+      "Name": "SensorCorrection",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2726",
+      "Name": "BottomRangeFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2727",
+      "Name": "CalibrationBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2728",
+      "Name": "EstimatorContextFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2729",
+      "Name": "FilteredIMUBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2731",
+      "Name": "HeightInputsBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2732",
+      "Name": "IMUAxisConversion",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2735",
+      "Name": "AccelBodySigns",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2736",
+      "Name": "AccelToG",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2737",
+      "Name": "BodyAxisSigns",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2738",
+      "Name": "GravityMps2",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2739",
+      "Name": "GyroBodySigns",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3309",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2740",
+      "Name": "SwapAccelXY",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2741",
+      "Name": "SwapGyroXY",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2744",
+      "Name": "IMUBiasCalibration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2744::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2744::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2745",
+      "Name": "IMUFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2746",
+      "Name": "IMUFiltering",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4190",
+      "Name": "AccelBiasZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2755",
+      "Name": "AccelLowpassXYZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2760",
+      "Name": "Denominator",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2761",
+      "Name": "InputTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2762",
+      "Name": "InputTimesDt",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2763",
+      "Name": "PreviousFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2764",
+      "Name": "PreviousTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2765",
+      "Name": "PreviousTimesT",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2766",
+      "Name": "ResetPrevious",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2767",
+      "Name": "TimeConstantS",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2768",
+      "Name": "UpdateOrHold",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2769",
+      "Name": "UpdatedFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2770",
+      "Name": "ZeroOnReset",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4191",
+      "Name": "AccelZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4189",
+      "Name": "GyroBiasXYZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2806",
+      "Name": "GyroLowpassXYZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2811",
+      "Name": "Denominator",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2812",
+      "Name": "InputTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2813",
+      "Name": "InputTimesDt",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2814",
+      "Name": "PreviousFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2815",
+      "Name": "PreviousTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2816",
+      "Name": "PreviousTimesT",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2817",
+      "Name": "ResetPrevious",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2818",
+      "Name": "TimeConstantS",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2819",
+      "Name": "UpdateOrHold",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2820",
+      "Name": "UpdatedFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2821",
+      "Name": "ZeroOnReset",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3310",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2878",
+      "Name": "PreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2883",
+      "Name": "RemoveAccelBiasZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4192",
+      "Name": "RemoveGyroBiasXYZ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2857",
+      "Name": "VerticalDeltaLowpass",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2862",
+      "Name": "Denominator",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2863",
+      "Name": "InputTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2864",
+      "Name": "InputTimesDt",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2865",
+      "Name": "PreviousFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2866",
+      "Name": "PreviousTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2867",
+      "Name": "PreviousTimesT",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2868",
+      "Name": "ResetPrevious",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2869",
+      "Name": "TimeConstantS",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2870",
+      "Name": "UpdateOrHold",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2871",
+      "Name": "UpdatedFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2872",
+      "Name": "ZeroOnReset",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3296",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3977",
+      "Name": "PublishFilteredAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2888",
+      "Name": "ToFHoldOutlierFilter",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2888::26",
+      "Name": " Demux ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2888::27",
+      "Name": " Terminator ",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2889",
+      "Name": "VerticalAcceleration",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_3311",
+      "Name": "JapaneseExplanation",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_2895",
+      "Name": "PreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2898",
+      "Name": "UpwardSign",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2899",
+      "Name": "VerticalLowpass",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2904",
+      "Name": "Denominator",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2905",
+      "Name": "InputTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2906",
+      "Name": "InputTimesDt",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2907",
+      "Name": "PreviousFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2908",
+      "Name": "PreviousTerm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2909",
+      "Name": "PreviousTimesT",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2910",
+      "Name": "ResetPrevious",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2911",
+      "Name": "TimeConstantS",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2912",
+      "Name": "UpdateOrHold",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2913",
+      "Name": "UpdatedFiltered",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_2914",
+      "Name": "ZeroOnReset",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4168",
+      "Name": "SupervisorCommandBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4167",
+      "Name": "SupervisorPilotFields",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3073",
+      "Name": "SystemDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4203",
+      "Name": "Hold_13",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4204",
+      "Name": "Hold_14",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4205",
+      "Name": "Hold_18",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4206",
+      "Name": "NamedDiagnosticBus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3102",
+      "Name": "ReadAppliedPWMCounts",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3110",
+      "Name": "ReadAttitudeAngles",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3118",
+      "Name": "ReadAttitudeQuaternion",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3117",
+      "Name": "ReadBatteryVoltage",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3120",
+      "Name": "ReadBottomToFDiagnostics",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3104",
+      "Name": "ReadCycleTiming",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3111",
+      "Name": "ReadFilteredAngularRate",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3107",
+      "Name": "ReadFlightMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3109",
+      "Name": "ReadIMUTemperature",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3116",
+      "Name": "ReadJoystickConnected",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3119",
+      "Name": "ReadJoystickTelemetrySent",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3115",
+      "Name": "ReadLoggerLEDMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3114",
+      "Name": "ReadLoggerRadioQueued",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3106",
+      "Name": "ReadMotorDuty",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3103",
+      "Name": "ReadPWMStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3113",
+      "Name": "ReadPreviousMode",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3105",
+      "Name": "ReadSchedulerStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3112",
+      "Name": "ReadSensorFlags",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_3108",
+      "Name": "ReadUnusedFrontRangeMm",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4169",
+      "Name": "TickStart",
+      "JapaneseDescription": true,
+      "SettingsDescription": true
+    },
+    {
+      "ID": "blk_4173",
+      "Name": "CycleClock",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4174",
+      "Name": "PublishCycleStartUs",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4175",
+      "Name": "PublishSamplePeriod",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4176",
+      "Name": "PublishSchedulerStatus",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4177",
+      "Name": "PublishTimeSeconds",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    },
+    {
+      "ID": "blk_4179",
+      "Name": "UsToSeconds",
+      "JapaneseDescription": true,
+      "SettingsDescription": false
+    }
+  ],
+  "SystemDialogHeaders": 16,
+  "ReceiverDocumented": true
+}

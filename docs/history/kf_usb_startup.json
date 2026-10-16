@@ -1,0 +1,169 @@
+{
+  "Port": "COM4",
+  "BaudRate": 921600,
+  "CaptureSeconds": 15.0,
+  "CapturedBytes": 478687,
+  "Frames": {
+    "SFI8": 751,
+    "SFIX": 750,
+    "SFIY": 750
+  },
+  "CRCErrors": {
+    "SFI8": 0,
+    "SFIX": 0,
+    "SFIY": 0
+  },
+  "BuildIDs": [
+    1401
+  ],
+  "FirmwareRevisions": [
+    1801
+  ],
+  "ObservedModes": [
+    3
+  ],
+  "ReservedFieldsZero": true,
+  "MaximumAppliedPWMCount": 0,
+  "FiniteFilteredSensorsAndQuaternion": true,
+  "FiniteAltitudeAndVelocity": true,
+  "FiniteSensorDiagnosticsAndBias": true,
+  "FiniteControlDiagnostics": true,
+  "HeightRange": [
+    0.09817278385162354,
+    0.10980991274118423
+  ],
+  "VerticalVelocityRange": [
+    0.014,
+    0.021
+  ],
+  "AltitudeBiasRange": [
+    0.0,
+    0.0
+  ],
+  "QuaternionNormRange": [
+    0.9999999042093467,
+    1.000000203840129
+  ],
+  "UnitQuaternions": true,
+  "FirmwareTimeSpanSeconds": 15.0,
+  "TaskTiming": [
+    {
+      "n": 400,
+      "mean_us": 1756,
+      "max_us": 2352,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1770,
+      "max_us": 2397,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1771,
+      "max_us": 2689,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1774,
+      "max_us": 2385,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1769,
+      "max_us": 2396,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1772,
+      "max_us": 2367,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1773,
+      "max_us": 2699,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1771,
+      "max_us": 2392,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1768,
+      "max_us": 2373,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1769,
+      "max_us": 2377,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1779,
+      "max_us": 2695,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1771,
+      "max_us": 2387,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1773,
+      "max_us": 2422,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1766,
+      "max_us": 2410,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1772,
+      "max_us": 2649,
+      "over": 1,
+      "missed": 0
+    }
+  ],
+  "TaskTimingSummary": {
+    "SampleCount": 6000,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1770.2666666666667,
+    "MaximumMicroseconds": 2699,
+    "DeadlineExceededCount": 4,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  },
+  "CaptureFile": "logs/kf400_startup_COM4.bin",
+  "FlightCommandsSent": false,
+  "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+  "Passed": true
+}

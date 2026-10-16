@@ -45,4 +45,13 @@ classdef MotorPWM400 < matlab.System & coder.ExternalDependency
             st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);
         end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly モーター PWM 出力', ...
+                'Text','入力 Counts4 は [FR, FL, RR, RL] の 8 bit PWM カウントです。Enable と AllowMotorOutput が有効なとき実機へ適用し、実適用値と状態を返します。機体用は 150 kHz 指定です。これは回転数の測定値ではありません。','ShowSourceLink',true);
+        end
+    end
+
 end

@@ -14,4 +14,13 @@ classdef UserButton400 < matlab.System & coder.ExternalDependency
   function b=isOutputFixedSizeImpl(~),b=true;end
   function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',.0025);end
  end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 機体ボタン', ...
+                'Text','StampS3 の GPIO0 ボタンを読み、押下中は uint8(1) を出力します。操縦用 JoyStick のボタンとは別です。押下時間と解放の判定は StatusIndicators で行います。','ShowSourceLink',true);
+        end
+    end
+
 end

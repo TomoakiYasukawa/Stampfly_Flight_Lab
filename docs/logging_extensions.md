@@ -1,40 +1,43 @@
-# センサーと指令のロギング
+# 飛行ログの読み方
 
-実装モデルは直下の `StampFly_PIDBlock_FlightTest400.slx`、受信機は `M5Stamp_IMU_Rx.slx` です。追加計測は飛行制御へ戻さず、ロガーへ接続しています。7個の専用PIDと離陸・ホバリングの計算は維持しています。
+現行機体 `StampFly_IMU400.slx` の **DataLogging50** は、生センサー・推定・操縦指令・モーター・診断を50 Hzで送ります。`M5Stamp_IMU_Rx.slx`を書き込んだ別の受信機をPCへUSB接続し、StampFlyIMUAppで記録します。[接続・記録手順](../README.md#joystickとアプリを使う)
 
-| ブロック | 更新 | 出力 |
-|---|---|---|
-| OpticalFlowSensor400 | 400 Hz | PMW3901MBの差分、品質、16 bitシャッター値、読出し時間、累積カウント |
-| MagnetometerSensor400 | 最新値を400 Hzで取得／新規測定30 Hz | BMM150の補償済み磁場[µT]、更新数、データ年齢、エラー |
-| OpticalFlowDistance50 | 50 Hz | 東・北の積算移動距離[m]、使用フラグ、区間移動距離[m] |
-| DataLogging50 | 50 Hz | 通常計測、指令補足、センサー補足 |
+## 表示と記録項目
 
-BMM150の新規測定は最大30 Hzです。400 Hzブロックはcore0の最新値を待たずに読みます。ToF・電池とのI2C排他を共用し、PMW3901MBはBMI270とSPIを共用して2 MHzのMotion_Burstを1回だけ読みます。
+| 項目 | 意味 |
+|---|---|
+| 生加速度／角速度 | BMI270のセンサーXYZ。m/s²、rad/s |
+| Roll／Pitch／Yaw、Quaternion | IMU Filterで推定した姿勢。QuaternionはWXYZ |
+| FilteredGyro | 機体XYZに戻した、PIDへ渡すバイアス補正済み角速度 |
+| ToF斜距離／補正高さ | 生距離と傾き補正。高度Kalmanの推定高度とは別の値 |
+| 高度／鉛直速度 | AltitudeKalmanの出力 |
+| 電池電圧 | V。読み出し有効性と合わせて確認 |
+| 光学フロー | 生差分・品質と、平面上の東・北移動距離 |
+| 磁気 | BMM150の補償済みセンサーXYZ、µT |
+| MotorFR／FL／RR／RL | 計算されたPWMカウント |
+| AppliedPWMFR／FL／RR／RL | 適用したPWMカウント。モーター回転数の測定値ではない |
+| 欠落／CRC／対象外 | 通常フレームの欠落、破損、別BuildIDの数 |
 
-## 光学フローの距離グラフ
+記録は`recordings/StampFly_日時.mat`です。**［記録停止］**後の保存完了を確認し、**［履歴・比較］→［一覧更新］**で開きます。別フォルダーの記録は **［MATを追加］** で追加できます。
 
-400 Hzで取得した全差分を累積カウントに保存し、50 Hzの差で20 ms区間の動きを取り出します。下向きToFの距離と姿勢から高さを求め、ジャイロによる回転成分を除去して東・北のメートル値へ変換・積算します。50 Hzの結果はRate Transitionで保持してログ入力へ渡します。アプリの光学フローグラフはこのメートル値を表示します。
-
-換算は以前の `imu.GroundFlowXYTracker` と同じ軸・床面の仮定です。385 count/radは未校正の初期換算値で、実測距離に対する校正が必要です。平らな床、十分な模様と照明、有効なToFが前提です。無効な値や速度上限を超える区間は加算せず、前回の位置を保持します。機体再起動で積算位置はゼロへ戻ります。磁気値はこの位置推定に使用していません。
-
-## 記録の読み方
-
-通常SFI8は従来どおり190 byteです。SFIX190とSFIY246を補足として送り、同じSequence・Time・BuildIDで対応させます。補足はグラフの時刻や通常フレームの欠落数を進めません。既存の80列は維持し、121項目の補足を別表に保存します。
+MATLABで詳しく確認する場合は、保存ファイルを指定します。
 
 ```matlab
-data = imu.readExtendedTelemetry("recordings/StampFly_....mat");
+data = imu.readExtendedTelemetry("recordings/StampFly_日時.mat");
 data(:,["TimeSeconds","XYX","XYY","FlowUsed","MagX_uT", ...
-    "AltitudeReferenceM","RollReferenceRad","AppliedPWMFR"])
+        "AltitudeReferenceM","RollReferenceRad","AppliedPWMFR"])
 ```
 
-補足が無線で欠落した行はNaNです。`XYX`・`XYY`は東・北[m]、`FlowDeltaX/Y`は20 ms区間の生カウントです。`FlowLastDeltaX/Y`は400 Hzの最後の1回の値です。`MagSampleCount`と`MagAgeUs`で新規測定と保持値を区別できます。
+## 光学フローと磁気
 
-`MotorFR/FL/RR/RL`は計算されたPWMカウントです。適用出力は補足の`AppliedPWMFR/FL/RR/RL`に保存し、回転速度の測定値ではありません。高度・姿勢・角速度指令、制御出力、制限前ミキサー、JoyStick入力・使用入力、状態、センサー補正値、温度、周期・処理時間も保存します。
+PMW3901は400 Hzで差分を累積し、**OpticalFlowDistance50** が20 ms区間の移動を取り出します。下向きToF、姿勢、角速度から回転成分を除き、[東, 北]の距離へ換算します。平らな床・模様・照明・有効なToFが前提で、**385 count/radは未校正の初期値**です。無効な区間は加算せず位置を保持し、再起動でゼロに戻ります。
 
-## 確認結果
+BMM150の新規測定は約30 Hz、モデルは400 Hzで最新値を受け取ります。`MagSampleCount`、`MagAgeUs`、Freshなどで新規値と保持値を区別します。磁気・光学フローの移動距離は、姿勢PIDや水平位置保持には使っていません。
 
-センサー追加前の飛行成功PID版と3シナリオ・36,000周期・15出力を比較し、値・型・サイズが一致しました（`logging_control_verification.json`）。距離換算は既存トラッカーとの100サンプル比較で差0です。距離は表示・記録専用で、飛行制御の入力を変更しません。
+## 通信形式と対応づけ
 
-距離追加前の実機記録 `StampFly_20261015_213659_399.mat` は60.52秒、通常3,027・補足6,054フレーム、欠落0・CRC0。Flow更新400 Hz、磁気の新規測定30.354 Hz、ToF約25 Hz、磁気エラー0でした。USBの全400 Hzタスク計測は最大2,079 µs、周期超過・取りこぼし0。PWM読み戻しは150,094 Hz／8 bitです。補足の`TimingMaxExecUs`はタスク全体より狭い範囲を計測するため、全タスクの値にはUSBのSFTASKを用います。
+通常 **SFI8は190 byte**、指令補足 **SFIXは190 byte**、センサー補足 **SFIYは246 byte**。同じSequence・Time・BuildIDで対応づけ、CRCを確認します。従来の通常80列に補足121項目を別表で保存し、補足が届かない項目はNaNになります。
 
-距離版の書き込み結果は `logging_aircraft_deployment.json`、ビルドは `logging_build.json`、表示テストは `logger_display_verification.json` を参照してください。今回の距離・追加ロギング版の実飛行はまだ確認していません。
+BuildID 1401はプログラムの識別子です。同じCHの同じプログラムを持つ複数機体を区別できないため、[専用CH](../README.md#自分専用のチャンネルをそろえる)を割り当てます。受信機のQueuedなどはキュー投入の指標で、電波到達は受信データで確認します。
+
+補足の`TimingMaxExecUs`は計測範囲がタスク全体より狭い値です。全400 Hzタスクの時間はUSB診断の`SFTASK`で確認します。過去の取得レート・飛行・表示テストは[履歴](history/README.md)に保存しています。

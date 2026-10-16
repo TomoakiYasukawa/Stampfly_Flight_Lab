@@ -30,6 +30,9 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             elseif contains(c.getBuildDir(),'StampFly_IMU400')
                 b.addDefines('OFFICIAL_IMU_PROFILE');
                 b.addLinkFlags('-Wl,--wrap=StampFly_IMU400_step');
+            elseif contains(c.getBuildDir(),'StampFly_KF400')
+                b.addDefines('OFFICIAL_KF_PROFILE');
+                b.addLinkFlags('-Wl,--wrap=StampFly_KF400_step');
             end
         end
     end
@@ -53,4 +56,13 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
         function varargout=isOutputFixedSizeImpl(~),varargout={true,true,true};end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 400 Hz 周期開始', ...
+                'Text','2500 μs の GPTimer で制御タスクを起動し、開始時刻 [μs]、実測 dt [s]、タイマー診断を返します。モデルの Fixed-step も 0.0025 秒に揃えます。生成された step の計測設定はモデル名 StampFly_IMU400 に対応しています。','ShowSourceLink',true);
+        end
+    end
+
 end

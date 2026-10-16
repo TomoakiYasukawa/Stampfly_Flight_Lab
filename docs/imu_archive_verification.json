@@ -1,0 +1,168 @@
+{
+  "OpenedModels": [
+    {
+      "File": "archive/aircraft/StampFly_Official_FlightTest400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_PIDBlock_FlightTest400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_Basic400.slx",
+      "Opened": true,
+      "FullUpdatePassed": true
+    },
+    {
+      "File": "archive/aircraft/PIDBlockComparison400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_Bench400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_EstimatorReplay400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_FlightSim400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_FullReplay400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/aircraft/StampFly_PWM400_Probe.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    },
+    {
+      "File": "archive/kf400/StampFly_KF400.slx",
+      "Opened": true,
+      "FullUpdatePassed": true
+    },
+    {
+      "File": "archive/kf400/baseline/StampFly_IMU400.slx",
+      "Opened": true,
+      "FullUpdatePassed": false
+    }
+  ],
+  "PreservedModels": [
+    {
+      "File": "archive/aircraft/PIDBlockComparison400.slx",
+      "SHA256": "32dcf4b1864d7de5284abd508eeb797a45caaddbc8d360b8cc59d946b94140d7"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Basic400.slx",
+      "SHA256": "a24794d51ecef266a95f58c272160bc5ddfa95fca1a7fd7d59fc3f18bd9236b1"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_Bench400.slx",
+      "SHA256": "31417f2cd71a73454d9a63bc2c6b77b9e1c3e30690284275b77d2a885a84bb63"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_EstimatorReplay400.slx",
+      "SHA256": "d18cabfc589e3da910e37eb0d9493cb33b3e4f7ddfe5cf0894108824f9b6239a"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_FlightSim400.slx",
+      "SHA256": "aedc0eae4892246889e0b4ad3d84d0577d05529c9f8b549df852b04c8cf982b5"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_FlightTest400.slx",
+      "SHA256": "c0a492b6953c7844e05034ae93c7b90b815ea1e961a8ea488d46fa2dda9e1be8"
+    },
+    {
+      "File": "archive/aircraft/StampFly_Official_FullReplay400.slx",
+      "SHA256": "3757713881f53c46465f18ebf21451782775c5c39de3fdd7a8551518eaffa589"
+    },
+    {
+      "File": "archive/aircraft/StampFly_PIDBlock_FlightTest400.slx",
+      "SHA256": "d8e1231ab67ae1626679d1bd63fe8ec5e2f719fec46632616e2e47c4b8efa60e"
+    },
+    {
+      "File": "archive/aircraft/StampFly_PWM400_Probe.slx",
+      "SHA256": "3ee94f31bc08320d38b300b87b9fd0ea98a96d2d8ff02a1663aa170cdd33c8db"
+    },
+    {
+      "File": "archive/before_tof_tilt_20261015/StampFly_PIDBlock_FlightTest400.slx",
+      "SHA256": "61ca23ec9f2d7834f07deece2f0633ba27838a8161e1503fe7dd8569c37b3d17"
+    },
+    {
+      "File": "archive/kf400/StampFly_KF400.slx",
+      "SHA256": "7b4bfddfafad0d0a53b8b4ec998ce1f5f3be061954af273ab40c8e1d08045a0a"
+    },
+    {
+      "File": "archive/kf400/baseline/StampFly_IMU400.slx",
+      "SHA256": "2f83a78a97d656741d2230512bb150f9d2b0814713dec011a13d27f52cbf86bf"
+    },
+    {
+      "File": "archive/logging_before_20261015/M5Stamp_IMU_Rx.slx",
+      "SHA256": "8c09054cd9af25796b170ff5550e4fb7f2c13425324e147a431e5f2a0afc59fd"
+    },
+    {
+      "File": "archive/logging_before_20261015/StampFly_PIDBlock_FlightTest400.slx",
+      "SHA256": "d1b34e0cba9e7bed896a805bcb9feeb5c190d5414a5e499629adf1b5b4f9ab51"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_before_compact_logging.slx",
+      "SHA256": "364dda040c204bbe65c4e7eb2cc9c980ea723787f34c63dbd859b9824bf1da82"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_before_control_layout_20261015_145343.slx",
+      "SHA256": "6ac992a7bdb27c4dc325c487171cfd5738c8e9ebb8c4b7396a0e45c394db80f5"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_before_refresh_20261015_085254.slx",
+      "SHA256": "b9db92101ccf443d5304ad420ebce7e24f5030c77d9686593fae094a83e9c5cd"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_before_sensor_blocks_20261015_092114.slx",
+      "SHA256": "14bcdd092d007f084bde05985107a2f15958d186372d3e6e320adeefe66e99d7"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_before_state_diagrams_20261015_104413.slx",
+      "SHA256": "dd8ea60a666ee606de8a54f25da15e5b3c8820fa7d39cbfda2ff6503d53a1ebe"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_disk_before_control_layout_20261015_145333.slx",
+      "SHA256": "6f3b7635bf0b4f3ca61b7bf9857b4d952810848bd2216bcefd198f73e12bddca"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_disk_before_sensor_blocks_20261015_092114.slx",
+      "SHA256": "b5cabadef1b01827e4c64de3069e1f7f8dd839adcef636113272f7afee5dd87b"
+    },
+    {
+      "File": "archive/snapshots/FlightTest_verified_before_root_reorganization.slx",
+      "SHA256": "ddcadf51093aafb3b56b6a491684a08b44b699bf57237f542f457579a0343ab5"
+    },
+    {
+      "File": "archive/snapshots/StampFly_Official_Bench400.before_full_modes.slx",
+      "SHA256": "f1fbf022c16d34d39b7bfe702ece19239c9ae75624e4ed129615b1fadf06e67e"
+    },
+    {
+      "File": "archive/snapshots/StampFly_Official_Bench400.before_modular.slx",
+      "SHA256": "b516ef11b4fa052915c20e4bb02d695c070b5d279a4c31b2dafbb734c99c26c4"
+    },
+    {
+      "File": "archive/snapshots/StampFly_Official_Replay400.slx",
+      "SHA256": "a81cd157dd625ae63ce8859e278b84ca2a0aa2978ff168041ac7b45e4d7a9f80"
+    }
+  ],
+  "ArchivedModelCount": 25,
+  "AllArchivedModelBytesPreserved": true,
+  "CurrentModelsResolveAtRoot": true,
+  "CurrentFullModelUpdatesPassed": true,
+  "SavedAnyModel": false,
+  "Flashed": false,
+  "Passed": true
+}

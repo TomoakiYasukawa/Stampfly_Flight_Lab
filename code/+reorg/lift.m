@@ -7,7 +7,9 @@ links=reorg.links(model,scope);parentLinks=reorg.links(model,parentScope);
 % SATK resolves same-model types relative to the destination root. Use an
 % independent saved copy to provide an unambiguous block source.
 copyModel='ReorganizationCopySource';
-copyFile=fullfile(stampfly_project_root(),'tests',[copyModel '.slx']);
+copyFolder=fullfile(stampfly_project_root(),'build','model_edit');
+if ~isfolder(copyFolder),mkdir(copyFolder);end
+copyFile=fullfile(copyFolder,[copyModel '.slx']);
 if bdIsLoaded(copyModel),close_system(copyModel,0);end
 save_system(model);copyfile(get_param(model,'FileName'),copyFile);open_system(copyFile);
 copyCleanup=onCleanup(@()close_system(copyModel,0)); %#ok<NASGU>

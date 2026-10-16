@@ -1,5 +1,5 @@
 classdef BMI270IMU < matlab.System & coder.ExternalDependency
-    %BMI270IMU  StampFly BMI270 6-axis IMU (SPI) 窶・deployable device block.
+    %BMI270IMU StampFlyの6軸IMU。SPIで加速度・角速度・温度を取得します。
     %
     %   MATLAB System block wrapping the Bosch BMI270 SensorAPI driver. On the
     %   ESP32-S3 target it reads the onboard BMI270 over SPI
@@ -51,7 +51,7 @@ classdef BMI270IMU < matlab.System & coder.ExternalDependency
         end
 
         function r = libsRoot()
-            % Root of StampFly_libs (parent of the +stampfly package folder).
+            % このファイルを同梱したプロジェクトのルートを求める。
             r = fileparts(fileparts(fileparts(mfilename('fullpath'))));
         end
 
@@ -112,5 +112,14 @@ classdef BMI270IMU < matlab.System & coder.ExternalDependency
                 'SampleTime', obj.SampleTime);
         end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly BMI270 IMU', ...
+                'Text','SPI 接続の加速度 [m/s²]、角速度 [rad/s]、温度 [°C]、新規サンプル Status を出力します。XYZ はセンサー座標です。機体座標への変換は後段で行います。ODR は 400 Hz、レンジは ±8 g・±2000 deg/s。PC シミュレーションは 0 を返すため、検証には再生入力を使います。','ShowSourceLink',true);
+        end
+    end
+
 end
 

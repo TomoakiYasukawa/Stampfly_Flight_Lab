@@ -1,0 +1,94 @@
+{
+  "ProjectFile": "StampFly_Official.prj",
+  "FreshCopy": true,
+  "RestoredDefaultPath": true,
+  "FullModelUpdatesPassed": true,
+  "CurrentAircraft": "StampFly_IMU400",
+  "CurrentReceiver": "M5Stamp_IMU_Rx",
+  "AppConstructedAndClosed": true,
+  "CustomClassesResolveInsideProject": true,
+  "ArchivedModelsExcludedFromPath": true,
+  "ExternalCustomDependencies": 0,
+  "ProjectChecks": [
+    {
+      "ID": "Project:Checks:ProjectDefinitionFilesAreUnderSourceControl",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:AllProjectFilesUnderSourceControl",
+      "Passed": false,
+      "ProblemFileCount": 1057
+    },
+    {
+      "ID": "Project:Checks:AllFilesUnderSourceControlAreInProject",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ProjectFilesExist",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ProjectPath",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ReferencedSubprojects",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:OutdatedPcodedFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MDLToSLX",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:SLPRJ",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:PathCaseSensitive",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MissingOrDuplicateLabelsInProject",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:UnsavedProjectFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    }
+  ],
+  "ProjectChecksPassed": false,
+  "Passed": true,
+  "RuntimeChecksPassed": true,
+  "NonSourceControlProjectChecksPassed": true,
+  "GitMetadataIncluded": false,
+  "SourceControlCheckNote": "Fresh copy excludes .git; AllProjectFilesUnderSourceControl reports untracked files. Registered source checkout is checked separately.",
+  "CopiedFileCount": 3830,
+  "CopyManifestSHA256": "d2a60f64e13551c2a9ddc787f65a5ca40aaebb601bfa937f9637e2d81c6cd737",
+  "TestedModels": [
+    {
+      "File": "StampFly_IMU400.slx",
+      "SHA256": "3e2547aeb792d8e340f9975993f871000265b75186b1a046c50ced3a59d40ebc",
+      "MatchesCurrentSavedModel": true
+    },
+    {
+      "File": "M5Stamp_IMU_Rx.slx",
+      "SHA256": "35f1a5a1f529db3cf77f63ebaa8193b99f485d726d5a17df32fdd5602af55d32",
+      "MatchesCurrentSavedModel": true
+    }
+  ]
+}

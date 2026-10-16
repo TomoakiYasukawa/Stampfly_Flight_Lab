@@ -30,4 +30,13 @@ classdef Battery400 < matlab.System & coder.ExternalDependency
         function varargout=isOutputFixedSizeImpl(~),varargout={true,true};end
         function st=getSampleTimeImpl(o),st=createSampleTime(o,'Type','Discrete','SampleTime',o.SampleTime);end
     end
+    methods (Static, Access=protected)
+        function header=getHeaderImpl()
+            % ダブルクリックした設定画面に用途と入出力を表示します。
+            header=matlab.system.display.Header( ...
+                'Title','StampFly 電池電圧', ...
+                'Text','機体の電池電圧 [V] と今回の読み出し成功 ReadValid を出力します。ToF・磁気と I2C の排他制御を共有し、使用中は待たずに前回値を返します。SampleTime は制御周期 0.0025 秒です。','ShowSourceLink',true);
+        end
+    end
+
 end

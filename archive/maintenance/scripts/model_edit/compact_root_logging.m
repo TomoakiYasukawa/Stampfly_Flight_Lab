@@ -1,0 +1,56 @@
+function result=compact_root_logging()
+%COMPACT_ROOT_LOGGING Keep auxiliary taps inside their relevant functions.
+% 主経路は直接Bus配線。記録用Gotoは各センサー／分配ブロック内へ移す。
+root=stampfly_project_root();model='StampFly_Official_FlightTest400';
+result=load(fullfile(root,'tests','root_reorganization_ids.mat')).result;
+save_system(model);copyfile(get_param(model,'FileName'),fullfile(root,'archive','snapshots','FlightTest_before_compact_logging.slx'));
+rawIMU=mapped(result.Core,'blk_1775');
+result.IMUSensor=reorg.wrap(model,'root',{result.IMU,rawIMU,'blk_785','blk_788','blk_790','blk_815'}, ...
+    'IMUSensor400',emptyGroups(),reorg.group('RawIMU',{[rawIMU '.y1']},{'RawIMU'}));saveProgress();
+result.BatterySensor=reorg.wrap(model,'root',{result.Battery,'blk_799','blk_803'}, ...
+    'BatterySensor400',emptyGroups(),reorg.group('BatteryVoltage',{[result.Battery '.y1']},{'BatteryVoltage'}));saveProgress();
+status=mapped(result.Core,'blk_2226');
+bottomFields=extractBefore(result.ToF.Fields.Groups.BottomRange.DistanceMm,'.y');
+rangeFields=extractBefore(result.ToF.Fields.Groups.RangeDiagnostics.Status,'.y');
+result.BottomSensor=reorg.wrap(model,'root',{result.ToF.ID,char(bottomFields),char(rangeFields),'blk_793','blk_795','blk_797','blk_805','blk_808'}, ...
+    'BottomRangeSensor400',reorg.group('Mode',{[status '.y1']},{'Mode'}), ...
+    reorg.group('BottomRange',{[result.ToF.ID '.y1']},{'BottomRange'}));saveProgress();
+radioFields=extractBefore(result.Joystick.Fields.Groups.RadioDiagnostics.PacketError,'.y');
+result.JoystickSensor=reorg.wrap(model,'root',{result.Joystick.ID,char(radioFields),'blk_3159','blk_813'}, ...
+    'JoystickCommand400',emptyGroups(),reorg.group('JoystickCommand',{[result.Joystick.ID '.y1']},{'JoystickCommand'}));saveProgress();
+% Command preprocessing retains four direct inputs; its log taps stay inside.
+commandFields=extractBefore(result.FlightInputs.Fields.Groups.CommandTap.Sticks,'.y');
+sensorFields=extractBefore(result.FlightInputs.Fields.Groups.SensorTap.Flags,'.y');
+commandInputs=[reorg.group('JoystickCommand',{[result.JoystickSensor.ID '.y1']},{'JoystickCommand'}), ...
+    reorg.group('BatteryVoltage',{[result.BatterySensor.ID '.y1']},{'BatteryVoltage'}), ...
+    reorg.group('Dt',{'blk_4.y2'},{'Dt'}),reorg.group('SensorStatus',{[result.Estimation '.y3']},{'SensorStatus'})];
+result.CommandPreparation=reorg.wrap(model,'root',{result.FlightInputs.ID,char(commandFields),char(sensorFields),'blk_783','blk_811','blk_767','blk_830'}, ...
+    'CommandPreparation400',commandInputs,reorg.group('FlightInputs',{[result.FlightInputs.ID '.y1']},{'FlightInputs'}));saveProgress();
+attitude=mapped(result.Core,'blk_1772');vertical=mapped(result.Core,'blk_1773');
+estimateInputs=[reorg.group('Attitude',{[result.Estimation '.y1']},{'Attitude'}), ...
+    reorg.group('VerticalMotion',{[result.Estimation '.y2']},{'VerticalMotion'})];
+result.EstimateLogging=reorg.wrap(model,'root',{attitude,vertical,'blk_752','blk_756','blk_765','blk_759','blk_762'}, ...
+    'EstimateLogging400',estimateInputs,emptyGroups());saveProgress();
+diagnostics=find_system(model,'SearchDepth',1,'Name','FlightDiagnosticFields');diagnostics=reorg.id(diagnostics{1});
+result.FlightStatus=reorg.wrap(model,'root',{status,diagnostics,'blk_747','blk_773','blk_776','blk_779','blk_770','blk_781'}, ...
+    'FlightStatus400',reorg.group('FlightStatus',{[result.Control '.y2']},{'FlightStatus'}), ...
+    reorg.group('Mode',{[status '.y1']},{'Mode'}));saveProgress();
+motorFields=mapped(result.Core,'blk_2225');
+result.MotorWrite=reorg.wrap(model,'root',{'blk_604',motorFields,'blk_743','blk_737','blk_740'}, ...
+    'MotorWrite400',reorg.group('MotorCommand',{[result.Control '.y1']},{'MotorCommand'}), ...
+    [reorg.group('AppliedCounts',{'blk_604.y1'},{'AppliedCounts'}),reorg.group('PWMStatus',{'blk_604.y2'},{'PWMStatus'})]);
+saveProgress();
+% Timing taps are allowed in this auxiliary subsystem; keep scheduler block visible.
+timeInput=[reorg.group('StartUs',{'blk_4.y1'},{'StartUs'}),reorg.group('Dt',{'blk_4.y2'},{'Dt'}), ...
+    reorg.group('Scheduler',{'blk_4.y3'},{'Scheduler'})];
+result.TimeSignals=reorg.wrap(model,'root',{'blk_13','blk_818','blk_817','blk_820','blk_823','blk_827'}, ...
+    'TimeSignals400',timeInput,emptyGroups());saveProgress();
+reorg.edit(model,'root',{reorg.wire([result.Auxiliary.Diagnostics400.ID '.y1'],'blk_726.u1','Diagnostics'), ...
+    struct('op','delete','target','blk_734'),struct('op','delete','target','blk_733')});
+saveProgress();disp(model_check(model,'root','["all"]'));
+    function saveProgress()
+        save(fullfile(root,'tests','root_reorganization_ids.mat'),'result');save_system(model);
+    end
+end
+function result=emptyGroups(),result=struct('Name',{},'Members',{});end
+function id=mapped(result,old),id=result.Copies{find(strcmp(result.Sources,old),1)};end
