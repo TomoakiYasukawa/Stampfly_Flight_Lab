@@ -1,0 +1,42 @@
+{
+  "Model": "StampFly_IMU400",
+  "ModelFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\StampFly_IMU400.slx",
+  "Step": 0.0025,
+  "PWMHz": 150000,
+  "PWMBits": 8,
+  "PIDCount": 7,
+  "MotorOutputEnabled": true,
+  "BuildID": 1401,
+  "FirmwareRevision": 1701,
+  "IMUFilterCount": 1,
+  "CorrectedAngularVelocityToPID": true,
+  "BuildAction": "Build",
+  "BuildPassed": true,
+  "Flashed": true,
+  "PhysicalFlightTested": true,
+  "BuildFolder": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\firmware",
+  "FirmwareFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\imu400\\firmware\\StampFly_IMU400.bin",
+  "DistributionFiles": [
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\firmware\\imu400\\StampFly_IMU400.bin",
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\firmware\\imu400\\StampFly_IMU400.bootloader.bin",
+    "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\firmware\\imu400\\StampFly_IMU400.partitions.bin"
+  ],
+  "BuildSeconds": 210.549785,
+  "ModelSHA256": "87db6f66963d1e79d75742ff981da0e8171d6776d920b50e258ef0a27722820d",
+  "FirmwareSHA256": "12c1dc6a8b5cfb897d1649a048ee25e7d59bdf898f43e7299b4bf8a08bfac40f",
+  "FirmwareBytes": 986656,
+  "SourceModelSHA256": "a24794d51ecef266a95f58c272160bc5ddfa95fca1a7fd7d59fc3f18bd9236b1",
+  "GeneratedModelFlipReferences": 0,
+  "DeploymentRecord": "docs/imu_aircraft_deployment.json",
+  "USBStartupVerified": true,
+  "TaskTimingSummary": {
+    "SampleCount": 6000,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1612.8666666666666,
+    "MaximumMicroseconds": 2552,
+    "DeadlineExceededCount": 2,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  },
+  "PhysicalFlightTestEvidence": "User reported successful flight on 2026-10-16; flight log not received or analyzed."
+}

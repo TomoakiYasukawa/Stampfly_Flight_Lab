@@ -1,0 +1,154 @@
+{
+  "Port": "COM4",
+  "BaudRate": 921600,
+  "CaptureSeconds": 15.0,
+  "CapturedBytes": 478894,
+  "Frames": {
+    "SFI8": 750,
+    "SFIX": 751,
+    "SFIY": 751
+  },
+  "CRCErrors": {
+    "SFI8": 0,
+    "SFIX": 0,
+    "SFIY": 0
+  },
+  "BuildIDs": [
+    1401
+  ],
+  "FirmwareRevisions": [
+    1701
+  ],
+  "ObservedModes": [
+    3
+  ],
+  "ReservedFieldsZero": true,
+  "MaximumAppliedPWMCount": 0,
+  "FiniteFilteredSensorsAndQuaternion": true,
+  "QuaternionNormRange": [
+    0.9999999078529039,
+    1.0000002005015225
+  ],
+  "FirmwareTimeSpanSeconds": 14.980000000000018,
+  "TaskTiming": [
+    {
+      "n": 400,
+      "mean_us": 1606,
+      "max_us": 2197,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1614,
+      "max_us": 2240,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1620,
+      "max_us": 2484,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1611,
+      "max_us": 2243,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1612,
+      "max_us": 2237,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1621,
+      "max_us": 2247,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1614,
+      "max_us": 2505,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1614,
+      "max_us": 2258,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1615,
+      "max_us": 2250,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1616,
+      "max_us": 2244,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1615,
+      "max_us": 2499,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1608,
+      "max_us": 2244,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1610,
+      "max_us": 2248,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1608,
+      "max_us": 2248,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1609,
+      "max_us": 2552,
+      "over": 1,
+      "missed": 0
+    }
+  ],
+  "CaptureFile": "logs/imu400_startup_COM4.bin",
+  "FlightCommandsSent": false,
+  "Passed": true,
+  "UnitQuaternions": true,
+  "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+  "TaskTimingSummary": {
+    "SampleCount": 6000,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1612.8666666666666,
+    "MaximumMicroseconds": 2552,
+    "DeadlineExceededCount": 2,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  }
+}

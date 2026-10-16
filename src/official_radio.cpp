@@ -59,6 +59,12 @@ extern "C" void official_radio_events(uint8_t flip[1],uint8_t newPacket[1],uint8
   consumedEpoch=validPackets;
   portEXIT_CRITICAL(&rcLock);
 }
+extern "C" void official_radio_basic_events(uint8_t newPacket[1],uint8_t error[1]) {
+  portENTER_CRITICAL(&rcLock);
+  error[0]=rcError;newPacket[0]=validPackets!=consumedEpoch;
+  consumedEpoch=validPackets;
+  portEXIT_CRITICAL(&rcLock);
+}
 extern "C" void official_radio_step(float stick[6],uint8_t arm[1],uint8_t connected[1],uint8_t ahrs[1]) {
   portENTER_CRITICAL(&rcLock);
   memcpy(stick,rcStick,6*sizeof(float));arm[0]=rcArm;ahrs[0]=rcAHRS;

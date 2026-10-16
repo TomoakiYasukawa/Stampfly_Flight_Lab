@@ -24,6 +24,12 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             elseif contains(c.getBuildDir(),'StampFly_PIDBlock_FlightTest400')
                 b.addDefines('OFFICIAL_PID_BLOCK_TEST_PROFILE');
                 b.addLinkFlags('-Wl,--wrap=StampFly_PIDBlock_FlightTest400_step');
+            elseif contains(c.getBuildDir(),'StampFly_Basic400')
+                b.addDefines('OFFICIAL_BASIC_PROFILE');
+                b.addLinkFlags('-Wl,--wrap=StampFly_Basic400_step');
+            elseif contains(c.getBuildDir(),'StampFly_IMU400')
+                b.addDefines('OFFICIAL_IMU_PROFILE');
+                b.addLinkFlags('-Wl,--wrap=StampFly_IMU400_step');
             end
         end
     end

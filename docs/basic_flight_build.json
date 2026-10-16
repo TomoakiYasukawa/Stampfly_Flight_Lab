@@ -1,0 +1,18 @@
+{
+  "Model": "StampFly_Basic400",
+  "ModelFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\StampFly_Basic400.slx",
+  "Step": 0.0025,
+  "PWMHz": 150000,
+  "PWMBits": 8,
+  "PIDCount": 7,
+  "MotorOutputEnabled": true,
+  "BuildID": 1401,
+  "FirmwareRevision": 1601,
+  "BuildAction": "Build",
+  "BuildPassed": true,
+  "Flashed": false,
+  "PhysicalFlightTested": false,
+  "BuildFolder": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\basic400\\firmware",
+  "FirmwareFile": "C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\build\\basic400\\firmware\\StampFly_Basic400.bin",
+  "BuildSeconds": 89.6420735
+}

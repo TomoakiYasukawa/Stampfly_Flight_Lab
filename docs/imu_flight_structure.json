@@ -1,0 +1,12 @@
+{
+  "Model": "StampFly_IMU400",
+  "SourceModel": "StampFly_Basic400",
+  "AttitudeBlock": "blk_4119",
+  "FusionStateBlock": "blk_4130",
+  "UpdateBlock": "blk_4140",
+  "FilterBlock": "blk_4148",
+  "InputBlock": "blk_4129",
+  "OutputBlock": "blk_4138",
+  "SourceSaved": false,
+  "FirmwareRevision": 1701
+}

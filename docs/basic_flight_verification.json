@@ -1,0 +1,165 @@
+{
+  "SourceModel": "StampFly_PIDBlock_FlightTest400.slx",
+  "Model": "StampFly_Basic400.slx",
+  "Outputs": [
+    "Duty",
+    "Counts",
+    "Mode",
+    "Angles",
+    "AngularRate",
+    "Altitude",
+    "Velocity",
+    "Quaternion",
+    "SensorFlags",
+    "ControlDiagnostics",
+    "SensorDiagnostics",
+    "PreviousMode",
+    "AltitudeEnabled",
+    "Connected"
+  ],
+  "Samples": 36000,
+  "AbsoluteTolerance": 0,
+  "Flashed": false,
+  "PhysicalFlightTested": false,
+  "BootTakeoffHoverLanding": {
+    "Samples": 12000,
+    "MismatchCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "MaxErrors": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "TypesMatch": true,
+    "Modes": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "ButtonIgnored": true
+  },
+  "ModeAndFlip": {
+    "Samples": 12000,
+    "MismatchCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "MaxErrors": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "TypesMatch": true,
+    "Modes": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "ButtonIgnored": true
+  },
+  "SensorTimingAndInterruptions": {
+    "Samples": 12000,
+    "MismatchCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "MaxErrors": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "TypesMatch": true,
+    "Modes": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "ButtonIgnored": true
+  },
+  "Logging": {
+    "Passed": true,
+    "BuildID": 1401,
+    "Revision": 1601,
+    "PacketBytes": [
+      190,
+      190,
+      246
+    ],
+    "ReservedFieldsZero": true
+  },
+  "Passed": true
+}

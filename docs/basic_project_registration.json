@@ -1,0 +1,108 @@
+{
+  "Model": "StampFly_Basic400.slx",
+  "ProjectFile": "StampFly_Official.prj",
+  "RegisteredFiles": [
+    "StampFly_Basic400.slx",
+    "code/+basic/Joystick400.m",
+    "code/+basic/ExtendedLogger50.m",
+    "code/+basic/packCommandExtension.m",
+    "scripts/setup/init_basic.m",
+    "scripts/model_edit/create_basic_flight400.m",
+    "scripts/verification/verify_basic_flight400.m",
+    "scripts/build/build_basic_flight400.m",
+    "docs/basic_flight_model.md",
+    "docs/basic_flight_verification.json",
+    "docs/basic_flight_build.json",
+    "docs/basic_project_registration.json"
+  ],
+  "Shortcut": "機体モデル（基礎版）",
+  "ProjectPathCount": 13,
+  "Shortcuts": [
+    "プロジェクトの説明",
+    "ロガーアプリ",
+    "受信機モデル",
+    "機体モデル（PID比較版）",
+    "機体モデル（公式比較基準）",
+    "機体モデル（基礎版）"
+  ],
+  "Checks": [
+    {
+      "ID": "Project:Checks:ProjectDefinitionFilesAreUnderSourceControl",
+      "Description": "すべてのプロジェクト定義ファイルがソース管理の対象です",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:AllProjectFilesUnderSourceControl",
+      "Description": "すべてのプロジェクト ファイルがソース管理の対象です",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:AllFilesUnderSourceControlAreInProject",
+      "Description": "ソース管理の対象であるすべてのファイルがプロジェクトに存在します",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:ProjectFilesExist",
+      "Description": "すべてのプロジェクト ファイルとプロジェクト フォルダーがファイル システムに存在します",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:ProjectPath",
+      "Description": "MATLAB 検索パス上のすべてのプロジェクト フォルダーがプロジェクト パス上にあります",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:ReferencedSubprojects",
+      "Description": "サブフォルダー内のすべてのプロジェクトがこのプロジェクトによって参照されています",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:OutdatedPcodedFiles",
+      "Description": "期限切れの P コード ファイルはありません",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:MDLToSLX",
+      "Description": "プロジェクトにファイル形式が一致しないモデルはありません",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:SLPRJ",
+      "Description": "プロジェクトに slprj または sfprj フォルダーがありません",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:PathCaseSensitive",
+      "Description": "プロジェクトのファイル、パス、および参照で大文字/小文字の不一致は検出されませんでした",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:MissingOrDuplicateLabelsInProject",
+      "Description": "プロジェクトには、重複または欠落している組み込みのラベルはありません",
+      "Passed": true,
+      "ProblemFiles": []
+    },
+    {
+      "ID": "Project:Checks:UnsavedProjectFiles",
+      "Description": "変更が保存されていないプロジェクト ファイルはありません",
+      "Passed": true,
+      "ProblemFiles": []
+    }
+  ],
+  "DependencyNodeCount": 704,
+  "DependencyEdgeCount": 2705,
+  "SavedModelFlipReferences": 0,
+  "GeneratedModelFlipReferences": 0,
+  "ConnectivityAndStateflowPassed": true,
+  "BasicModelIndependentReopenCompilePassed": true
+}
