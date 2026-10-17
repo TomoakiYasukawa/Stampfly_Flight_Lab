@@ -2,7 +2,7 @@
 
 `StampFly_IMU400.slx`の水平補助は、**移動中も速度を制御し、中立後は減速して停止位置を保持**します。既存7個の姿勢・角速度・高度PIDの内部と係数は維持し、その前段のRoll／Pitch目標を作ります。磁気によるYaw補正・絶対位置・自動航行は別工程です。
 
-**現行の水平補助版は実飛行で落下し、原因調査中です。** Revision 1802は高度推定と診断ログを修正した机上確認版です。以下は設計上の操作・条件で、飛行再開の確認ではありません。[調査結果](history/horizontal_trials/20261017_fall_review.md)
+**Revision 1804でユーザーから安定飛行の報告を得ています。** CPU固定・高度推定・記録の修正と、確認範囲は[実飛行記録](incident1804_flight_verification.json)・[調査履歴](history/horizontal_trials/20261017_fall_review.md)にまとめています。
 
 ## 操作と条件
 
@@ -100,7 +100,8 @@ FlowMotionのStatus8は **[Valid, Updated, IntervalS, FlowAgeS, RangeAgeS, Cover
 | ログ負荷分散 | 保存時刻・Sequenceを保ち、入力変化と巡回countを含む192パケットが従来byte列と一致。[結果](horizontal_telemetry_verification.json) |
 | 表示・自動記録・履歴 | 48試験、CRC、欠落・時刻リセット・遅延パケット・旧記録の互換。[結果](incident_recording_verification.json) |
 | 高度推定修正 | 静止ToF量子化、既知上昇、再離陸切替。実ブロックの有限試験。[結果](vertical_boundary_verification.json) |
-| 1802の変更範囲 | 5個の境界ブロックと3か所の設定・配線変更を明示。14 MATLAB Function、7PID、Supervisorを維持。[結果](incident_invariants_verification.json) |
+| 1804の変更範囲 | 5個の高度境界ブロックと3か所の設定・配線変更を明示。CPU固定・区間計測を追加し、14 MATLAB Function、7PID、Supervisorを維持。[結果](incident_invariants_verification.json) |
+| 実飛行1804 | ユーザーが問題解消・安定飛行を報告。試験したモデル・BINを保全。[結果](incident1804_flight_verification.json) |
 
 閉ループの剛体・推力係数は**この機体の同定値ではありません**。高度には真値を使い、IMU Filterや高度Kalmanの推定誤差を含みません。生成MEXはESP32でのPILではありません。フローの取付軸・倍率と実機の保持性能は飛行前後の机上・実飛行ログで確認します。過去の機体モデルの飛行成功を、この水平補助版の成功として扱いません。[設計と試験方針](specs/algorithms/horizontal-hold/horizontal-hold-system.md)
 

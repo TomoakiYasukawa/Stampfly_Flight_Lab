@@ -238,10 +238,75 @@ log.ExcludedDelayedOrDuplicateFrames=nnz(~accepted);
 gaps=[false;diff(boot)~=0 | diff(rawTime)<=0 | diff(rawTime)>.15*max(1,step)];
 log.PlotBreakBefore=gaps;
 log.IsOfficialFixedPID=strcmp(states.Schema,'StampFlyOfficial-v1');
+log.CommonThrustDuty=nan(size(time));
+log.CommonThrustCorrection=nan(size(time));
+log.MotorMeanDuty=mean(motors,2,'omitnan')/255;
+log.MotorCommandSpread=(max(motors,[],2)-min(motors,[],2))/255;
+log.ControlDetailsAvailable=false;
 if log.IsOfficialFixedPID
     % 旧列名FilteredVerticalVelocityMpsはこのロガーではKalman速度と同じ値。
     % 固定PID版はKalman速度を直接使用するため、複製した列を別のLPFとして表示しません。
     log.FilteredVerticalVelocityMps(:)=NaN;
+    % SFI8のスロットル列は0.1刻みです。PIDのP/I別項は送信されていません。
+    % 同一Sequence/Time/BuildIDのSFIXを使い、微小な実制御量を表示します。
+    details=localCommandDetails(m,meta,info,columns,sample);
+    log.ControlDetailsAvailable=any(isfinite(details.ThrustCommand));
+    log.BaseThrottle=details.BaseDuty(keep);
+    log.CommonThrustDuty=details.ThrustCommand(keep)/3.7;
+    log.CommonThrustCorrection=log.CommonThrustDuty-log.BaseThrottle;
+    log.ThrottleBeforeLimit=mean(details.MixerBeforeLimit(keep,:),2,'omitnan');
+    log.ThrottleAfterLimit=mean(details.ComputedDuty(keep,:),2,'omitnan');
+    log.MotorMeanDuty=log.ThrottleAfterLimit;
+    log.MotorCommandSpread=max(details.ComputedDuty(keep,:),[],2) ...
+        -min(details.ComputedDuty(keep,:),[],2);
+    log.HeightControlEnabled=details.AltitudeEnabled(keep);
+    log.VerticalPTerm(:)=NaN;log.VerticalIResidual(:)=NaN;
+    log.VerticalPIOutput(:)=NaN;log.AppliedHeightCorrection(:)=NaN;
+end
+end
+
+function details=localCommandDetails(m,meta,info,columns,sample)
+% 通常・補足を同じキーで結合し、欠落した補足の値を別時刻から埋めません。
+n=size(sample,1);
+details=struct('BaseDuty',nan(n,1),'ThrustCommand',nan(n,1), ...
+    'AltitudeEnabled',nan(n,1),'MixerBeforeLimit',nan(n,4),'ComputedDuty',nan(n,4));
+extensionMeta=meta(strcmp({meta.name},'extensionTelemetry'));
+if isempty(extensionMeta) || extensionMeta.size(1)==0 || ...
+        ~isfield(info,'ExtensionColumns'),return;end
+header=double(m.extensionTelemetry(1:extensionMeta.size(1),1:4));
+commandRows=find(header(:,1)==1);
+keys=nan(n,3);
+for k=1:3
+    name={'Sequence','TimeSeconds','BuildID'};
+    column=find(columns==name{k},1);
+    if isempty(column),return;end
+    keys(:,k)=sample(:,column);
+end
+[matched,index]=ismember(keys,header(commandRows,2:4),'rows');
+if ~any(matched),return;end
+matchedSamples=find(matched);
+extensionRows=commandRows(index(matched));
+% matfileは不規則な行番号を受け付けないため、連続した小区間で読みます。
+% 補足の欠落や受信順の違いがあっても、結合した行だけを取り出します。
+blockSize=8192;blockIds=floor((extensionRows-1)/blockSize);
+blocks=unique(blockIds);
+extensionColumns=string(info.ExtensionColumns);
+names={'BaseDuty','ThrustCommand','AltitudeEnabled', ...
+    'MixerBeforeLimitFR','MixerBeforeLimitFL','MixerBeforeLimitRR','MixerBeforeLimitRL', ...
+    'ComputedDutyFR','ComputedDutyFL','ComputedDutyRR','ComputedDutyRL'};
+for k=1:numel(names)
+    column=find(extensionColumns==names{k},1);
+    if isempty(column) || column>extensionMeta.size(2),continue;end
+    values=nan(n,1);
+    for block=blocks(:)'
+        first=block*blockSize+1;last=min(first+blockSize-1,extensionMeta.size(1));
+        selected=blockIds==block;
+        chunk=double(m.extensionTelemetry(first:last,column));
+        values(matchedSamples(selected))=chunk(extensionRows(selected)-first+1);
+    end
+    if k<=3,details.(names{k})=values;
+    elseif k<=7,details.MixerBeforeLimit(:,k-3)=values;
+    else,details.ComputedDuty(:,k-7)=values;end
 end
 end
 

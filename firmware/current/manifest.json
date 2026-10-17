@@ -4,7 +4,7 @@
   "Models": [
     {
       "Model": "StampFly_IMU400.slx",
-      "ModelSHA256": "15748428d752e51cc60ab3288415fd6f80b51e3a9ab90f4c4ec469ffafa018a0",
+      "ModelSHA256": "28608bde6f11989ba24d33b717b8c3f41af0346d439fed55c748cb32fa15c9a9",
       "BuildPassed": true,
       "BuildAction": "Build",
       "Step": 0.0025,
@@ -24,17 +24,20 @@
         "ParkingKalmanReset": "rising edge",
         "ResetReasonTelemetry": true,
         "WatchdogDisabled": false,
+        "BaseRatePinnedCore": 1,
+        "CrossCoreIdleAgeRaceCorrected": true,
+        "RuntimeSectionProbe": true,
         "HorizontalVelocityAndPositionLocalFrame": true,
         "HorizontalSupplementBytes": 182,
         "BuildID": 1401,
-        "FirmwareRevision": 1802,
+        "FirmwareRevision": 1804,
         "RadioChannel": 3
       },
       "Binaries": [
         {
           "File": "firmware/current/StampFly_IMU400.bin",
-          "SHA256": "f6e3a81990920195fb06625b15cb395ae5b68de193cafc71d0a24343f2f6354f",
-          "Bytes": 1.002304E+6
+          "SHA256": "5cb8851359673573ffce6ca20d9b12da0c6076325a38b3136dceca7b66de79e6",
+          "Bytes": 1.003616E+6
         },
         {
           "File": "firmware/current/StampFly_IMU400.bootloader.bin",
@@ -47,7 +50,7 @@
           "Bytes": 3072
         }
       ],
-      "BuildSeconds": 151.7704853,
+      "BuildSeconds": 150.1392279,
       "Dependencies": {
         "ExternalCustomDependencyCount": 0,
         "UnresolvedSourceCount": 0,
@@ -71,6 +74,7 @@
           "src/official_battery.cpp",
           "src/official_pwm.cpp",
           "src/official_radio.cpp",
+          "src/official_runtime_probe.cpp",
           "src/official_scheduler.cpp",
           "src/official_status.cpp",
           "src/official_timing.cpp",
@@ -137,7 +141,7 @@
           "Bytes": 3072
         }
       ],
-      "BuildSeconds": 9.6528166,
+      "BuildSeconds": 10.4585345,
       "Dependencies": {
         "ExternalCustomDependencyCount": 0,
         "UnresolvedSourceCount": 0,
@@ -617,7 +621,7 @@
     },
     {
       "File": "code/+official/TickStart400.m",
-      "SHA256": "c06bb1f6769f48aa4acc5d173ab429e90145e88e5cd09349f66997e1eda0f574"
+      "SHA256": "cc0c593d6d6d068798b9b0e022e1cd709772a7e212e04b947f58f54a3bf6ac0b"
     },
     {
       "File": "code/+official/TimingEnd400.m",
@@ -1024,8 +1028,12 @@
       "SHA256": "0fa4511537774a2a310df451b3bc818d384fbc79bdb4c650937806608861c171"
     },
     {
+      "File": "src/official_runtime_probe.cpp",
+      "SHA256": "8a6c5107c7e76826149201dfeca8a87726153ade883148e780ef2abc094fd9c2"
+    },
+    {
       "File": "src/official_scheduler.cpp",
-      "SHA256": "2f3e900dd115bb191ef0f9423bd300676f95c4194ca96a4ca55850bf8a6b7e8a"
+      "SHA256": "abb687087b17a361ce261613d47cc554e6646a699053bb649a5aaaefc6d1afcc"
     },
     {
       "File": "src/official_scheduler.h",

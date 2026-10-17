@@ -28,6 +28,8 @@
 
 固定PID版の旧`RawVerticalVelocityMps`と`FilteredVerticalVelocityMps`は**同じKalman速度の重複列**です。別のLPFは通っておらず、アプリも重複表示しません。ToF変化率は新規値だけを用い、150 msを超える欠測・無効値・時刻逆転をまたぎません。高度推定が使う斜距離と、表示用の鉛直投影も区別します。
 
+通常SFI8の`AppliedHeightCorrection`・スロットル列は0.1刻みのため、微小な補正は0に見えます。履歴画面はSFIXの単精度値から共通推力差とモーター平均を表示します。PIDのP/I/D個別項は現行機体から送信されません。[グラフの読み方](logger_app.md)
+
 MATLABで詳しく確認する場合は、保存ファイルを指定します。
 
 ```matlab

@@ -1,5 +1,5 @@
 classdef TickStart400 < matlab.System & coder.ExternalDependency
-    %TICKSTART400 Timestamp and install the 2500us GPTimer scheduler wrappers.
+    %TICKSTART400 概要：2500 us周期、実測時刻、制御タスクのCPU1固定を設定。
     properties (Nontunable)
         SampleTime=0.0025
     end
@@ -14,6 +14,8 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             src=fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))),'src');
             b.addIncludePaths(src);b.addSourcePaths(src);b.addSourceFiles('official_scheduler.cpp',src);
             b.addLinkFlags('-Wl,--wrap=mw_osTimerCreate,--wrap=mw_osTimerStart,--wrap=mw_osTimerStop,--wrap=mw_osTimerDelete');
+            % タスク生成をプロジェクト内でラップし、BaserateだけをCPU1に固定します。
+            b.addLinkFlags('-Wl,--wrap=mw_osThreadCreate');
             % The bench task wrapper measures all work, including state updates.
             if contains(c.getBuildDir(),'StampFly_Official_Bench400')
                 b.addDefines('OFFICIAL_BENCH_PROFILE');
@@ -30,6 +32,11 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             elseif contains(c.getBuildDir(),'StampFly_IMU400')
                 b.addDefines('OFFICIAL_IMU_PROFILE');
                 b.addLinkFlags('-Wl,--wrap=StampFly_IMU400_step');
+                % 診断版：生成された計算式は保ち、外部I/O間の区間時間を記録。
+                b.addDefines('OFFICIAL_RUNTIME_SECTIONS');
+                b.addSourceFiles('official_runtime_probe.cpp',src);
+                b.addLinkFlags('-Wl,--wrap=bmi270_imu_step,--wrap=official_radio_step,--wrap=pmw3901_logger_step');
+                b.addLinkFlags('-Wl,--wrap=official_pwm_step,--wrap=official_timing_end,--wrap=official_user_button,--wrap=official_status_write');
             elseif contains(c.getBuildDir(),'StampFly_KF400')
                 b.addDefines('OFFICIAL_KF_PROFILE');
                 b.addLinkFlags('-Wl,--wrap=StampFly_KF400_step');
@@ -61,7 +68,7 @@ classdef TickStart400 < matlab.System & coder.ExternalDependency
             % ダブルクリックした設定画面に用途と入出力を表示します。
             header=matlab.system.display.Header( ...
                 'Title','StampFly 400 Hz 周期開始', ...
-                'Text','2500 μs の GPTimer で制御タスクを起動し、開始時刻 [μs]、実測 dt [s]、タイマー診断を返します。モデルの Fixed-step も 0.0025 秒に揃えます。生成された step の計測設定はモデル名 StampFly_IMU400 に対応しています。','ShowSourceLink',true);
+                'Text','2500 μs の GPTimer で制御タスクを起動し、開始時刻 [μs]、実測 dt [s]、タイマー診断を返します。ESP32-S3では制御タスクをCPU1に固定し、CPU0の無線・I2C・USB処理との競合を抑えます。モデルの Fixed-step も 0.0025 秒に揃えます。生成された step の計測設定はモデル名 StampFly_IMU400 に対応しています。','ShowSourceLink',true);
         end
     end
 

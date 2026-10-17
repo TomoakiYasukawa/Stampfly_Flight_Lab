@@ -1,0 +1,320 @@
+{
+  "CapturedAtUTC": "2026-10-17T08:45:21.005871+00:00",
+  "Device": "aircraft",
+  "Port": "COM4",
+  "BaudRate": 921600,
+  "CaptureSeconds": 12.0,
+  "CapturedBytes": 344200,
+  "Frames": {
+    "SFI8": 401,
+    "SFIX": 421,
+    "SFIY": 407,
+    "SFIH": 441
+  },
+  "CRCErrors": {
+    "SFI8": 0,
+    "SFIX": 0,
+    "SFIY": 0,
+    "SFIH": 0
+  },
+  "BuildIDs": [
+    1401
+  ],
+  "FirmwareRevisions": [
+    1802
+  ],
+  "ObservedModes": [
+    1,
+    3
+  ],
+  "ReservedFieldsZero": true,
+  "MaximumAppliedPWMCount": 0,
+  "FiniteFilteredSensorsAndQuaternion": true,
+  "FiniteAltitudeAndVelocity": true,
+  "InitializationInvalidHeightSamples": 101,
+  "InitializationHeightNote": "Modes 0/1 have no height before sensors and estimation are ready; modes >1 must be finite and valid.",
+  "FiniteSensorDiagnosticsAndBias": true,
+  "FiniteControlDiagnostics": true,
+  "HeightRange": [
+    2.1198018895773885e-09,
+    0.17388950288295746
+  ],
+  "VerticalVelocityRange": [
+    -2.765,
+    6.351
+  ],
+  "AltitudeBiasRange": [
+    -4.088874816894531,
+    12.515512466430664
+  ],
+  "QuaternionNormRange": [
+    0.9999998655029853,
+    1.000000226062491
+  ],
+  "RawToFRangeM": [
+    0.0,
+    0.15700000524520874
+  ],
+  "FlowSQUALRange": [
+    52,
+    112
+  ],
+  "EstimatedTiltDegreesRange": [
+    0.0,
+    1.8579583427009179
+  ],
+  "UnitQuaternions": true,
+  "FirmwareTimeSpanSeconds": 11.82,
+  "FirmwareFirstTimeSeconds": 0.767,
+  "FirmwareLastTimeSeconds": 12.587,
+  "TaskTiming": [
+    {
+      "n": 400,
+      "mean_us": 1407,
+      "max_us": 2230,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1405,
+      "max_us": 2141,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1999,
+      "max_us": 3957,
+      "over": 28,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 2031,
+      "max_us": 3648,
+      "over": 28,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 2031,
+      "max_us": 3726,
+      "over": 37,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 2017,
+      "max_us": 3785,
+      "over": 31,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 2016,
+      "max_us": 3429,
+      "over": 27,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 2012,
+      "max_us": 3613,
+      "over": 27,
+      "missed": 0
+    }
+  ],
+  "TaskTimingSummary": {
+    "SampleCount": 3200,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1864.75,
+    "MaximumMicroseconds": 3957,
+    "DeadlineExceededCount": 178,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  },
+  "ResetReasons": [
+    1
+  ],
+  "RuntimeDiagnostics": [
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 1764,
+      "Idle1AgeUs": 250,
+      "StackMinimumBytes": 6448,
+      "FreeHeapBytes": 94612,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 1864,
+      "Idle1AgeUs": 349,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 3085,
+      "Idle1AgeUs": 4294967233,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 29909,
+      "Idle1AgeUs": 226,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 242523,
+      "Idle1AgeUs": 298,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 262695,
+      "Idle1AgeUs": 479,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 602770,
+      "Idle1AgeUs": 642,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 29679,
+      "Idle1AgeUs": 0,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 785175,
+      "Idle1AgeUs": 553,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 425220,
+      "Idle1AgeUs": 556,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    },
+    {
+      "ResetReason": 1,
+      "Idle0AgeUs": 64739,
+      "Idle1AgeUs": 33,
+      "StackMinimumBytes": 5200,
+      "FreeHeapBytes": 94348,
+      "ControlCore": 0,
+      "IdleHookStatus": 0
+    }
+  ],
+  "ProfileMaxima": {
+    "LoggerMaxUs": 899,
+    "FlowMotionMaxUs": 912,
+    "HorizontalLoggerMaxUs": 532
+  },
+  "CaptureFile": "logs/incident1802_reconnect400_startup_COM4.bin",
+  "FlightCommandsSent": false,
+  "FrameKeysMatchedToBase": {
+    "SFI8": 401,
+    "SFIX": 388,
+    "SFIY": 390,
+    "SFIH": 375
+  },
+  "PassedScope": "USB packet integrity and zero waiting outputs only; actual boot, stationary health and timing have separate results",
+  "Passed": false,
+  "ResetRequested": true,
+  "AnalysisOfSavedCapture": false,
+  "ActualBootAndCalibrationCaptured": true,
+  "CalibrationAtFirstPacket": {
+    "TimeSeconds": 0.767,
+    "Count": 0,
+    "GyroBiasRadps": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "AccelZBiasG": 0.0,
+    "VerticalAccelG": 0.0,
+    "FilteredAccelG": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "CalibrationAtLastPacket": {
+    "TimeSeconds": 12.587,
+    "Count": 800,
+    "GyroBiasRadps": [
+      0.003818966681137681,
+      -0.0014008225407451391,
+      0.002700447803363204
+    ],
+    "AccelZBiasG": -0.9889294505119324,
+    "VerticalAccelG": -8.57090053614229e-05,
+    "FilteredAccelG": [
+      0.01851852796971798,
+      -0.019217688590288162,
+      -0.9898974895477295
+    ]
+  },
+  "StationaryBenchHealth": {
+    "SettledSamples": 158,
+    "ZOffsetMatchesRestingGravity": true,
+    "UpperSurfaceUpGravity": true,
+    "SmallGyroBias": true,
+    "SmallVerticalAcceleration": true,
+    "VelocityNotSaturated": true,
+    "SmallStationaryVerticalVelocity": false,
+    "Passed": false
+  },
+  "Horizontal": {
+    "FiniteDiagnostics": true,
+    "WaitingAssistAndBlendZero": true,
+    "SameSequenceTimeBuildMatched": 375,
+    "SupplementKeyCount": 441,
+    "MeasurementValidSamples": 331,
+    "LongestValidLogRunSeconds": 2.76,
+    "States": [
+      0.0
+    ],
+    "RejectReasons": [
+      0.0,
+      3.0,
+      4.0,
+      5.0
+    ],
+    "MaximumIntegralMps2": 0.0
+  },
+  "BenchChecksPassed": false
+}

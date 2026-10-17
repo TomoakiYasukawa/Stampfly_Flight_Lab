@@ -130,9 +130,9 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
             end
             testCase.App.stopRecording();state=testCase.App.recordingStatus();
             imu.RecordingHistoryView.refresh(testCase.App,state.LastFile);
-            testCase.verifyEqual(testCase.App.HistoryStateAxes.YTick,[0 1 2 3 5]);
+            testCase.verifyEqual(testCase.App.HistoryStateAxes.YTick,0:4);
             testCase.verifyEqual(string(testCase.App.HistoryStateAxes.YTickLabel), ...
-                ["初期化";"800サンプル校正";"飛行制御";"待機";"自動着陸"]);
+                ["初期化";"校正";"待機";"飛行制御";"着陸"]);
             testCase.verifyLessThan(testCase.App.HistoryHeightAxes.XLim(1),0);
             markers=findall(testCase.App.HistoryHeightAxes,'Type','constantline');
             names=string({markers.Label});
@@ -143,6 +143,60 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
             testCase.verifyEqual(testCase.App.HistorySummaryTable.Data{1,8},'手動停止');
             lines=findall(testCase.App.HistoryVerticalSpeedAxes,'Type','line');
             testCase.verifyFalse(any(string({lines.DisplayName})=="フィルター後"));
+        end
+
+        function chosenFolderIsUsedByRecorderAndHistory(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.setRecordingFolder(string(fixture.Folder));
+            file=testCase.App.startRecording();
+            [raw,estimate,control,extra]=logging_fixture();
+            control.Mode=uint8(3);
+            packer=basic.ExtendedLogger50;testCase.addTeardown(@()release(packer));
+            [base,commands,sensors]=packer(raw,estimate,control,extra);
+            testCase.App.processBytes([commands;sensors;base]);testCase.App.stopRecording();
+            testCase.verifyEqual(string(fileparts(file)),string(fixture.Folder));
+            imu.RecordingHistoryView.refresh(testCase.App);
+            testCase.verifyTrue(ismember(file,string(testCase.App.HistoryList.ItemsData)));
+            testCase.verifyTrue(contains(testCase.App.HistoryFolderLabel.Text,fixture.Folder));
+            testCase.verifyTrue(contains(testCase.App.HistoryDataLabel.Text,string(testCase.App.HistoryList.Items{1})));
+            axes=[testCase.App.HistoryHeightAxes testCase.App.HistoryControlAxes ...
+                testCase.App.HistoryValidityAxes testCase.App.HistoryXYAxes testCase.App.HistoryStateAxes];
+            for ax=axes
+                testCase.verifyTrue(contains(ax.Subtitle.String,string(testCase.App.HistoryList.Items{1})));
+            end
+        end
+
+        function historyShowsExactControlAndSeparatedFlagsAndXYEndpoints(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.setRecordingFolder(string(fixture.Folder));
+            file=testCase.App.startRecording();
+            [raw,estimate,control,extra]=logging_fixture();
+            control.Mode=uint8(2);control.AltitudeEnabled=uint8(1);
+            packer=basic.ExtendedLogger50;testCase.addTeardown(@()release(packer));
+            for k=1:4
+                raw.Time=single(10+k*.02);
+                estimate.ControlDiagnostics(2)=single(.70);
+                estimate.ControlDiagnostics(5)=single(3.7*(.70+k*.001));
+                extra.Distance.PositionEN=single([k*.01;-k*.02]);
+                [base,commands,sensors]=packer(raw,estimate,control,extra);
+                testCase.App.processBytes([commands;sensors;base]);
+            end
+            testCase.App.stopRecording();imu.RecordingHistoryView.refresh(testCase.App,file);
+            effort=findall(testCase.App.HistoryControlAxes,'Type','line', ...
+                'DisplayName','共通推力−基準（平滑化・制限後）');
+            testCase.verifyNumElements(effort,1);
+            testCase.verifyEqual(effort.YData,(1:4)*.001,'AbsTol',1e-6);
+            for k=1:6
+                flag=findall(testCase.App.HistoryValidityAxes,'Tag',sprintf('DiagnosticFlag%d',k));
+                testCase.verifyNumElements(flag,1);
+                y=flag.YData(isfinite(flag.YData));
+                testCase.verifyGreaterThanOrEqual(y,repmat(3*(k-1),size(y)));
+                testCase.verifyLessThanOrEqual(y,repmat(3*(k-1)+.7,size(y)));
+            end
+            first=findall(testCase.App.HistoryXYAxes,'Type','line','Tag','XYStart');
+            last=findall(testCase.App.HistoryXYAxes,'Type','line','Tag','XYEnd');
+            testCase.verifyEqual([first.XData first.YData],[0 0],'AbsTol',1e-7);
+            testCase.verifyEqual([last.XData last.YData],[.03 -.06],'AbsTol',1e-6);
         end
 
         function tofGraphUsesTiltProjectionNotKalmanHeight(testCase)
@@ -209,7 +263,7 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
                 [frames(:,k),~,~]=packer(raw,estimate,control,extra);
             end
             testCase.App.processBytes(frames(:));drawnow;
-            plotted=findall(testCase.App.PathAxes,'Type','line');
+            plotted=findall(testCase.App.PathAxes,'Type','line','DisplayName','相対XY');
             testCase.verifyEqual(numel(plotted),1);
             testCase.verifyEqual(plotted.XData(end),.2,'AbsTol',1e-6);
             testCase.verifyEqual(plotted.YData(end),-.1,'AbsTol',1e-6);

@@ -21,7 +21,7 @@ for k=1:numel(a)
     elseif strcmp(expected.ID,'blk_2260')
         expected.Inputs=replace(expected.Inputs,'blk_2236:outport:3','blk_4352:outport:1');
     elseif strcmp(expected.ID,'blk_3995')
-        expected.Parameters.FirmwareRevision='uint32(1802)';
+        expected.Parameters.FirmwareRevision='uint32(1804)';
     end
     assert(isequaln(expected,b(j)),'incident:UnexpectedChange','想定外の変更: %s',expected.ID);
 end

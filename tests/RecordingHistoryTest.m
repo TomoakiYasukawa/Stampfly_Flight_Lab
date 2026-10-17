@@ -125,6 +125,28 @@ classdef RecordingHistoryTest < matlab.unittest.TestCase
             testCase.verifyEqual(joined.ResetReason(2),6);
             testCase.verifyEqual(joined.Reserved,[9;6]);
         end
+        function commandSupplementIsMatchedAndMissingValuesStayUnknown(testCase)
+            writer=imu.MatRecordingWriter(testCase.Folder,struct('ExpectedBuildID',1401));
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=basic.ExtendedLogger50;testCase.addTeardown(@()release(packer));
+            for k=1:5
+                raw.Time=single(10+(k-1)*.02);control.Mode=uint8(2);
+                estimate.ControlDiagnostics(2)=single(.7);
+                estimate.ControlDiagnostics(5)=single(3.7*(.7+k*.001));
+                [base,commands,sensors]=packer(raw,estimate,control,extra);
+                writer.append(imu.decodeFrame(base),base);
+                if k~=2,writer.appendExtension(imu.decodeExtensionFrame(commands),commands);end
+                % 補足の欠落と異なる種類の混在で、SFIXの行番号を不等間隔にします。
+                writer.appendExtension(imu.decodeExtensionFrame(sensors),sensors);
+            end
+            writer.finish(0,0,struct('Reason','manual_stop'));
+            log=imu.readRecordingHistory(writer.FilePath,"all");
+            testCase.verifyEqual(log.CommonThrustCorrection([1 3 4 5]),[.001;.003;.004;.005],'AbsTol',1e-6);
+            testCase.verifyTrue(isnan(log.CommonThrustCorrection(2)));
+            testCase.verifyTrue(isnan(log.HeightControlEnabled(2)));
+            testCase.verifyTrue(all(isnan(log.AppliedHeightCorrection)));
+            testCase.verifyTrue(log.ControlDetailsAvailable);
+        end
     end
     methods (Access=private)
         function file=record(testCase,times,modes,buildID,schema)

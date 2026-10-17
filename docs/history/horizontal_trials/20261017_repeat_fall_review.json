@@ -1,0 +1,576 @@
+{
+  "RecordedAtUTC": "2026-10-17T08:31:22.378105+00:00",
+  "RecordedDataOnly": true,
+  "SerialConnectionsOpened": 0,
+  "InterpolationUsed": false,
+  "FlightCauseConfirmed": false,
+  "UserReportedManualResetAfterLatestTwoFalls": true,
+  "Revision1802PhysicalFlightTested": false,
+  "Recordings": [
+    {
+      "Recording": "recordings/StampFly_20261017_164408_407.mat",
+      "RecordingSHA256": "17a2e8de84b2fe94acfb8dd27a82b00c573005b1e36b6730daf3d6ad1cbeba02",
+      "FirmwareRevision": 1801,
+      "BuildID": 1401,
+      "FlightStartDeviceSeconds": 13.294,
+      "LastBaseAfterFlightStartSeconds": 5.039999999999999,
+      "LastCommandAfterFlightStartSeconds": 5.059999999999999,
+      "LastSensorAfterFlightStartSeconds": 5.059999999999999,
+      "LastHorizontalAfterFlightStartSeconds": 5.039999999999999,
+      "LastPacketAfterFlightStartSeconds": 5.059999999999999,
+      "RawVerification": {
+        "BaseCount": 264,
+        "ExtensionCount": 932,
+        "CRCFailures": 0,
+        "StoredValueMismatches": 0
+      },
+      "MissingBaseFrames": 90,
+      "MaximumBaseHostGapSeconds": 0.5807747999999999,
+      "MaximumBaseDeviceGapSeconds": 0.14000000000000057,
+      "MaximumAllPacketHostGapSeconds": 0.4035305,
+      "LargestHostGapSpansSameSnapshot": true,
+      "RecordingStopReason": "firmware_restart",
+      "RecordingStopLastDeviceSeconds": 18.354,
+      "NewBootFirstDeviceSeconds": 0.756,
+      "NewBootResetReasonAvailable": false,
+      "UserReportedManualResetAfterFall": true,
+      "LastBase": {
+        "EstRollDeg": -0.011094833851226619,
+        "EstPitchDeg": -0.6207780025945259,
+        "HeightM": 0.5118579268455505,
+        "RawVerticalVelocityMps": 0.006000000052154064,
+        "BatteryVoltageV": 3.624000072479248,
+        "BatteryReadSuccess": 1,
+        "FlightState": 2
+      },
+      "LastCommand": {
+        "ElapsedS": 5.059999999999999,
+        "AppliedPWMFR": 202.0,
+        "AppliedPWMFL": 157.0,
+        "AppliedPWMRR": 158.0,
+        "AppliedPWMRL": 203.0,
+        "JoystickConnected": 1.0,
+        "JoystickPacketError": 0.0,
+        "RollReferenceRad": 0.006135923322290182,
+        "PitchReferenceRad": -0.007056312169879675
+      },
+      "LastSensor": {
+        "ElapsedS": 5.059999999999999,
+        "MagSampleCount": 270.0,
+        "MagSampleTimeUs": 13573469.0,
+        "MagAgeUs": 4782380.0,
+        "MagReadUs": 24419.0,
+        "MagErrorCount": 0.0,
+        "MagErrorCode": 0.0,
+        "OverGFlag": 0.0,
+        "RangeFailureCounter": 0.0,
+        "LowVoltageCounter": 0.0,
+        "SchedulerMissedCount": 0.0
+      },
+      "LastHorizontal": {
+        "ElapsedS": 5.039999999999999,
+        "HorizontalEnabled": 0.0,
+        "HorizontalBlend": 0.0,
+        "HorizontalMeasurementValid": 1.0,
+        "HorizontalRejectReason": 0.0
+      },
+      "ObservedRanges": {
+        "EstRollDeg": {
+          "Count": 164,
+          "Min": -1.064102875315375,
+          "Max": 1.531452952475193,
+          "Final": -0.011094833851226619,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1.531452952475193,
+          "PeakElapsedS": 3.419999999999998
+        },
+        "EstPitchDeg": {
+          "Count": 164,
+          "Min": -1.398941435955669,
+          "Max": 1.6602133357312254,
+          "Final": -0.6207780025945259,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1.6602133357312254,
+          "PeakElapsedS": 1.6999999999999993
+        },
+        "RawVerticalVelocityMps": {
+          "Count": 164,
+          "Min": -0.42100000381469727,
+          "Max": 0.5989999771118164,
+          "Final": 0.006000000052154064,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0.5989999771118164,
+          "PeakElapsedS": 3.0599999999999987
+        },
+        "CalibrationSampleCount": {
+          "Count": 153,
+          "Min": 800,
+          "Max": 800,
+          "Final": 800,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 800,
+          "PeakElapsedS": 0
+        },
+        "TimingMaxExecUs": {
+          "Count": 153,
+          "Min": 1963,
+          "Max": 2584,
+          "Final": 2447,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 2584,
+          "PeakElapsedS": 2.42
+        },
+        "TimingMaxGapUs": {
+          "Count": 153,
+          "Min": 2717,
+          "Max": 3354,
+          "Final": 3205,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 3354,
+          "PeakElapsedS": 3.6999999999999993
+        },
+        "TimingOverrunCount": {
+          "Count": 153,
+          "Min": 0,
+          "Max": 1,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 2.42
+        },
+        "SchedulerMissedCount": {
+          "Count": 153,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "PilotRoll": {
+          "Count": 156,
+          "Min": -0.0009765625,
+          "Max": 0.009765625,
+          "Final": 0.0087890625,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0.009765625,
+          "PeakElapsedS": 4.199999999999999
+        },
+        "HorizontalEnabled": {
+          "Count": 108,
+          "Min": 0,
+          "Max": 1,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 3.419999999999998
+        },
+        "HorizontalBlend": {
+          "Count": 108,
+          "Min": 0,
+          "Max": 1,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 3.419999999999998
+        }
+      },
+      "ObservedStopAndLinkFlags": {
+        "ArmButton": {
+          "Count": 156,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "AHRSRequest": {
+          "Count": 156,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "JoystickConnected": {
+          "Count": 156,
+          "Min": 1,
+          "Max": 1,
+          "Final": 1,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 0
+        },
+        "JoystickPacketError": {
+          "Count": 156,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "OverGFlag": {
+          "Count": 153,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "RangeFailureCounter": {
+          "Count": 153,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "LowVoltageCounter": {
+          "Count": 153,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.039999999999999,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        }
+      }
+    },
+    {
+      "Recording": "recordings/StampFly_20261017_164502_308.mat",
+      "RecordingSHA256": "6c6fd52aed62c24e8b7adfd1cbe114332ea2e2da37b1676acaefa456c7a58914",
+      "FirmwareRevision": 1801,
+      "BuildID": 1401,
+      "FlightStartDeviceSeconds": 4.721,
+      "LastBaseAfterFlightStartSeconds": 5.300000000000001,
+      "LastCommandAfterFlightStartSeconds": 5.300000000000001,
+      "LastSensorAfterFlightStartSeconds": 5.300000000000001,
+      "LastHorizontalAfterFlightStartSeconds": 5.32,
+      "LastPacketAfterFlightStartSeconds": 5.32,
+      "RawVerification": {
+        "BaseCount": 304,
+        "ExtensionCount": 952,
+        "CRCFailures": 0,
+        "StoredValueMismatches": 0
+      },
+      "MissingBaseFrames": 63,
+      "MaximumBaseHostGapSeconds": 0.6272763,
+      "MaximumBaseDeviceGapSeconds": 0.16000000000000014,
+      "MaximumAllPacketHostGapSeconds": 0.4476842,
+      "LargestHostGapSpansSameSnapshot": true,
+      "RecordingStopReason": "firmware_restart",
+      "RecordingStopLastDeviceSeconds": 10.041,
+      "NewBootFirstDeviceSeconds": 0.758,
+      "NewBootResetReasonAvailable": false,
+      "UserReportedManualResetAfterFall": true,
+      "LastBase": {
+        "EstRollDeg": -0.7207075761596351,
+        "EstPitchDeg": 0.5222255655608498,
+        "HeightM": 0.542012095451355,
+        "RawVerticalVelocityMps": 0.003000000026077032,
+        "BatteryVoltageV": 3.6080000400543213,
+        "BatteryReadSuccess": 1,
+        "FlightState": 2
+      },
+      "LastCommand": {
+        "ElapsedS": 5.300000000000001,
+        "AppliedPWMFR": 201.0,
+        "AppliedPWMFL": 160.0,
+        "AppliedPWMRR": 151.0,
+        "AppliedPWMRL": 207.0,
+        "JoystickConnected": 1.0,
+        "JoystickPacketError": 0.0,
+        "RollReferenceRad": -0.03093927912414074,
+        "PitchReferenceRad": 0.0025172715540975332
+      },
+      "LastSensor": {
+        "ElapsedS": 5.300000000000001,
+        "MagSampleCount": 92.0,
+        "MagSampleTimeUs": 4921356.0,
+        "MagAgeUs": 5101760.0,
+        "MagReadUs": 2571.0,
+        "MagErrorCount": 0.0,
+        "MagErrorCode": 0.0,
+        "OverGFlag": 0.0,
+        "RangeFailureCounter": 0.0,
+        "LowVoltageCounter": 0.0,
+        "SchedulerMissedCount": 0.0
+      },
+      "LastHorizontal": {
+        "ElapsedS": 5.32,
+        "HorizontalEnabled": 1.0,
+        "HorizontalBlend": 1.0,
+        "HorizontalMeasurementValid": 1.0,
+        "HorizontalRejectReason": 0.0
+      },
+      "ObservedRanges": {
+        "EstRollDeg": {
+          "Count": 203,
+          "Min": -1.918514831852913,
+          "Max": 2.9863262481567037,
+          "Final": -0.7207075761596351,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 2.9863262481567037,
+          "PeakElapsedS": 3.3200000000000003
+        },
+        "EstPitchDeg": {
+          "Count": 203,
+          "Min": -0.403439636657949,
+          "Max": 1.7419861082552563,
+          "Final": 0.5222255655608498,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 1.7419861082552563,
+          "PeakElapsedS": 1.6799999999999997
+        },
+        "RawVerticalVelocityMps": {
+          "Count": 203,
+          "Min": -0.34200000762939453,
+          "Max": 0.5920000076293945,
+          "Final": 0.003000000026077032,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0.5920000076293945,
+          "PeakElapsedS": 3
+        },
+        "CalibrationSampleCount": {
+          "Count": 164,
+          "Min": 800,
+          "Max": 800,
+          "Final": 800,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 800,
+          "PeakElapsedS": 0
+        },
+        "TimingMaxExecUs": {
+          "Count": 164,
+          "Min": 2024,
+          "Max": 2823,
+          "Final": 2823,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 2823,
+          "PeakElapsedS": 5.18
+        },
+        "TimingMaxGapUs": {
+          "Count": 164,
+          "Min": 2829,
+          "Max": 3405,
+          "Final": 3199,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 3405,
+          "PeakElapsedS": 1.3200000000000003
+        },
+        "TimingOverrunCount": {
+          "Count": 164,
+          "Min": 0,
+          "Max": 7,
+          "Final": 2,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 7,
+          "PeakElapsedS": 3.0199999999999996
+        },
+        "SchedulerMissedCount": {
+          "Count": 164,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "PilotRoll": {
+          "Count": 183,
+          "Min": -0.00146484375,
+          "Max": 1.0380859375,
+          "Final": 0.005859375,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 1.0380859375,
+          "PeakElapsedS": 4.4
+        },
+        "HorizontalEnabled": {
+          "Count": 162,
+          "Min": 0,
+          "Max": 1,
+          "Final": 1,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 3.0809999999999995
+        },
+        "HorizontalBlend": {
+          "Count": 162,
+          "Min": 0,
+          "Max": 1,
+          "Final": 1,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 3.42
+        }
+      },
+      "ObservedStopAndLinkFlags": {
+        "ArmButton": {
+          "Count": 183,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "AHRSRequest": {
+          "Count": 183,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "JoystickConnected": {
+          "Count": 183,
+          "Min": 1,
+          "Max": 1,
+          "Final": 1,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 1,
+          "PeakElapsedS": 0
+        },
+        "JoystickPacketError": {
+          "Count": 183,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "OverGFlag": {
+          "Count": 164,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "RangeFailureCounter": {
+          "Count": 164,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        },
+        "LowVoltageCounter": {
+          "Count": 164,
+          "Min": 0,
+          "Max": 0,
+          "Final": 0,
+          "FinalElapsedS": 5.300000000000001,
+          "AbsolutePeak": 0,
+          "PeakElapsedS": 0
+        }
+      },
+      "LargeRollInput": {
+        "Count": 39,
+        "FirstLastSeconds": [
+          3.6999999999999993,
+          4.619999999999999
+        ],
+        "MaximumUsedRoll": 1.0380859375,
+        "RawBytesVerified": true,
+        "PhysicalStickOperationKnown": false,
+        "CommonToBothFlights": false
+      }
+    }
+  ],
+  "MagneticUpdateStops": [
+    {
+      "File": "StampFly_20261017_125204_206.mat",
+      "FirmwareRevisions": 1801,
+      "FlightStartDeviceS": 17.195,
+      "LastSensorElapsedS": 5.161000000000001,
+      "MagLastSampleElapsedS": 0.2504390000000001,
+      "MagAgeAtLastSensorS": 4.912287,
+      "MagFinalCount": 351,
+      "MagErrorAtLastSensor": 0,
+      "MagErrorCodeAtLastSensor": 0,
+      "ToFObservedRateHz": 24.413873280372016,
+      "FlowUpdatesAfterFirstFlightSensor": 2064,
+      "SchedulerMissedAtLastSensor": 0
+    },
+    {
+      "File": "StampFly_20261017_125358_399.mat",
+      "FirmwareRevisions": 1801,
+      "FlightStartDeviceS": 48.104,
+      "LastSensorElapsedS": 5.020000000000003,
+      "MagLastSampleElapsedS": 0.14458799999999883,
+      "MagAgeAtLastSensorS": 4.877368,
+      "MagFinalCount": 933,
+      "MagErrorAtLastSensor": 0,
+      "MagErrorCodeAtLastSensor": 0,
+      "ToFObservedRateHz": 24.501992031872494,
+      "FlowUpdatesAfterFirstFlightSensor": 2008,
+      "SchedulerMissedAtLastSensor": 0
+    },
+    {
+      "File": "StampFly_20261017_125503_794.mat",
+      "FirmwareRevisions": 1801,
+      "FlightStartDeviceS": 13.676,
+      "LastSensorElapsedS": 5.499999999999998,
+      "MagLastSampleElapsedS": 0.16001400000000032,
+      "MagAgeAtLastSensorS": 5.34263,
+      "MagFinalCount": 297,
+      "MagErrorAtLastSensor": 0,
+      "MagErrorCodeAtLastSensor": 0,
+      "ToFObservedRateHz": 24.545454545454554,
+      "FlowUpdatesAfterFirstFlightSensor": 2200,
+      "SchedulerMissedAtLastSensor": 0
+    },
+    {
+      "File": "StampFly_20261017_164408_407.mat",
+      "FirmwareRevisions": 1801,
+      "FlightStartDeviceS": 13.294,
+      "LastSensorElapsedS": 5.059999999999999,
+      "MagLastSampleElapsedS": 0.27946899999999886,
+      "MagAgeAtLastSensorS": 4.78238,
+      "MagFinalCount": 270,
+      "MagErrorAtLastSensor": 0,
+      "MagErrorCodeAtLastSensor": 0,
+      "ToFObservedRateHz": 24.703557312252972,
+      "FlowUpdatesAfterFirstFlightSensor": 2024,
+      "SchedulerMissedAtLastSensor": 0
+    },
+    {
+      "File": "StampFly_20261017_164502_308.mat",
+      "FirmwareRevisions": 1801,
+      "FlightStartDeviceS": 4.721,
+      "LastSensorElapsedS": 5.300000000000001,
+      "MagLastSampleElapsedS": 0.2003560000000002,
+      "MagAgeAtLastSensorS": 5.10176,
+      "MagFinalCount": 92,
+      "MagErrorAtLastSensor": 0,
+      "MagErrorCodeAtLastSensor": 0,
+      "ToFObservedRateHz": 24.52830188679245,
+      "FlowUpdatesAfterFirstFlightSensor": 2120,
+      "SchedulerMissedAtLastSensor": 0
+    }
+  ],
+  "Limits": [
+    "Manual post-fall resets do not establish an automatic restart as the fall cause.",
+    "No recorded packet shows the reported sudden loss of control or ground impact.",
+    "Magnetic data is not used by current attitude or horizontal control.",
+    "Frozen magnetic sample/read diagnostics do not distinguish worker starvation from bus waiting.",
+    "Host arrival gaps include delay between packets from the same firmware snapshot.",
+    "A five-second CPU0 idle watchdog is configured but its involvement is unconfirmed.",
+    "The current app has local edits; prior app/distribution validation is tied to its tested hash."
+  ],
+  "EvidenceFiles": [
+    "build/horizontal_control/fall_investigation/latest1644_read2.log",
+    "build/horizontal_control/fall_investigation/latest1644_rawcheck.log",
+    "build/horizontal_control/fall_investigation/runtime_freeze2.log"
+  ]
+}

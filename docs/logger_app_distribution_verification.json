@@ -1,0 +1,122 @@
+{
+  "ProjectFile": "StampFly_Official.prj",
+  "FreshCopy": true,
+  "RestoredDefaultPath": true,
+  "FullModelUpdatesPassed": true,
+  "CurrentAircraft": "StampFly_IMU400",
+  "CurrentReceiver": "M5Stamp_IMU_Rx",
+  "AppConstructedAndClosed": true,
+  "CustomClassesResolveInsideProject": true,
+  "ArchivedModelsExcludedFromPath": true,
+  "ExternalCustomDependencies": 0,
+  "ProjectChecks": [
+    {
+      "ID": "Project:Checks:ProjectFilesExist",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ProjectPath",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:ReferencedSubprojects",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:OutdatedPcodedFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MDLToSLX",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:SLPRJ",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:PathCaseSensitive",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:MissingOrDuplicateLabelsInProject",
+      "Passed": true,
+      "ProblemFileCount": 0
+    },
+    {
+      "ID": "Project:Checks:UnsavedProjectFiles",
+      "Passed": true,
+      "ProblemFileCount": 0
+    }
+  ],
+  "ProjectChecksPassed": true,
+  "RuntimeChecksPassed": true,
+  "NonSourceControlProjectChecksPassed": true,
+  "GitMetadataIncluded": false,
+  "Passed": true,
+  "SourceControlCheckNote": "配布用コピーは.gitを含まないためGit管理のチェックを実行可否の判定から除きます。ファイル存在・パス・起動・モデル更新・アプリと、元リポジトリの登録は別に検証します。",
+  "TestedModels": [
+    {
+      "File": "StampFly_IMU400.slx",
+      "SHA256": "28608bde6f11989ba24d33b717b8c3f41af0346d439fed55c748cb32fa15c9a9",
+      "HashNormalization": "bytes"
+    },
+    {
+      "File": "M5Stamp_IMU_Rx.slx",
+      "SHA256": "35f1a5a1f529db3cf77f63ebaa8193b99f485d726d5a17df32fdd5602af55d32",
+      "HashNormalization": "bytes"
+    }
+  ],
+  "TestedAppFiles": [
+    {
+      "File": "StampFlyIMUApp.m",
+      "SHA256": "0809305c2108f2051e862ec16bd3b3e8a270d2253f336a9cab9984f7b54019ea",
+      "HashNormalization": "LF"
+    },
+    {
+      "File": "StampFlyIMUApp.xml",
+      "SHA256": "4c896f219b31f5845d94330b94439944e0a7529bd6291649da4c677abfa7ffa5",
+      "HashNormalization": "LF"
+    }
+  ],
+  "TestedHostSources": [
+    {
+      "File": "code/+imu/RecordingHistoryView.m",
+      "SHA256": "79b74809daed380287c1d7f1db4a4657037f26946fc06a0f16c1ddd947ebbc0c",
+      "HashNormalization": "bytes"
+    },
+    {
+      "File": "code/+imu/readRecordingHistory.m",
+      "SHA256": "d2cca349b82954e644e73bb40ec4d20b9fc369e2601cfa535cdfd89f67c3932d",
+      "HashNormalization": "bytes"
+    },
+    {
+      "File": "code/+imu/ControlSettings.m",
+      "SHA256": "53f7156f25ccf80fa260ad232f78a40dc000ffdbb306d93ce16abadec0925406",
+      "HashNormalization": "bytes"
+    },
+    {
+      "File": "code/+imu/recordingFolder.m",
+      "SHA256": "2a0705a5eb2311e49960970901b3ba95af95cf965dff0c6e30c47cc26646e7f6",
+      "HashNormalization": "bytes"
+    },
+    {
+      "File": "code/+imu/flightStatePresentation.m",
+      "SHA256": "2794376931bd9958274919d881c1aa33557b21e534499ae063e16e128d6efcea",
+      "HashNormalization": "bytes"
+    }
+  ],
+  "PIDAndHorizontalSettingsUIVerified": true,
+  "ControlSettingsWithoutToolkitVerified": true,
+  "FirmwareRevision": 1804,
+  "HardwareIO": false,
+  "SavedModelChanged": false,
+  "CopyManifestSHA256": "dbd30790b05061fea51a16401c40caf1c8541070ecd0efeb1cd599ccedc4c615"
+}

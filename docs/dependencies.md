@@ -35,7 +35,7 @@
 
 ## 保守・検証だけで使うもの
 
-モデル構造の編集スクリプトは **Simulink Agentic Toolkit** を使用します。保存済みモデルの閲覧、GUIからの設定・ビルド・書き込み、アプリ利用には必要ありません。
+モデル構造の編集スクリプトは **Simulink Agentic Toolkit** を使用します。保存済みモデルの閲覧、GUIからの設定・ビルド・書き込み、アプリ利用には必要ありません。アプリの制御パラメータ反映は、Toolkitがある環境では共通編集API、配布先では標準Simulink APIを使います。
 
 Pythonのシリアル・書き込み補助ツールを使う場合はPython、pyserial、esptoolが必要です。通常の操作はSimulink画面から行えます。水平補助のモデル試験はSimulink TestとSimulink Agentic Toolkit、生成MEX比較はMATLAB Coderと対応C/C++コンパイラーを使用します。通常の機体ビルド・アプリ利用にはこれらの追加試験製品は不要です。過去の構築・展開ツールは`archive/maintenance/`に保存しています。
 

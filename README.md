@@ -4,7 +4,7 @@ M5Stackの小型ドローン **StampFly** を使って、センサー、姿勢�
 
 現行の機体モデルは、直下の **[StampFly_IMU400.slx](StampFly_IMU400.slx)** です。標準 **IMU Filter**、MATLAB Functionの高度Kalman推定、7個のPIDを使い、**400 Hz（2.5 ms）** で動作します。光学フローによる水平速度制御・停止位置保持を追加しています。宙返り機構はありません。ほかの機体モデルは[アーカイブ](archive/README.md)へまとめています。
 
-**現在の水平補助版は実飛行中の落下を調査中です。** 高度推定・自動記録を修正したRevision 1802は机上診断用で、飛行確認は完了していません。[調査結果と確認範囲](docs/history/horizontal_trials/20261017_fall_review.md)を先に確認してください。実飛行成功の報告がある水平補助追加前のモデル・BINは、[アーカイブ](archive/README.md)で区別しています。
+**現行のRevision 1804は、ユーザーによる実飛行で安定飛行を確認しています。** [飛行結果と保存版](docs/incident1804_flight_verification.json)、[開発・実験の履歴](docs/history/README.md)を参照できます。
 
 ## 用意するもの
 
@@ -67,9 +67,9 @@ JoyStickは[M5Stack公式ガイド](https://docs.m5stack.com/en/guide/stampfly/f
 1. USB接続した**ログ受信機のCOMポート**、通信速度 **921600**、自分のCHを選びます。
 2. **［接続］→［CHを設定］** を押し、設定完了の応答と増え続けるフレーム数を確認します。
 3. 通常は**自動記録**です。飛行制御（Mode 2）または自動着陸（Mode 5）を受信すると開始し、直前2秒も保存します。待機へ戻った後1秒で保存完了します。接続したまま次の飛行も別ファイルへ記録します。
-4. 記録は **`recordings/StampFly_日時.mat`** へ保存されます。**［履歴・比較］→［一覧更新］** で高度・速度・保存終了理由を確認します。通信途絶・時刻リセットは待機復帰と区別します。机上記録には **［記録開始］／［記録停止］** を使えます。
+4. **［履歴・飛行］→［保存先を指定］** で記録フォルダーを選べます。初期値は **`recordings/StampFly_日時.mat`**。**［保存先を開く］** でエクスプローラー、**［一覧更新］** で高度・速度・制御量・保存終了理由を確認します。通信途絶・時刻リセットは待機復帰と区別します。机上記録には **［手動記録開始］／［記録停止］** を使えます。
 
-机上では機体のUSBへ直接接続して観測できます。この場合はCH設定を使いません。アプリの飛行操作・高度適用ボタンは無効です。[ログ項目の読み方](docs/logging_extensions.md)
+机上では機体のUSBへ直接接続して観測できます。この場合はCH設定を使いません。**［制御パラメータ］** は現在の7 PIDと水平P/PIをモデルから読み込み、編集値をモデルへ反映します。**保存・再ビルド・書き込み**で機体へ反映します。[係数の意味と操作](docs/control_parameters.md)・[グラフの読み方](docs/logger_app.md)
 
 ## 最初の飛行
 
@@ -85,7 +85,7 @@ JoyStickは[M5Stack公式ガイド](https://docs.m5stack.com/en/guide/stampfly/f
 | Stabilize／Sport | 左前面ボタン |
 | Auto／Manual Altitude | 右前面ボタン |
 
-飛行確認が完了した版を使い、最初は **Stabilize／Auto Altitude** で、離陸 → 短いホバリング → 着陸 → ログ確認を行います。初期高度目標は **0.5 m**。飛行中に中央液晶ボタンを再度押して離すと着陸へ移ります。中央ボタンは押した瞬間の停止ボタンではありません。現在の調査中版では飛行を再開しないでください。
+最初は **Stabilize／Auto Altitude** で、離陸 → 短いホバリング → 着陸 → ログ確認を行います。初期高度目標は **0.5 m**。飛行中に中央液晶ボタンを再度押して離すと着陸へ移ります。中央ボタンは押した瞬間の停止ボタンではありません。
 
 **水平補助**はStabilize／Auto Altitudeで、高さ0.20 m以上・正常な測定・スティック中立が0.5秒続くと有効になります。右スティックは機首基準の速度指令となり、移動中も水平速度を制御します。離すと減速し、**止まった新しい位置**を保持します。初期速度上限は0.3 m/sです。
 
@@ -102,5 +102,7 @@ JoyStickは[M5Stack公式ガイド](https://docs.m5stack.com/en/guide/stampfly/f
 水平推定は最上位の **HorizontalMotionEstimation**、速度目標・PI・傾き選択は **FlightControl → TakeoffHoverControl → AttitudeControl → HorizontalControl** にあります。各処理の設定画面に日本語の説明を表示します。
 
 MATLAB Functionには概要と機能別の日本語コメント、主要ブロックには日本語の説明と端子名があります。PIDの変更は **FlightControl → TakeoffHoverControl → 各制御 → 各PID → DedicatedPID** の設定画面から行い、更新・保存・再ビルドします。[階層・推定手法・配列の順序](docs/imu_flight_model.md)
+
+モデルの計算全体はCPU1、別タスクのセンサーI/O・送信・表示はCPU0で実行します。割り当ては **TickStart → CycleClock** が追加するプロジェクト内C++で指定しています。[CPUと処理周期の設定箇所](docs/cpu_tasks.md)
 
 `code/`、`src/`、`third_party/`に必要な独自コード・ドライバーを同梱しています。生成物は`build/`、記録は`recordings/`、過去モデルは`archive/`です。[開発・実験の履歴](docs/history/README.md)に過去の試行と検証記録をまとめています。

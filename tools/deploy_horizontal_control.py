@@ -53,7 +53,8 @@ if args.device == "aircraft":
     assert settings["HorizontalAssistEnabled"] and settings["HorizontalSupplementBytes"] == 182
     assert settings["AltitudeKalmanImplementation"] == "MATLAB Function"
     assert not settings["AltitudeControlTiltCompensated"]
-    assert settings["BuildID"] == 1401 and settings["FirmwareRevision"] == 1802
+    assert settings["BuildID"] == 1401 and settings["FirmwareRevision"] == 1804
+    assert settings["BaseRatePinnedCore"] == 1 and settings["CrossCoreIdleAgeRaceCorrected"]
     assert settings["VerticalAccelerationUnits"] == "m/s^2"
     assert settings["ParkingKalmanReset"] == "rising edge" and not settings["WatchdogDisabled"]
 else:

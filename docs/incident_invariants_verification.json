@@ -1,7 +1,7 @@
 {
   "Passed": true,
   "Model": "StampFly_IMU400.slx",
-  "ModelSHA256": "15748428d752e51cc60ab3288415fd6f80b51e3a9ab90f4c4ec469ffafa018a0",
+  "ModelSHA256": "28608bde6f11989ba24d33b717b8c3f41af0346d439fed55c748cb32fa15c9a9",
   "BaselineSnapshot": "archive/snapshots/Horizontal1801.slx",
   "BaselineSHA256": "9f34330c830841929026f65ab0a836b624f87ef0d8c19d9d01ff07e5e6d85ec6",
   "PreservedBlockCount": 974,

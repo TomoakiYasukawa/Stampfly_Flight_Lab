@@ -12,6 +12,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         MainTabs                        matlab.ui.container.TabGroup
         MonitorTab                      matlab.ui.container.Tab
         MainGrid                        matlab.ui.container.GridLayout
+        MonitorDataLabel                matlab.ui.control.Label
         AttitudeGrid                    matlab.ui.container.GridLayout
         AttitudeLabel                   matlab.ui.control.Label
         MagAxes                         matlab.ui.control.UIAxes
@@ -26,6 +27,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         GyroAxes                        matlab.ui.control.UIAxes
         AccelAxes                       matlab.ui.control.UIAxes
         ConfigGrid                      matlab.ui.container.GridLayout
+        JoystickHelpLabel               matlab.ui.control.Label
         RecordButton                    matlab.ui.control.Button
         RecordingStatusLabel            matlab.ui.control.Label
         ProtocolLabel                   matlab.ui.control.Label
@@ -38,10 +40,6 @@ classdef StampFlyIMUApp < matlab.apps.App
         RefreshButton                   matlab.ui.control.Button
         PortDropDown                    matlab.ui.control.DropDown
         PortLabel                       matlab.ui.control.Label
-        TakeoffButton                   matlab.ui.control.Button
-        LandingButton                   matlab.ui.control.Button
-        EmergencyButton                 matlab.ui.control.Button
-        ResetEmergencyButton            matlab.ui.control.Button
         HeaderGrid                      matlab.ui.container.GridLayout
         BatteryLabel                    matlab.ui.control.Label
         FlightStateLabel                matlab.ui.control.Label
@@ -53,41 +51,24 @@ classdef StampFlyIMUApp < matlab.apps.App
         DroneAxes                       matlab.ui.control.UIAxes
         FlightTab                       matlab.ui.container.Tab
         FlightGrid                      matlab.ui.container.GridLayout
-        HeightAppliedLabel              matlab.ui.control.Label
-        HeightTuningStatusLabel         matlab.ui.control.Label
-        HeightApplyButton               matlab.ui.control.Button
-        HeightLandingBaseField          matlab.ui.control.NumericEditField
-        HeightLandingBaseLabel          matlab.ui.control.Label
-        HeightMaxSpeedField             matlab.ui.control.NumericEditField
-        HeightMaxSpeedLabel             matlab.ui.control.Label
-        HeightHoverBaseField            matlab.ui.control.NumericEditField
-        HeightHoverBaseLabel            matlab.ui.control.Label
-        HeightLiftBaseField             matlab.ui.control.NumericEditField
-        HeightLiftBaseLabel             matlab.ui.control.Label
-        HeightMaxCorrectionField        matlab.ui.control.NumericEditField
-        HeightMaxCorrectionLabel        matlab.ui.control.Label
-        HeightFilterTimeField           matlab.ui.control.NumericEditField
-        HeightFilterTimeLabel           matlab.ui.control.Label
-        HeightKiVelField                matlab.ui.control.NumericEditField
-        HeightKiVelLabel                matlab.ui.control.Label
-        HeightKpVelField                matlab.ui.control.NumericEditField
-        HeightKpVelLabel                matlab.ui.control.Label
-        HeightKpPosField                matlab.ui.control.NumericEditField
-        HeightKpPosLabel                matlab.ui.control.Label
-        HeightTuningTitleLabel          matlab.ui.control.Label
-        FlightCommandStatusLabel        matlab.ui.control.Label
+        ControlSettingsSourceLabel      matlab.ui.control.Label
         FlightStateDetailLabel          matlab.ui.control.Label
+        ControlSettingsStatusLabel      matlab.ui.control.Label
+        ControlApplyButton              matlab.ui.control.Button
+        ControlLoadButton               matlab.ui.control.Button
+        ControlOpenButton               matlab.ui.control.Button
+        ControlPIDDropDown              matlab.ui.control.DropDown
+        HorizontalControlTable          matlab.ui.control.Table
+        HorizontalControlTitleLabel     matlab.ui.control.Label
+        ControlPIDTable                 matlab.ui.control.Table
+        ControlPIDTitleLabel            matlab.ui.control.Label
         FlightHelpLabel                 matlab.ui.control.Label
-        LandSpeedField                  matlab.ui.control.NumericEditField
-        LandSpeedLabel                  matlab.ui.control.Label
-        HoverHeightField                matlab.ui.control.NumericEditField
-        HoverHeightLabel                matlab.ui.control.Label
-        ClimbSpeedField                 matlab.ui.control.NumericEditField
-        ClimbSpeedLabel                 matlab.ui.control.Label
         FlightTitleLabel                matlab.ui.control.Label
         HistoryTab                      matlab.ui.container.Tab
         HistoryRootGrid                 matlab.ui.container.GridLayout
         HistoryMainGrid                 matlab.ui.container.GridLayout
+        HistoryDiagnosticHelpLabel      matlab.ui.control.Label
+        HistoryDataLabel                matlab.ui.control.Label
         HistorySummaryTable             matlab.ui.control.Table
         HistoryChartGrid                matlab.ui.container.GridLayout
         HistoryStateAxes                matlab.ui.control.UIAxes
@@ -101,6 +82,9 @@ classdef StampFlyIMUApp < matlab.apps.App
         HistoryVerticalSpeedAxes        matlab.ui.control.UIAxes
         HistoryHeightAxes               matlab.ui.control.UIAxes
         HistorySidebarGrid              matlab.ui.container.GridLayout
+        HistoryFolderLabel              matlab.ui.control.Label
+        HistoryOpenFolderButton         matlab.ui.control.Button
+        HistoryFolderButton             matlab.ui.control.Button
         HistoryStatusLabel              matlab.ui.control.Label
         HistoryList                     matlab.ui.control.ListBox
         HistoryRangeDropDown            matlab.ui.control.DropDown
@@ -114,37 +98,29 @@ classdef StampFlyIMUApp < matlab.apps.App
         AccelLines
         ByteBuffer
         CRCErrorCount = 0
+        ControlSnapshot = []
         DrawClock
-        FlightCommandSequence = 'uint16(0)'
         FlightRecorder
         ForeignFrameCount = 0
         FrameCount = 0
         GroundTracker
         GyroData
         GyroLines
-        HasTuningTelemetry = ""
         HeightData
         HeightLine
         HorizontalClock = [  ]
         HorizontalSample = [  ]
-        LastFlightHeartbeatClock = '[]'
-        LastFlightSendClock = '[]'
         LastFlightState = 'uint8(0)'
         LastLedCommandClock
         LastReceivedClock
-        LastTuningSendClock = ""
         MagData
         MagLines
         MissingCount = 0
         MotorData
         MotorLines
+        PathEndLine = []
         PathLine
-        PendingFlightOperation = 'uint8(0)'
-        PendingFlightRetries = '0'
-        PendingFlightSequence = 'NaN'
-        PendingTuningRetries = ""
-        PendingTuningSequence = ""
-        PendingTuningValues = ""
+        PathStartLine = []
         PlotTimeline
         PlotWindowSeconds = 10
         PoseView
@@ -161,7 +137,6 @@ classdef StampFlyIMUApp < matlab.apps.App
         TimeData
         ToFData
         ToFLine
-        TuningCommandSequence = ""
         XYData
     end
 
@@ -182,6 +157,27 @@ classdef StampFlyIMUApp < matlab.apps.App
             command = uint8([double(sprintf('CH=%d',channel)) 10]);
             write(app.SerialDevice, command, 'uint8');
             app.StatusLabel.Text = sprintf('CH %d の設定を送信', channel);
+        end
+
+        function applyControlSettings(app)
+            if isempty(app.ControlSnapshot),return;end
+            progress=uiprogressdlg(app.UIFigure,'Title','モデル設定を反映中', ...
+                'Message','係数を更新し、モデルを確認しています','Indeterminate','on');
+            cleanup=onCleanup(@()delete(progress)); %#ok<NASGU>
+            try
+                settings=imu.ControlSettings.apply(app.ControlSnapshot, ...
+                    app.ControlPIDTable.Data,cell2mat(app.HorizontalControlTable.Data(:,2)));
+                app.ControlSnapshot=settings;
+                app.ControlPIDTable.Data=settings.PIDValues;
+                app.HorizontalControlTable.Data=[settings.HorizontalLabels(:),num2cell(settings.HorizontalValues)];
+                if settings.ChangedParameterCount==0
+                    app.ControlSettingsStatusLabel.Text='変更した係数はありません。';
+                else
+                    app.ControlSettingsStatusLabel.Text=sprintf('%d項目をモデルに反映しました（未保存）。保存→再ビルド→書き込みで機体へ反映します。',settings.ChangedParameterCount);
+                end
+            catch err
+                app.ControlSettingsStatusLabel.Text=['反映できません: ' err.message];
+            end
         end
 
         function captureExtension(app,sample,frame)
@@ -257,12 +253,6 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.SerialDevice = [];
             if ~isempty(app.FlightRecorder),app.FlightRecorder.resetConnection();end
             app.ConnectButton.Text = '接続';
-            app.LastFlightHeartbeatClock = [];
-            app.PendingFlightSequence = NaN;
-                    app.PendingTuningSequence = NaN;
-                    app.HasTuningTelemetry = false;
-                    app.HeightApplyButton.Enable = 'off';
-                    app.HeightTuningStatusLabel.Text = '設定: 機体の接続待ち';
             app.StatusLabel.Text = '未接続';
         end
 
@@ -280,8 +270,10 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.FlightRecorder.Enabled=logical(app.AutoRecordingEnabled);
         end
 
-        function name = flightStateName(~,state)
-            name=imu.flightStateName(state);
+        function name=flightStateName(~,state)
+            display=imu.flightStatePresentation();
+            index=find(display.Codes==double(state),1);
+            if isempty(index),name=sprintf('不明 (Mode %d)',state);else,name=display.Names{index};end
         end
 
         function initializeFlightRecorder(app)
@@ -318,7 +310,12 @@ classdef StampFlyIMUApp < matlab.apps.App
                 {'斜距離','補正高さ'},'Location','northeast');
             title(app.ToFAxes,'ToF / 補正高さ');
             ylabel(app.ToFAxes,'距離・高さ [m]');
-            app.PathLine = plot(app.PathAxes,nan,nan);
+            app.PathLine = plot(app.PathAxes,nan,nan,'DisplayName','相対XY');
+            app.PathStartLine=plot(app.PathAxes,nan,nan,'o','MarkerFaceColor',[0 .45 .74], ...
+                'Color',[0 .45 .74],'MarkerSize',7,'Tag','XYStart','DisplayName','開始');
+            app.PathEndLine=plot(app.PathAxes,nan,nan,'x','Color',[.85 .33 .1], ...
+                'MarkerSize',9,'LineWidth',1.8,'Tag','XYEnd','DisplayName','最新');
+            legend(app.PathAxes,'show','Location','best');
             grid(app.ToFAxes,'on');
             grid(app.PathAxes,'on');
             xlim(app.ToFAxes,[0 10]);
@@ -345,6 +342,30 @@ classdef StampFlyIMUApp < matlab.apps.App
             grid(app.MotorAxes,'on');
             xlim(app.MotorAxes,[0 10]);
             ylim(app.MotorAxes,[0 255]);
+            for ax=[app.AccelAxes app.GyroAxes app.MotorAxes app.ToFAxes app.PathAxes app.MagAxes app.DroneAxes]
+                ax.Subtitle.String='表示データ: ライブ受信待ち';
+                ax.Subtitle.Interpreter='none';ax.Subtitle.FontSize=9;
+            end
+        end
+
+        function loadControlSettings(app)
+            % モデルのロード・編集と競合しないよう、読込中は操作を止めます。
+            progress=uiprogressdlg(app.UIFigure,'Title','モデル設定を読み込み中', ...
+                'Message','StampFly_IMU400 の実係数を確認しています','Indeterminate','on');
+            cleanup=onCleanup(@()delete(progress)); %#ok<NASGU>
+            try
+                settings=imu.ControlSettings.read();
+                app.ControlSnapshot=settings;
+                app.ControlPIDTable.Data=settings.PIDValues;
+                app.HorizontalControlTable.Data=[settings.HorizontalLabels(:),num2cell(settings.HorizontalValues)];
+                app.ControlApplyButton.Enable='on';app.ControlOpenButton.Enable='on';
+                app.ControlSettingsStatusLabel.Text='モデルの現在値を読み込みました。機体の適用値とは区別してください。';
+                app.ControlSettingsSourceLabel.Text=['読込元: ' settings.ModelFile];
+                app.ControlSettingsSourceLabel.Tooltip=settings.ModelFile;
+            catch err
+                app.ControlSnapshot=[];app.ControlApplyButton.Enable='off';app.ControlOpenButton.Enable='off';
+                app.ControlSettingsStatusLabel.Text=['設定を読み込めません: ' err.message];
+            end
         end
 
         function onSerialData(app)
@@ -363,14 +384,6 @@ classdef StampFlyIMUApp < matlab.apps.App
             if isempty(app.FlightRecorder) || ~isgraphics(app.UIFigure),return;end
             app.FlightRecorder.poll(toc(app.StartClock),app.MissingCount,app.CRCErrorCount);
             app.syncRecordingView();
-        end
-
-        function values = readHeightTuning(app)
-            values = single([app.HeightKpPosField.Value; app.HeightKpVelField.Value; ...
-                app.HeightKiVelField.Value; app.HeightFilterTimeField.Value; ...
-                app.HeightMaxCorrectionField.Value; app.HeightLiftBaseField.Value; ...
-                app.HeightHoverBaseField.Value; app.HeightMaxSpeedField.Value; ...
-                app.HeightLandingBaseField.Value]);
         end
 
         function [accepted,positionENU,heightNow] = recordSample(app, sample)
@@ -545,12 +558,6 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.ForeignFrameCount = 0;
             app.FlightStateLabel.Text = '飛行状態: 未受信';
             app.FlightStateDetailLabel.Text = '機体状態: 未受信';
-                    app.PendingTuningSequence = NaN;
-                    app.LastTuningSendClock = [];
-                    app.HasTuningTelemetry = false;
-                    app.HeightApplyButton.Enable = 'off';
-                    app.HeightTuningStatusLabel.Text = '設定: 機体の接続待ち';
-                    app.HeightAppliedLabel.Text = '機体の適用値: 未受信';
             app.BatteryLabel.Text = '電池: 未取得';
             app.BatteryLabel.FontColor = [0.4 0.4 0.4];
             app.TimeData = zeros(0,1);
@@ -576,21 +583,14 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.LatestLabel.Text = '最新値: 受信待機中';
             app.MotionLabel.Text = 'ToF・Optical flow: データを待機中';
             app.AttitudeLabel.Text = '磁気・姿勢: データ待機中';
+            app.MonitorDataLabel.Text='表示データ: ライブ受信待ち';
             if ~isempty(app.PoseView), app.PoseView.reset(); end
-            for line = [app.AccelLines app.GyroLines app.ToFLine app.HeightLine ...
+            for line = [app.PathStartLine app.PathEndLine app.AccelLines app.GyroLines app.ToFLine app.HeightLine ...
                     app.MagLines app.MotorLines app.PathLine]
                 if isgraphics(line)
                     set(line,'XData',nan,'YData',nan);
                 end
             end
-        end
-
-        function sendFlightCommand(app,~)
-            app.FlightCommandStatusLabel.Text = '公式 JoyStick で操作します。実出力は機体モデルの設定に従います。';
-        end
-
-        function sendHeightTuning(app)
-            app.HeightTuningStatusLabel.Text = '公式 PID の係数を固定して比較中';
         end
 
         function sendLedState(app, mode)
@@ -629,17 +629,10 @@ classdef StampFlyIMUApp < matlab.apps.App
 
         function updateFlightLink(app,sample)
             if sample.Version >= 6
-                if isnan(app.PendingFlightSequence)
-                    app.FlightCommandSequence = sample.AcceptedCommandSequence;
-                end
-                app.LastFlightState = sample.FlightState;
-                name = app.flightStateName(sample.FlightState);
-                app.FlightStateLabel.Text = '飛行状態: ' + string(name);
-                app.FlightStateDetailLabel.Text = sprintf('公式状態: %s    操作: JoyStick',name);
-                if ~isnan(app.PendingFlightSequence) && double(sample.AcceptedCommandSequence) == app.PendingFlightSequence
-                    app.FlightCommandStatusLabel.Text = sprintf('機体が指令 %d を受理',app.PendingFlightSequence);
-                    app.PendingFlightSequence = NaN;
-                end
+                app.LastFlightState=sample.FlightState;
+                name=app.flightStateName(sample.FlightState);
+                app.FlightStateLabel.Text='飛行状態: '+string(name);
+                app.FlightStateDetailLabel.Text=sprintf('受信した機体状態: %s (Mode %d) / 操作: JoyStick',name,sample.FlightState);
             end
         end
 
@@ -685,8 +678,10 @@ classdef StampFlyIMUApp < matlab.apps.App
             xlim(app.MagAxes,[right-app.PlotWindowSeconds right]);
             valid = all(isfinite(app.XYData),2);
             xy = app.XYData(valid,:);
-            set(app.PathLine,'XData',xy(:,1),'YData',xy(:,2));
+            set(app.PathLine,'XData',app.XYData(:,1),'YData',app.XYData(:,2));
             if ~isempty(xy)
+                set(app.PathStartLine,'XData',xy(1,1),'YData',xy(1,2));
+                set(app.PathEndLine,'XData',xy(end,1),'YData',xy(end,2));
                 low = min(xy,[],1);
                 high = max(xy,[],1);
                 radius = max(0.05,0.6*max(high-low));
@@ -694,12 +689,12 @@ classdef StampFlyIMUApp < matlab.apps.App
                 xlim(app.PathAxes,center(1)+[-radius radius]);
                 ylim(app.PathAxes,center(2)+[-radius radius]);
             end
-        end
-
-        function updateTuningLink(app,~)
-            app.HeightApplyButton.Enable = 'off';
-            app.HeightTuningStatusLabel.Text = '公式 PID 固定 / ベンチ検証';
-            app.HeightAppliedLabel.Text = '高度 PID: 0.38 / 10 / 0.5 / 0.125    速度 PID: 0.08 / 0.95 / 0.08 / 0.125';
+            source=sprintf('表示データ: ライブ %s / CH %d / BuildID %d / 直近 %.0f秒', ...
+                string(app.PortDropDown.Value),app.ChannelField.Value,app.ExpectedBuildID,app.PlotWindowSeconds);
+            app.MonitorDataLabel.Text=source;
+            for ax=[app.AccelAxes app.GyroAxes app.MotorAxes app.ToFAxes app.PathAxes app.MagAxes app.DroneAxes]
+                ax.Subtitle.String=source;
+            end
         end
 
     end
@@ -739,16 +734,6 @@ classdef StampFlyIMUApp < matlab.apps.App
                             app.StatusLabel.Text = '受信機: CH ' + extractAfter(line,',');
                         elseif startsWith(line,'OK,')
                             app.StatusLabel.Text = '設定完了: CH ' + extractAfter(line,',');
-                        elseif startsWith(line,'TUNEACK,')
-                            if ~isnan(app.PendingTuningSequence) && ...
-                                    str2double(extractAfter(line,',')) == app.PendingTuningSequence
-                                app.HeightTuningStatusLabel.Text = '受信機が送信: ' + ...
-                                    extractAfter(line,',') + ' / 機体確認待ち';
-                            end
-                        elseif startsWith(line,'CTLACK,')
-                            if ~isnan(app.PendingFlightSequence)
-                                app.FlightCommandStatusLabel.Text = '受信機が送信: ' + extractAfter(line,',') + ' / 機体確認待ち';
-                            end
                         elseif startsWith(line,'ERR,')
                             app.StatusLabel.Text = '受信機エラー: ' + line;
                         end
@@ -796,9 +781,8 @@ classdef StampFlyIMUApp < matlab.apps.App
                     continue
                 end
                 [accepted,positionENU,heightNow] = app.recordSample(sample);
-                    app.captureFrame(sample,candidate); % CRC正常の生データを描画条件によらず保存する。
+                app.captureFrame(sample,candidate);
                 if accepted
-            % 採用した最新サンプルを描画用に保持する。
                     latestSample = sample;
                     latestPosition = positionENU;
                     latestHeight = heightNow;
@@ -814,7 +798,6 @@ classdef StampFlyIMUApp < matlab.apps.App
                     app.MissingCount,app.CRCErrorCount,app.ForeignFrameCount);
                 if ~isempty(latestSample)
                     app.updateFlightLink(latestSample);
-                    app.updateTuningLink(latestSample);
                     app.refreshMonitor(latestSample,latestPosition,latestHeight);
                     app.updatePlots();
                     app.DrawClock = tic;
@@ -829,6 +812,20 @@ classdef StampFlyIMUApp < matlab.apps.App
             file="";if ~isempty(r.Writer),file=r.Writer.FilePath;end
             state=struct('Active',r.Active,'Automatic',r.Automatic,'CurrentFile',file, ...
                 'LastFile',r.LastPath,'SavedFiles',r.SavedPaths,'Status',r.Status,'Error',r.ErrorMessage);
+        end
+
+        function setRecordingFolder(app,folder)
+            % 保存中のファイルは移動せず、次の記録から新しい保存先を使います。
+            validateattributes(folder,{'char','string'},{'scalartext'});
+            folder=string(folder);
+            assert(isfolder(folder),'imu:RecordingFolder','保存先フォルダーが見つかりません。');
+            app.RecordingFolder=folder;
+            app.ensureFlightRecorder();
+            app.HistoryList.UserData=struct('ExtraPaths',strings(0,1));
+            imu.RecordingHistoryView.refresh(app);
+            if app.FlightRecorder.Active
+                app.HistoryStatusLabel.Text='保存先を変更しました。現在の記録は旧保存先、次の記録から適用します。';
+            end
         end
 
         function path=startRecording(app,outputFolder)
@@ -864,20 +861,6 @@ classdef StampFlyIMUApp < matlab.apps.App
             run(fullfile(fileparts(which('StampFlyIMUApp')),'config','startup.m'));
             imu.fitAppWindow(app.UIFigure);
             app.SerialDevice = [];
-            app.FlightCommandSequence = uint16(0);
-                        app.TuningCommandSequence = uint16(0);
-                        app.PendingTuningSequence = NaN;
-                        app.PendingTuningValues = single(zeros(9,1));
-                        app.PendingTuningRetries = 0;
-                        app.LastTuningSendClock = [];
-                        app.HasTuningTelemetry = false;
-                        app.HeightApplyButton.Enable = 'off';
-                        app.HeightTuningStatusLabel.Text = '設定: 機体の接続待ち';
-            app.PendingFlightSequence = NaN;
-            app.PendingFlightRetries = 0;
-            app.LastFlightSendClock = [];
-            app.LastFlightHeartbeatClock = [];
-            app.FlightCommandStatusLabel.Text = '指令: 未送信';
             app.FlightStateDetailLabel.Text = '機体状態: 未受信';
             app.RecordingWriter = [];
             app.RecordingActive = false;
@@ -894,25 +877,23 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.ToFLine = gobjects(1,1);
             app.HeightLine = gobjects(1,1);
             app.PathLine = gobjects(1,1);
+            app.PathStartLine=gobjects(1,1);app.PathEndLine=gobjects(1,1);
             app.BaudField.Value = 921600;
             app.ChannelField.Value = 3;
             app.resetData();
             app.refreshPorts();
             app.initializePlots();
             app.PoseView = imu.StampFlyPoseView(app.DroneAxes);
-            imu.RecordingHistoryView.refresh(app);
             app.TitleLabel.Text = 'StampFly 公式制御 400 Hz ロガー';
             app.UIFigure.Name = 'StampFly Official 400 Hz';
-            app.TakeoffButton.Enable = 'off';
-            app.LandingButton.Enable = 'off';
-            app.EmergencyButton.Enable = 'off';
-            app.ResetEmergencyButton.Enable = 'off';
-            app.HeightApplyButton.Enable = 'off';
-            app.FlightHelpLabel.Text = '離着陸と操縦は公式 JoyStick で行います。実モーター出力は機体に書き込んだモデルの設定に従います。';
             title(app.MotorAxes,'モーター指令');
             app.RecordingFolder="";
+            app.ControlSnapshot=[];
+            imu.RecordingHistoryView.refresh(app);
             app.AutoRecordingEnabled=true;
             app.initializeFlightRecorder();
+            app.ControlPIDTable.ColumnEditable=true(1,4);
+            app.HorizontalControlTable.ColumnEditable=[false true];
         end
 
         % Close request function: UIFigure
@@ -926,26 +907,6 @@ classdef StampFlyIMUApp < matlab.apps.App
                 return
             end
             delete(app);
-        end
-
-        % Button pushed function: ResetEmergencyButton
-        function resetEmergencyButtonPushed(app, event)
-            app.sendFlightCommand(uint8(4));
-        end
-
-        % Button pushed function: EmergencyButton
-        function emergencyButtonPushed(app, event)
-            app.sendFlightCommand(uint8(3));
-        end
-
-        % Button pushed function: LandingButton
-        function landingButtonPushed(app, event)
-            app.sendFlightCommand(uint8(2));
-        end
-
-        % Button pushed function: TakeoffButton
-        function takeoffButtonPushed(app, event)
-            app.sendFlightCommand(uint8(1));
         end
 
         % Button pushed function: RefreshButton
@@ -984,9 +945,21 @@ classdef StampFlyIMUApp < matlab.apps.App
             end
         end
 
-        % Button pushed function: HeightApplyButton
-        function heightApplyButtonPushed(app, event)
-            app.sendHeightTuning();
+        % Button pushed function: ControlOpenButton
+        function controlOpenButtonPushed(app, event)
+            if isempty(app.ControlSnapshot),return;end
+            row=double(app.ControlPIDDropDown.Value);
+            open_system(app.ControlSnapshot.PIDPaths{row});
+        end
+
+        % Button pushed function: ControlLoadButton
+        function controlLoadButtonPushed(app, event)
+            app.loadControlSettings();
+        end
+
+        % Button pushed function: ControlApplyButton
+        function controlApplyButtonPushed(app, event)
+            app.applyControlSettings();
         end
 
         % Button pushed function: HistoryRefreshButton
@@ -1007,6 +980,22 @@ classdef StampFlyIMUApp < matlab.apps.App
         % Value changed function: HistoryList
         function historySelectionChanged(app, event)
             imu.RecordingHistoryView.show(app);
+        end
+
+        % Button pushed function: HistoryFolderButton
+        function historyFolderButtonPushed(app, event)
+            folder=imu.recordingFolder(app);
+            if ~isfolder(folder),folder=fileparts(which('StampFlyIMUApp'));end
+            chosen=uigetdir(folder,'StampFly記録の保存先フォルダーを指定');
+            if isequal(chosen,0),return;end
+            app.setRecordingFolder(string(chosen));
+        end
+
+        % Button pushed function: HistoryOpenFolderButton
+        function historyOpenFolderButtonPushed(app, event)
+            folder=imu.recordingFolder(app);
+            if ~isfolder(folder),mkdir(folder);end
+            winopen(char(folder));
         end
     end
 

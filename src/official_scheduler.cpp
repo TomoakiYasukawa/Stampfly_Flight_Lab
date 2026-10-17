@@ -1,5 +1,5 @@
-// Local linker wrappers replace only MathWorks Timer1, leaving installed files intact.
-// Requires --wrap=mw_osTimerCreate,Start,Stop,Delete and fixed-step .0025 model.
+// プロジェクト内のラッパーで周期タイマーと制御タスクのCPUを指定します。
+// インストール済みMathWorksファイルは変更しません。周期は2500 usです。
 #include "official_scheduler.h"
 #include <string.h>
 #if defined(ARDUINO_ARCH_ESP32)
@@ -11,11 +11,30 @@
 #include "official_usb.h"
 #include "mw_timer.h"
 #include "mw_semaphore.h"
+#include "mw_thread.h"
 extern "C" mw_semaphore_t baserateTaskSem;
 extern "C" int __real_mw_osTimerCreate(mw_timer_t*,TimerCallbackFunction_t);
 extern "C" int __real_mw_osTimerStart(mw_timer_t*,TickType_t);
 extern "C" int __real_mw_osTimerStop(mw_timer_t*);
 extern "C" int __real_mw_osTimerDelete(mw_timer_t*);
+extern "C" int __real_mw_osThreadCreate(mw_thread_t*,TaskFunction_t,void*);
+#if configNUMBER_OF_CORES > 1
+// CPU0の無線・I2C・USB処理が制御タスクと競合しないようにします。
+// タスク生成時に指定することで、最初の浮動小数点演算前にCPUが確定します。
+// 他のMathWorksタスクは元の生成処理へ渡し、優先度・スタックも維持します。
+extern "C" int __wrap_mw_osThreadCreate(mw_thread_t* def,TaskFunction_t task,void* argument) {
+  if(!def || strcmp(def->name,"Baserate")!=0)
+    return __real_mw_osThreadCreate(def,task,argument);
+  const BaseType_t result=xTaskCreatePinnedToCore(task,def->name,def->stackdepth,
+                                                argument,def->priority,&def->taskhandle,1);
+  configASSERT(def->taskhandle);
+  return result!=pdPASS;
+}
+#else
+extern "C" int __wrap_mw_osThreadCreate(mw_thread_t* def,TaskFunction_t task,void* argument) {
+  return __real_mw_osThreadCreate(def,task,argument);
+}
+#endif
 namespace {
 gptimer_handle_t timer=nullptr;
 mw_timer_t* schedulerDef=nullptr;
@@ -89,10 +108,20 @@ extern "C" int __wrap_mw_osTimerDelete(mw_timer_t* def) {
 #define OFFICIAL_WRAP_STEP __wrap_StampFly_Official_FlightTest400_step
 #endif
 extern "C" void OFFICIAL_REAL_STEP(void);
+#if defined(OFFICIAL_RUNTIME_SECTIONS)
+extern "C" void official_sections_begin(uint32_t);
+extern "C" void official_sections_end(void);
+#endif
 extern "C" void OFFICIAL_WRAP_STEP(void) {
   uint32_t start=official_now_us();
+#if defined(OFFICIAL_RUNTIME_SECTIONS)
+  official_sections_begin(start);
+#endif
   OFFICIAL_REAL_STEP();
   uint32_t elapsed=official_now_us()-start;
+#if defined(OFFICIAL_RUNTIME_SECTIONS)
+  official_sections_end();
+#endif
   static uint32_t count=0,total=0,maximum=0,over=0;
   ++count;total+=elapsed;if(elapsed>maximum)maximum=elapsed;if(elapsed>2500)++over;
   if(count==400) {
@@ -141,10 +170,13 @@ extern "C" void official_runtime_setup(void) {
 extern "C" void official_runtime_info(uint32_t info[7]) {
   memset(info,0,7*sizeof(uint32_t));
 #if defined(ARDUINO_ARCH_ESP32)
+  // 別CPUのidle hookが時刻取得後に更新すると、符号なし減算が周回します。
+  // 両CPUの記録を先に読み、最後に現在時刻を取ってその競合を防ぎます。
+  const uint32_t at0=idleAt0,at1=idleAt1;
   const uint32_t now=official_now_us();
   const uint32_t stack=uxTaskGetStackHighWaterMark(nullptr);
   if(stack<stackMinimum)stackMinimum=stack;
-  info[0]=official_reset_reason();info[1]=now-idleAt0;info[2]=now-idleAt1;
+  info[0]=official_reset_reason();info[1]=now-at0;info[2]=now-at1;
   info[3]=stackMinimum;info[4]=xPortGetFreeHeapSize();
   info[5]=xPortGetCoreID();info[6]=idleHookStatus;
 #endif
