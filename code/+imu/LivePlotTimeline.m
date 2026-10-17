@@ -7,10 +7,17 @@ classdef LivePlotTimeline < handle
         LastHostTime = NaN
         LastSequence = NaN
         NominalStep = 0.02
+        PendingDeviceTime = NaN
+        PendingSequence = NaN
+        PendingFirstTime = NaN
+        PendingFirstHostTime = NaN
+        PendingCount = 0
     end
 
     methods
-        function [time,restarted,accepted] = advance(obj,deviceTime,sequence,hostTime)
+        function [time,restarted,accepted] = advance(obj,deviceTime,sequence,hostTime,mode)
+            % 単独の古い通常フレームでは、再起動や時間軸のリセットとしません。
+            if nargin<5,mode=NaN;end
             time = obj.LastDisplayTime;
             restarted = false;
             accepted = false;
@@ -30,13 +37,27 @@ classdef LivePlotTimeline < handle
                 if elapsed < 0
                     if obj.LastDeviceTime > 2^32/1000-1 && deviceTime < 1
                         elapsed = elapsed+2^32/1000;
-                    elseif elapsed < -0.5 || (sequence <= 1 && deviceTime < 0.5)
-                        restarted = true;
-                        elapsed = max(obj.NominalStep,hostTime-obj.LastHostTime);
+                    elseif elapsed < -0.5
+                        pendingStep=mod(sequence-obj.PendingSequence,65536);
+                        if obj.PendingCount>0 && deviceTime>obj.PendingDeviceTime && ...
+                                pendingStep>0 && pendingStep<32768
+                            obj.PendingCount=obj.PendingCount+1;
+                        else
+                            obj.PendingCount=1;obj.PendingFirstTime=deviceTime;
+                            obj.PendingFirstHostTime=hostTime;
+                        end
+                        obj.PendingDeviceTime=deviceTime;obj.PendingSequence=sequence;
+                        needed=3;if ismember(mode,[0 1])&&deviceTime<5,needed=2;end
+                        if obj.PendingCount<needed,return;end
+                        restarted=true;
+                        elapsed=max(obj.NominalStep,obj.PendingFirstHostTime-obj.LastHostTime) ...
+                            +deviceTime-obj.PendingFirstTime;
                     else
                         return % 遅れて届いた古いフレームで時間軸を戻さない。
                     end
-                elseif elapsed > 0 && elapsed < 1 && sequenceStep > 0 && sequenceStep < 32768
+                elseif sequenceStep==0 || sequenceStep>=32768
+                    obj.clearPending();return
+                elseif elapsed > 0 && elapsed < 1
                     obj.NominalStep = elapsed/sequenceStep;
                 end
                 time = obj.LastDisplayTime+elapsed;
@@ -45,6 +66,7 @@ classdef LivePlotTimeline < handle
             obj.LastDisplayTime = time;
             obj.LastHostTime = hostTime;
             obj.LastSequence = sequence;
+            obj.clearPending();
             accepted = true;
         end
 
@@ -54,6 +76,13 @@ classdef LivePlotTimeline < handle
             obj.LastHostTime = NaN;
             obj.LastSequence = NaN;
             obj.NominalStep = 0.02;
+            obj.clearPending();
+        end
+    end
+    methods (Access=private)
+        function clearPending(obj)
+            obj.PendingDeviceTime=NaN;obj.PendingSequence=NaN;
+            obj.PendingFirstTime=NaN;obj.PendingFirstHostTime=NaN;obj.PendingCount=0;
         end
     end
 end

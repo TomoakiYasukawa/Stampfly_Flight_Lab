@@ -4,7 +4,7 @@
   "Models": [
     {
       "Model": "StampFly_IMU400.slx",
-      "ModelSHA256": "3e2547aeb792d8e340f9975993f871000265b75186b1a046c50ced3a59d40ebc",
+      "ModelSHA256": "15748428d752e51cc60ab3288415fd6f80b51e3a9ab90f4c4ec469ffafa018a0",
       "BuildPassed": true,
       "BuildAction": "Build",
       "Step": 0.0025,
@@ -14,18 +14,27 @@
         "PWMHz": 150000,
         "PWMBits": 8,
         "MotorOutputEnabled": true,
+        "ExistingPIDParametersPreserved": true,
         "CorrectedAngularVelocityToPID": true,
         "AltitudeKalmanImplementation": "MATLAB Function",
         "RawToFModeIndependent": true,
+        "AltitudeControlTiltCompensated": false,
+        "HorizontalAssistEnabled": true,
+        "VerticalAccelerationUnits": "m/s^2",
+        "ParkingKalmanReset": "rising edge",
+        "ResetReasonTelemetry": true,
+        "WatchdogDisabled": false,
+        "HorizontalVelocityAndPositionLocalFrame": true,
+        "HorizontalSupplementBytes": 182,
         "BuildID": 1401,
-        "FirmwareRevision": 1701,
+        "FirmwareRevision": 1802,
         "RadioChannel": 3
       },
       "Binaries": [
         {
           "File": "firmware/current/StampFly_IMU400.bin",
-          "SHA256": "4f3f84b25f389132a8a1b7a00f60d09ca21044c559d96f0c0f40378ea492a402",
-          "Bytes": 986528
+          "SHA256": "f6e3a81990920195fb06625b15cb395ae5b68de193cafc71d0a24343f2f6354f",
+          "Bytes": 1.002304E+6
         },
         {
           "File": "firmware/current/StampFly_IMU400.bootloader.bin",
@@ -38,17 +47,17 @@
           "Bytes": 3072
         }
       ],
-      "BuildSeconds": 139.1410251,
+      "BuildSeconds": 151.7704853,
       "Dependencies": {
         "ExternalCustomDependencyCount": 0,
         "UnresolvedSourceCount": 0,
         "ProjectSources": [
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/StampFly_IMU400.c",
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/StampFly_IMU400_data.c",
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/ert_main.c",
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rtGetInf.c",
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rtGetNaN.c",
-          "build/imu_cleanup/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rt_nonfinite.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/StampFly_IMU400.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/StampFly_IMU400_data.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/ert_main.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rtGetInf.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rtGetNaN.c",
+          "build/horizontal_control/firmware/StampFly_IMU400/StampFly_IMU400_ert_rtw/rt_nonfinite.c",
           "src/bmi270/bmi2.c",
           "src/bmi270/bmi270.c",
           "src/bmi270/bmi270_imu_driver.c",
@@ -96,12 +105,7 @@
           "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_wait.c",
           "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_xtalk.c"
         ],
-        "InstalledProductSourceCount": 10,
-        "AllowedInstalledDependencies": [
-          "MATLAB products",
-          "Arduino Support Package",
-          "ESP32 Arduino toolchain"
-        ]
+        "InstalledProductSourceCount": 10
       }
     },
     {
@@ -113,13 +117,14 @@
       "SystemTargetFile": "ert.tlc",
       "Settings": {
         "RadioChannel": 3,
-        "BaudRate": 921600
+        "BaudRate": 921600,
+        "AcceptsSFIH182": true
       },
       "Binaries": [
         {
           "File": "firmware/current/M5Stamp_IMU_Rx.bin",
-          "SHA256": "eca3100fd75546e234e259cf0b0b3409cb2f060510b45182e7bc050eafc1f23c",
-          "Bytes": 853824
+          "SHA256": "9c4b4c3f6cd2f287bdd80fdbc21ea09220e27246a255eb9500356435df672212",
+          "Bytes": 853888
         },
         {
           "File": "firmware/current/M5Stamp_IMU_Rx.bootloader.bin",
@@ -132,27 +137,987 @@
           "Bytes": 3072
         }
       ],
-      "BuildSeconds": 11.9191672,
+      "BuildSeconds": 9.6528166,
       "Dependencies": {
         "ExternalCustomDependencyCount": 0,
         "UnresolvedSourceCount": 0,
         "ProjectSources": [
-          "build/imu_cleanup/firmware/M5Stamp_IMU_Rx/M5Stamp_IMU_Rx_ert_rtw/M5Stamp_IMU_Rx.c",
-          "build/imu_cleanup/firmware/M5Stamp_IMU_Rx/M5Stamp_IMU_Rx_ert_rtw/ert_main.c",
+          "build/horizontal_control/firmware/M5Stamp_IMU_Rx/M5Stamp_IMU_Rx_ert_rtw/M5Stamp_IMU_Rx.c",
+          "build/horizontal_control/firmware/M5Stamp_IMU_Rx/M5Stamp_IMU_Rx_ert_rtw/ert_main.c",
           "src/imu_rx.cpp"
         ],
-        "InstalledProductSourceCount": 8,
-        "AllowedInstalledDependencies": [
-          "MATLAB products",
-          "Arduino Support Package",
-          "ESP32 Arduino toolchain"
-        ]
+        "InstalledProductSourceCount": 8
       }
     }
   ],
-  "VerificationRecord": "docs/imu_cleanup_verification.json",
+  "VerificationRecords": [
+    "incident_invariants_verification",
+    "vertical_boundary_verification",
+    "incident_recording_verification",
+    "incident_layout_verification",
+    "horizontal_telemetry_verification",
+    "imu_cleanup_model_audit"
+  ],
+  "SourceHashes": [
+    {
+      "File": "code/+basic/ExtendedLogger50.m",
+      "SHA256": "f00da5e897382341c8d03b04dbd9f5df628dce12133fbf18690f8fb8f290fa13"
+    },
+    {
+      "File": "code/+basic/Joystick400.m",
+      "SHA256": "0f227ba9796cf7a605daf9a6b159489df8a39890ca6c699baa0426ef03bbff5c"
+    },
+    {
+      "File": "code/+basic/packCommandExtension.m",
+      "SHA256": "79465b2e4524b72b000900b3268577ddb01b2b25ddd5702c6aaccdf3c1418978"
+    },
+    {
+      "File": "code/+horizontal/Command.m",
+      "SHA256": "c63fc6e7a59aca56021aa0e66fa997a9333d6f18ef206eb3f22fc9bee84e7da8"
+    },
+    {
+      "File": "code/+horizontal/FlowMotion.m",
+      "SHA256": "4a4b819deb441a9e2c5fa17d7f4b57fbf1a35fd827a585add1481d1b122ddb78"
+    },
+    {
+      "File": "code/+horizontal/IMUSource.m",
+      "SHA256": "2ffe2160107b0a8129a9c3a70dd875df6decd811a2f10d194b30ff9d106880c9"
+    },
+    {
+      "File": "code/+horizontal/Logger.m",
+      "SHA256": "a8246ea6eae26eac994cb9dc34b717407feb308fc48b8ff98d506f7c8c3b3c04"
+    },
+    {
+      "File": "code/+horizontal/SelectAttitude.m",
+      "SHA256": "9711a64ba82ee10e393fc2459dc8d16cbe68ba0eff5412376cde2a98c7edd56c"
+    },
+    {
+      "File": "code/+horizontal/TelemetryPacker.m",
+      "SHA256": "a0559c8def57fde5d70152c38a517ea24d7687b050b15b90d2f05a4613caa421"
+    },
+    {
+      "File": "code/+horizontal/TelemetryTransport.m",
+      "SHA256": "a27cbf91ec27f4fabaff95414611ab5795db19f35813a97637138d0fb645744e"
+    },
+    {
+      "File": "code/+horizontal/VelocityPI.m",
+      "SHA256": "6ac4af98de78f86bdf59457004aae1c0c63f840481041a44e0f7b7ca239ed3ee"
+    },
+    {
+      "File": "code/+horizontal/bodyRotation.m",
+      "SHA256": "965d9170017954415d011148efb2ad8da39bb3a13c8d94e092f107513e0dd835"
+    },
+    {
+      "File": "code/+horizontal/controlTilt.m",
+      "SHA256": "508548943ed822b9a3e0d2f0fc434233fc157f63b0d849c5707f16750c5e287a"
+    },
+    {
+      "File": "code/+horizontal/counterDelta.m",
+      "SHA256": "f6863635c6666c69ad2597f32549632a9ed6f90b2a119185b8fb0d4bf254ba41"
+    },
+    {
+      "File": "code/+horizontal/fixture.m",
+      "SHA256": "5dc9380753dcd8b4702c69fe399da19a3455c4e215ba84d75073a85f6d2adfb3"
+    },
+    {
+      "File": "code/+horizontal/limitVector.m",
+      "SHA256": "59bb50f0f9c7cc27bde85609f5f8122123cce2f008a5c2353bbebe867bb4cc4e"
+    },
+    {
+      "File": "code/+horizontal/loggingState.m",
+      "SHA256": "ef997544d49c57dc2cb773cb0289ca5b4ce9525c645d202fa5e46a508290ecd9"
+    },
+    {
+      "File": "code/+horizontal/mathSingle.m",
+      "SHA256": "d23c1022de26ac7a7625233dd8f0c90ea1acfaa45eca5d0e0affb1559d2da950"
+    },
+    {
+      "File": "code/+horizontal/names.m",
+      "SHA256": "5df05d1e8b6f70cad2415622bc77761fb0fbea7c310ef118dba9bdd21e164098"
+    },
+    {
+      "File": "code/+horizontal/packFrame.m",
+      "SHA256": "5bd805206d88e9be6af9b48ba7ece1ef3da9cc5e7e84edbe8571c4683b59f685"
+    },
+    {
+      "File": "code/+horizontal/vectorNorm.m",
+      "SHA256": "fa8eec696ba9fb0a54f3fe14b243df2c43ea867a4cea7783d629296b5522912b"
+    },
+    {
+      "File": "code/+imu/AttitudeInputAdapter.m",
+      "SHA256": "3854356303a491362edd5b68751f7b880e71047e1e5f636eef1a4c3d17256595"
+    },
+    {
+      "File": "code/+imu/BaseRateEnd.m",
+      "SHA256": "4426ee0fd74a1426db6fa2049e24e659b4f2c9c1335d1347a99336c2235cb2e7"
+    },
+    {
+      "File": "code/+imu/BottomToFWithFreshness.m",
+      "SHA256": "5bfea264faf2e759d97d97debe87974399cd550baeb74304a9bd7c8ca5985673"
+    },
+    {
+      "File": "code/+imu/ESPNowIMUTx.m",
+      "SHA256": "b012d56657d13321c38fd179af0ae51dc0c49480bf72cf86ae132fe1c637eefd"
+    },
+    {
+      "File": "code/+imu/FlatGroundPoseTracker.m",
+      "SHA256": "80086f89c3b2f089402c2d401ca2dccf575da46ac285ad71d9f78aedcb9850dc"
+    },
+    {
+      "File": "code/+imu/FlightCommandReceiver.m",
+      "SHA256": "1128019ea04b93ed275e007caecdd86b43f7100db8721296ae1736b1646259b9"
+    },
+    {
+      "File": "code/+imu/FlightRecorder.m",
+      "SHA256": "2fbe3670d021beab04842ffe33271b3cde41c753fd33a4fb60f37701b0cd7438"
+    },
+    {
+      "File": "code/+imu/FlightTelemetryFramePacker.m",
+      "SHA256": "7fe7bd51791baf7ad61dc00befcbcd95e2ef952a22db2347f5cbdf229c8d73dc"
+    },
+    {
+      "File": "code/+imu/FlightTuningReceiver.m",
+      "SHA256": "add9be23bc9c98713b74cb6a2c99d8a0ab4a4572f2c6119b77d28b17ddd38f33"
+    },
+    {
+      "File": "code/+imu/FlowDistance50.m",
+      "SHA256": "3f6484ae9a8718889b334722716dfd688c9a849725ffe5b82421e8cdc016ccd7"
+    },
+    {
+      "File": "code/+imu/FlowXYTracker.m",
+      "SHA256": "1bbe54070461b68b573df9777bd414c8a2a4a7796ae0ad01234056dbc685ef18"
+    },
+    {
+      "File": "code/+imu/GroundFlowXYTracker.m",
+      "SHA256": "d723c917a0b5ceb2b4a88a1724f07cb00a6d9d28e561df2250a2838fac73c81c"
+    },
+    {
+      "File": "code/+imu/HeightTuningManager.m",
+      "SHA256": "6b7228f1abd652ca429d5a797a30b44fb086225d7d591cc5b0b61183d6f0de2d"
+    },
+    {
+      "File": "code/+imu/HoverFrameEstimator.m",
+      "SHA256": "1bd11fb7ab823b00ff6308674fb689aaa205e296407af9ecc72880cda6114336"
+    },
+    {
+      "File": "code/+imu/IMUFramePacker.m",
+      "SHA256": "29f0c49bde89a2bde01551f8dda156d69f1f4df362b0d92bc7791acdb35e669f"
+    },
+    {
+      "File": "code/+imu/LEDColorMap.m",
+      "SHA256": "1913a3dd51e6cee05ea185178df6d0d226eb8cd7298dfbbade6fa05c6e359439"
+    },
+    {
+      "File": "code/+imu/LivePlotTimeline.m",
+      "SHA256": "fef70c539aada176fe0f0f1ef8926670e4f1ca17e7b5a1b5e7300fe228375cd6"
+    },
+    {
+      "File": "code/+imu/M5Receiver.m",
+      "SHA256": "72cc0c21038a6071242f35ae5a5294afb94e0b57e5b16f5fc23ce19de76ef76e"
+    },
+    {
+      "File": "code/+imu/MatRecordingWriter.m",
+      "SHA256": "e2c323567ef8bfc047992bc6eaaf7e46e7c8292aab5cc64f7dfb65e4970e90dc"
+    },
+    {
+      "File": "code/+imu/QuaternionToEuler.m",
+      "SHA256": "2bc0f6a20e0bc87255e7d76a400f380057fd98c5f4adffd9a5ed47363dcfc881"
+    },
+    {
+      "File": "code/+imu/RecordingHistoryView.m",
+      "SHA256": "399a49f7dd3bde8a2cbf717aa7dd071d5d92095066627a3dae7db972b8c99de9"
+    },
+    {
+      "File": "code/+imu/StampFlyPoseView.m",
+      "SHA256": "ea7004bd2f5c8083d0c774f81c415f3a03b325eded69b14dd598e33ed389453a"
+    },
+    {
+      "File": "code/+imu/TelemetryFramePacker.m",
+      "SHA256": "9495a5b1b0133d1c415570df1704ecdd7d45fd0de5a9dfd61ba2cb1eb305b908"
+    },
+    {
+      "File": "code/+imu/TimedBMI270.m",
+      "SHA256": "aa55f7e9d7e19663210a2f54ddf7ba8c2af99b200ddecd326fdab6a7108931c8"
+    },
+    {
+      "File": "code/+imu/ToFHeightCorrector.m",
+      "SHA256": "a7b1e8b72b90ecbdff9c86b920169185ab006fadae58e2d8ce682b69f0239840"
+    },
+    {
+      "File": "code/+imu/VirtualFlightCommand.m",
+      "SHA256": "633628391aa122146fba89da4ea26d0815941711ac09c82dc231b4aeb2df4235"
+    },
+    {
+      "File": "code/+imu/VirtualNoHeightTuning.m",
+      "SHA256": "bfad2d8ab2e1415f77809d60e2aeb73a60a730577db687c240ea99a3a423a9cc"
+    },
+    {
+      "File": "code/+imu/VirtualStampFlyPlant.m",
+      "SHA256": "f0d9959a77700edcfd6ea9869599ade6fb845953cca9b09c7401780fbf86b25a"
+    },
+    {
+      "File": "code/+imu/bodyToNEDRotation.m",
+      "SHA256": "ec14e758ce8543230a6646906e36ae380228a03d24188028c7f800fe618becbe"
+    },
+    {
+      "File": "code/+imu/correctToFHeight.m",
+      "SHA256": "514e46f4faae1907385930725ff4f4c516d66cce5185f77a8622b13220e7521a"
+    },
+    {
+      "File": "code/+imu/crc16.m",
+      "SHA256": "3235f323b08c341a269a5baf4b2bef73492d46027826572cabf3a85565af3ccb"
+    },
+    {
+      "File": "code/+imu/decodeExtensionFrame.m",
+      "SHA256": "a85b85be92149ae25f99d93b20738ac2c1bc8f50ed19455572e10d53b7031f1c"
+    },
+    {
+      "File": "code/+imu/decodeFrame.m",
+      "SHA256": "d569ecdcd4a012db641a347688acea83c52581f14778d4ea46c342b8c24fa486"
+    },
+    {
+      "File": "code/+imu/extensionNames.m",
+      "SHA256": "0344e078eec4f9d2acca6bdd4bea370181941fde6b0aada4c75d5b89a223caea"
+    },
+    {
+      "File": "code/+imu/fitAppWindow.m",
+      "SHA256": "d68beb02c916f3bb55607a6384d75f6ef197f8414388c66b4028b175e03363fe"
+    },
+    {
+      "File": "code/+imu/flightDiagnosticNames.m",
+      "SHA256": "5d653f00378628c14255196d357f9c885331fd22dc50d175fbb445af470f5618"
+    },
+    {
+      "File": "code/+imu/flightDiagnosticScales.m",
+      "SHA256": "32e01018f8745099ff1ad004292b5709e078d6600764c9215d4831f6b676f0db"
+    },
+    {
+      "File": "code/+imu/flightStateDefinition.m",
+      "SHA256": "406af8e26916a471290be0b3f160b434f3e8e2db77fac2a98093968d68522efb"
+    },
+    {
+      "File": "code/+imu/flightStateName.m",
+      "SHA256": "19cad9c779166ec577f9a5f05aea7f304966d2bf458ade948c892fb2c475635f"
+    },
+    {
+      "File": "code/+imu/formatHeightTuningCommand.m",
+      "SHA256": "bdce992fe12368a819d969ebae0957ae0aa305c02366d37cf3ce86cb79345991"
+    },
+    {
+      "File": "code/+imu/frameLength.m",
+      "SHA256": "19ffabe2661c7fb73baf9b2a43c42684251f863f5a75e220ea9d23dfd161d200"
+    },
+    {
+      "File": "code/+imu/gateToFDataAge.m",
+      "SHA256": "f0a2c2fff95e37cbb714871c9191905892142dc2e3fbca989763af0ddbcd5b5c"
+    },
+    {
+      "File": "code/+imu/heightTuningLimits.m",
+      "SHA256": "4c634526a6669dc615402a3573a5fdbafcca834fa3fd96087b56677515c61ecc"
+    },
+    {
+      "File": "code/+imu/heightTuningScales.m",
+      "SHA256": "175c7021787b7f8e9a42794d98f7100b7bf7206c68dcd84538824b3a58a628f1"
+    },
+    {
+      "File": "code/+imu/heightVelocity.m",
+      "SHA256": "03a93888af0033f144bcf342fe5e06cb92a2adfb7ca8a00b721655ac228a54a0"
+    },
+    {
+      "File": "code/+imu/packAttitudeFrame.m",
+      "SHA256": "5e5bab0590b424da6fbc5c96ab4b14f1469c135083238f989b76b15d3b493f22"
+    },
+    {
+      "File": "code/+imu/packCommandExtension.m",
+      "SHA256": "6f48f6153c6f02f6eba872ef4518bce0c18a4107823c06897786f2fb7d525997"
+    },
+    {
+      "File": "code/+imu/packFlightDiagnosticsFrame.m",
+      "SHA256": "27d23cf9dd631ee8933ba9aa256c8ad10a4438a4fd8ddd87fcc3507354413023"
+    },
+    {
+      "File": "code/+imu/packFlightFrame.m",
+      "SHA256": "37d74090d2f193b2fbf00b00cf024b383bb83af42ed4bd7611f17b340cba131e"
+    },
+    {
+      "File": "code/+imu/packFlightTuningFrame.m",
+      "SHA256": "1f80bac2061a2c2b88822fa80f541f7cbd7cbe5b02410a8cc3da327418b3673c"
+    },
+    {
+      "File": "code/+imu/packFrame.m",
+      "SHA256": "e48ce579a5f5f5623e5f52d2db2654400c616059df7b3ac051122ea4140c0ffd"
+    },
+    {
+      "File": "code/+imu/packHeightFrame.m",
+      "SHA256": "9c4af8959ea3ac6325c2ee489d8b059fabcc41509a5b0de09bebe8ecf0cbb56a"
+    },
+    {
+      "File": "code/+imu/packMotorFrame.m",
+      "SHA256": "ca7500ff305fb3d4b91c3269815f76114d64acedc6fa64eef53649147151218a"
+    },
+    {
+      "File": "code/+imu/packSensorExtension.m",
+      "SHA256": "b1c16ddade7e3f0c81a6201ddd8071ce803ce6fd5034e675702b4f7f313b012b"
+    },
+    {
+      "File": "code/+imu/packTelemetryFrame.m",
+      "SHA256": "95aebb074141fb6cb5ff5a0e1311b1056f223145f44695488539e4502a551a7e"
+    },
+    {
+      "File": "code/+imu/readExtendedTelemetry.m",
+      "SHA256": "8c5c8965a6fc4675c5dacd6bf5f4f081cbd22d28dbb1979ea7837b6387ea800e"
+    },
+    {
+      "File": "code/+imu/readRecordingHistory.m",
+      "SHA256": "0462f1d4613d67f3fe12705259832dc2ef20a451ee15f2eefeb85918ed80c312"
+    },
+    {
+      "File": "code/+imu/recordingStopName.m",
+      "SHA256": "485e0ed0e55c577372c6b2d24d99a39f997c7145bb2f9b3e795e3ec43c4e18f2"
+    },
+    {
+      "File": "code/+imu/recordingTimeline.m",
+      "SHA256": "e0adda0c85199145eb44d7783d330d77f53a6b65d56ca5b79f81d9a0085ff94d"
+    },
+    {
+      "File": "code/+imu/resetReasonName.m",
+      "SHA256": "d173669dcf5244ce5d3d36d53374a6d95691c6181230191692b23f104e7a6a73"
+    },
+    {
+      "File": "code/+official/AltitudeKalman400.m",
+      "SHA256": "d7ea00800a52c43d2033054b8161abe7e51d049ac508c4a72918fe83767a5884"
+    },
+    {
+      "File": "code/+official/Battery400.m",
+      "SHA256": "7e73ee7628dd810b53e4799daff129d07c043ededb27a7033a93383f4c0d461c"
+    },
+    {
+      "File": "code/+official/BottomToF400.m",
+      "SHA256": "7ab0ee89698049def9d56f19855acc9a45268956bb7ddf5d478d5de9dc4d3d8d"
+    },
+    {
+      "File": "code/+official/BottomToFSource.m",
+      "SHA256": "d8114e4a5fb1f80e994706a4d2e13ebfdc410c2d07d61f69ecd94222be33a49c"
+    },
+    {
+      "File": "code/+official/ControlDiagnostics400.m",
+      "SHA256": "882645db6bd70c68c9543f2bae15e2b23afd2f1ec9c645835ea9eec83fcd3c7c"
+    },
+    {
+      "File": "code/+official/ControlGates400.m",
+      "SHA256": "6e6ff52992794445b0501592ea0f9bc03292456551b5a320fb0bdbc9e85eaf6d"
+    },
+    {
+      "File": "code/+official/ExtendedLogger50.m",
+      "SHA256": "697f92b3e9e43e5c7e26790f69ad63dc1e50c84066bdd859dd435b62c746d130"
+    },
+    {
+      "File": "code/+official/FlightController400.m",
+      "SHA256": "aa3ebf2d64d55b0e4542049e5f79b7a464bb2497a899784ca7fc8cf6bf637d7e"
+    },
+    {
+      "File": "code/+official/FlightInputs400.m",
+      "SHA256": "2701c1fdb8e30a1303df4e9ee24cd7e0977d65f310f264145f62ca41442e355a"
+    },
+    {
+      "File": "code/+official/FullReplayInput400.m",
+      "SHA256": "9d47b5a8279a442f0725501053a98665d5ff6d69f306fef47cf0033ccc3d2331"
+    },
+    {
+      "File": "code/+official/IMUAxes400.m",
+      "SHA256": "c8215337cbc68120b0e8633b6d9120ca3ca64ae2a75bc9be4277d8798389bc0b"
+    },
+    {
+      "File": "code/+official/IMUCalibration400.m",
+      "SHA256": "83de6d31f64f3df8209fff2969fd8d685c48bbb587e06c3fd1c7da636f2b6481"
+    },
+    {
+      "File": "code/+official/IMUFilters400.m",
+      "SHA256": "f0518991fd7de5c3925a7cdd8f0687823280d0de7532858fcce3ca721523f2ee"
+    },
+    {
+      "File": "code/+official/Joystick400.m",
+      "SHA256": "0b640b7d2e3076d011b71e101ae014c950a28194731f9bfb2a2857b718cc440b"
+    },
+    {
+      "File": "code/+official/JoystickTelemetry40.m",
+      "SHA256": "114802d1c1ea35401d2c19ebb816d4f69ad37a2d2bda80d1112b1e07bbb739e6"
+    },
+    {
+      "File": "code/+official/LogTransport50.m",
+      "SHA256": "f035444d0390d318e9a2de4fb811216a55950a119269c669aa3d9a331f6e4f0c"
+    },
+    {
+      "File": "code/+official/LoggerPacker50.m",
+      "SHA256": "f5bc2718490a1533da3421f41d0a8bd0c0d6ad3d19a686b07006ab02c0949455"
+    },
+    {
+      "File": "code/+official/Madgwick400.m",
+      "SHA256": "3e375805dad03f0eb38ed54d89082a972790b26c11a01055bc28054ebf4e583b"
+    },
+    {
+      "File": "code/+official/MotorMixer400.m",
+      "SHA256": "6628702ac431c4c14fca3817a2f29762bb477fbd5dde3ccea385557c73e89b42"
+    },
+    {
+      "File": "code/+official/MotorPWM400.m",
+      "SHA256": "ddbdba8725898d38a5cc5cdd2e2984678135473bc4bd5936c4a797f3a86f5f5f"
+    },
+    {
+      "File": "code/+official/OfficialFlight400.m",
+      "SHA256": "d93a0ba82ed7ac474d5e8776da79bc2daf3d294afec9462239acc1e8db61dc0e"
+    },
+    {
+      "File": "code/+official/PID400.m",
+      "SHA256": "966793bed2c68dfb1f65629c8b269704882f5aacdd2bf7a2089bb0f16b4419a6"
+    },
+    {
+      "File": "code/+official/RadioTelemetryWrite40.m",
+      "SHA256": "034c837395dc358b91c554ed662dc7aed331288355172d52c85a38df73deae8e"
+    },
+    {
+      "File": "code/+official/RateReference400.m",
+      "SHA256": "dda8e1e8b53bd316140cb530e8afebe160dfdcecac3ee430d13f0b1d4fd3d005"
+    },
+    {
+      "File": "code/+official/ReplayInput400.m",
+      "SHA256": "1ad68fd4ca6db5d1f0b29f0e418e184b1b241b47a26fe14b08666f2d849e78fb"
+    },
+    {
+      "File": "code/+official/SensorDiagnostics400.m",
+      "SHA256": "d3f9d2cdbd11837a6f388976b0fb5e0278ea66e9b7cbf4edce82d9e688dc420c"
+    },
+    {
+      "File": "code/+official/SensorFlags400.m",
+      "SHA256": "31c359e6d9504de4d9b095cd65c970e9f03a21ac99cd0d76be433168d2b6a441"
+    },
+    {
+      "File": "code/+official/SensorFusion400.m",
+      "SHA256": "4425636704b31f5ce49c461f249fbe845aa4fb026eee3caf0d2cfa987edf9f00"
+    },
+    {
+      "File": "code/+official/StatusWrite400.m",
+      "SHA256": "a1e14e18332964e5ce7e0b983bb57444a05da453905c67c457a0c1997ae65b3b"
+    },
+    {
+      "File": "code/+official/StickTargets400.m",
+      "SHA256": "2e0e85414e6e5c7adbc9926afca97b801eb572cc904c95fafaaab9857b5089c0"
+    },
+    {
+      "File": "code/+official/Supervisor400.m",
+      "SHA256": "5e2968a55941722ad7b36c7a996381a84394928cc8a2061195d923bf196c2acb"
+    },
+    {
+      "File": "code/+official/TakeoffCommand400.m",
+      "SHA256": "bd3aba072cd2e72d21c42b832b2dce101d90a8582342af58d62f22e31de6aebb"
+    },
+    {
+      "File": "code/+official/ThrustFinalize400.m",
+      "SHA256": "6ede7ad66b639d6a012c0788a5dc09b1ad706bd6be5540a1c3864f0a7429c807"
+    },
+    {
+      "File": "code/+official/TickStart400.m",
+      "SHA256": "c06bb1f6769f48aa4acc5d173ab429e90145e88e5cd09349f66997e1eda0f574"
+    },
+    {
+      "File": "code/+official/TimingEnd400.m",
+      "SHA256": "bf28a2d14f10a8ee49aaa5f0679aa9472d77696ea1feb1eff0054c175dcecc5a"
+    },
+    {
+      "File": "code/+official/ToFPreprocess400.m",
+      "SHA256": "23431d979ed8e8d0d20c0bd724d0c14588ee5b6e4ddcbf99d73a06791d36d9b4"
+    },
+    {
+      "File": "code/+official/USBLogger50.m",
+      "SHA256": "50c9f129cb4450e646e3d25b6c9482bb3bd51f6ad7c7a7dc8d90fc5628002afa"
+    },
+    {
+      "File": "code/+official/UserButton400.m",
+      "SHA256": "7408a3dece34bf89c49f49a41e5c2ed12ac62597ec798ba18c313d68ed9a4b32"
+    },
+    {
+      "File": "code/+official/VelocityReference400.m",
+      "SHA256": "7268499ccdc3c48991c4ccabb5d325cc0bd823554c79bc43a7a9cdb05caabd01"
+    },
+    {
+      "File": "code/+official/VerticalAccel400.m",
+      "SHA256": "9c2c1f8e3433637f05a3f9b4262049aa3838bca0d442c277b2f3f2034937a86b"
+    },
+    {
+      "File": "code/+official/controllerInitial.m",
+      "SHA256": "64ae04532f88b21c7e5a1a981c87c885545d43434e2f5db976c6762485de0e7d"
+    },
+    {
+      "File": "code/+official/controllerStep.m",
+      "SHA256": "d67b4873bb213908428b21347dd11a2c7b2d08e5df8e829089df5eaf88f31463"
+    },
+    {
+      "File": "code/+official/elapsedUs.m",
+      "SHA256": "ece1f8172aa0b84a9f70488b0c131f4886ba580ab1f65f64dc5ec4de7a175142"
+    },
+    {
+      "File": "code/+official/eulerQuaternion.m",
+      "SHA256": "65bc0fadaa281b6070746f1d1a2143e7d1cfd3919f73c96c724bc4204a65d658"
+    },
+    {
+      "File": "code/+official/filterStep.m",
+      "SHA256": "187c8609866d1b400d578bdad9d97aa22c5288273a6fb64dd3b66d9a5ae37181"
+    },
+    {
+      "File": "code/+official/kalmanInitial.m",
+      "SHA256": "6b32dd56000598f41980b6e2bb8266c729f4baf931fbc6d70b6af83ac9bec38c"
+    },
+    {
+      "File": "code/+official/kalmanStep.m",
+      "SHA256": "fb1ecc927a2f95d84be26f314a11493c02e806a51e36f7b892f154fa67de1b3d"
+    },
+    {
+      "File": "code/+official/madgwickStep.m",
+      "SHA256": "154908f5813d7e5047902977cef89cc51b41b5576eda4980e27ca3fbc94fdef4"
+    },
+    {
+      "File": "code/+official/pidStep.m",
+      "SHA256": "3dede87bccc32ee6d2b404c12634ad262687e87bf69cd2d2b219a0de8a7305ed"
+    },
+    {
+      "File": "code/+official/sensorInitial.m",
+      "SHA256": "0c2bb7932cf940fa251c9431f8f14d82ffedeb84b962c53bf695b7885e607d9c"
+    },
+    {
+      "File": "code/+official/sensorStep.m",
+      "SHA256": "7146a5c20d041fb58799b67ded06d3d64e18a04a738d2bbd7b3a79636a9505c9"
+    },
+    {
+      "File": "code/+official/supervisorInitial.m",
+      "SHA256": "f785176f04a38f416cb9a4acf5238bebae78c5be3cbc6df8257ab3629ebaa045"
+    },
+    {
+      "File": "code/+official/supervisorStep.m",
+      "SHA256": "3f45ba75aae84731efbdb98a1e6cfcb1712b8970763bf559aa768705560b8ee7"
+    },
+    {
+      "File": "code/+reorg/add.m",
+      "SHA256": "7e2517fdd814d44a169a5cf4a2303ca91d00bea83128918912a92674002870b9"
+    },
+    {
+      "File": "code/+reorg/chartInterface.m",
+      "SHA256": "6e3ed8d5c3552ab93551a7d119d9b70cf8f537772e850ee0c6139c7b142ffafb"
+    },
+    {
+      "File": "code/+reorg/configure.m",
+      "SHA256": "824b051fcb91a92ad82aa11b297f70220a03fa2d7c71debc9cf77c9c423a094f"
+    },
+    {
+      "File": "code/+reorg/created.m",
+      "SHA256": "3da601b3a4f7bfdfb4dea107b325bd44fa766f29e6c46498831869317306e689"
+    },
+    {
+      "File": "code/+reorg/data.m",
+      "SHA256": "9e5519c081975c41c2d32740b2d710719138491fe5528b461290a2a0f8c90a93"
+    },
+    {
+      "File": "code/+reorg/directTags.m",
+      "SHA256": "55ce318d3645c4b15eb54e900a9422c9f1a54e57a1380c47c3ba4693ae179d3b"
+    },
+    {
+      "File": "code/+reorg/edit.m",
+      "SHA256": "c7d65e48a7e6a6756590cd7353b1d2c14a0c78000f5c7303ac8bc62535b845b1"
+    },
+    {
+      "File": "code/+reorg/group.m",
+      "SHA256": "0efc686a4e8a5c286119c82881f90a707787af59502c298f0d000837d7a2536c"
+    },
+    {
+      "File": "code/+reorg/groupCopy.m",
+      "SHA256": "32a0a6eea4dac8ae4941afaad53286f873dccf88028d99727be7edeca6eb8046"
+    },
+    {
+      "File": "code/+reorg/id.m",
+      "SHA256": "0c5170487b6bb66d698d52717685e929e60b2f754cb2f6dc9eecb3622646fc89"
+    },
+    {
+      "File": "code/+reorg/isChartScope.m",
+      "SHA256": "3da1dd787a4651c51cd949d3acaf2f7dd9edb2f646008c5eae40ec43f1f83bad"
+    },
+    {
+      "File": "code/+reorg/lift.m",
+      "SHA256": "78ddd93566b322f1b1291555d90873bad55b31fc73f7a9fc49e61377b219214d"
+    },
+    {
+      "File": "code/+reorg/links.m",
+      "SHA256": "1016433bd45f2423fcbee75f9b8a4a1aceaf138c08ccbd48f695b9bcd1ce0f0e"
+    },
+    {
+      "File": "code/+reorg/members.m",
+      "SHA256": "7770bcdfd34fd540dfccd071ccedeee02d7e35a513463f22dfd07c943fe44d97"
+    },
+    {
+      "File": "code/+reorg/note.m",
+      "SHA256": "eecf504d0948e99968db3e8988ed016339ae3341f1093fd7fc6d1326737333ba"
+    },
+    {
+      "File": "code/+reorg/outputMap.m",
+      "SHA256": "a30982e6dae15e1d320a2981ee59ab6d7edf739703dbf5a98860f68f445d14df"
+    },
+    {
+      "File": "code/+reorg/path.m",
+      "SHA256": "01c8b22c6e0b1bf76f6617dc48c662e4a9a3255d89955b0b977f2f2f0fe6beb7"
+    },
+    {
+      "File": "code/+reorg/ports.m",
+      "SHA256": "a579d5b8f88c79d97712f633859d6ddfa4969cbb932b587c47fbbd7ec6565f67"
+    },
+    {
+      "File": "code/+reorg/semanticSnapshot.m",
+      "SHA256": "4a0786e49cdefba9e26d081b1301efaf3e2689a090815d7ce0d37d3bccde75ab"
+    },
+    {
+      "File": "code/+reorg/transition.m",
+      "SHA256": "a523b9dcb01fe09b777923fa17d746d4d9519648e3cfd9639656819fbae37496"
+    },
+    {
+      "File": "code/+reorg/wire.m",
+      "SHA256": "e1277b0f3e6e26b52f55ee5b3354d8f16314912d24391851b29327032448dc43"
+    },
+    {
+      "File": "code/+reorg/wrap.m",
+      "SHA256": "87e004aaf029079537b9fce4dfe2d2389a55ba481f841ac24d122d2061d5e005"
+    },
+    {
+      "File": "code/+stampfly/BMI270IMU.m",
+      "SHA256": "de3651096b26da684af140952f27fb6849c4dbd0380ee073257e458b691a2f95"
+    },
+    {
+      "File": "code/+stampfly/BMM150.m",
+      "SHA256": "00bd921d411ef905aa37f2f8e1f6bb1b76cf8cccf33f722ccebf7421c4223b1d"
+    },
+    {
+      "File": "code/+stampfly/PMW3901MB.m",
+      "SHA256": "53f1694df610f353e285c571853ef0f7e5a2179985472a12a3dbd99ec7aa63f0"
+    },
+    {
+      "File": "code/+stampfly/VL53L3CX.m",
+      "SHA256": "8d2ebc200c77a9be1766affadf7b725f713ed6e78e73f19fe6700ce6c1f00fc7"
+    },
+    {
+      "File": "code/model_algorithms/ControlEnableReset.m",
+      "SHA256": "f35f6d235b3b3b1bd3d54ca3eae236b2b7c51b84e783ebcf481295bf06df30a5"
+    },
+    {
+      "File": "code/model_algorithms/FinalizeMode.m",
+      "SHA256": "582b040c959ae8cfafb19487a89c67950ab430abadfb386011392d22541dd9bd"
+    },
+    {
+      "File": "code/model_algorithms/FlightSupervisor.m",
+      "SHA256": "e5ef3044e1693366bb56870ef9546de8a64d97281e63b3660ab429df7744585f"
+    },
+    {
+      "File": "code/model_algorithms/FlipSequence.m",
+      "SHA256": "44e5497f1f2ee7939117a6a6bb20c15aabc790ab6ae3cc35f98ebb6cf34817f0"
+    },
+    {
+      "File": "code/model_algorithms/IMUFilterInputs.m",
+      "SHA256": "8e63ead70f21d4a0fc94b8b5cd0ecfd48ffcfc0dd2df702fd46a7d6ec19f30c9"
+    },
+    {
+      "File": "code/model_algorithms/IMUFlightOutputs.m",
+      "SHA256": "46fbdab84981e5a32f1668a7145e309cb0f67e28266459167448226c057c8e01"
+    },
+    {
+      "File": "code/model_algorithms/KF400CurrentState.m",
+      "SHA256": "93e8e44b8cc067e04ff010328ac42494cd6891c18972ed49fe1ee9ab4ff7364d"
+    },
+    {
+      "File": "code/model_algorithms/KF400FlightOutputs.m",
+      "SHA256": "b7415f4bdd866441211db6832802bac0db0b7720c933335475d7f5c9acbf843e"
+    },
+    {
+      "File": "code/model_algorithms/KF400Schedule.m",
+      "SHA256": "733c716c344428909f79a8a17f556b0494e004a61a99bc6bef77364ca50b179a"
+    },
+    {
+      "File": "code/model_algorithms/MotorMixer400.m",
+      "SHA256": "5ec10d4705eae0637a051f89fc80924c8a0ba35e415c455c73aed8754db43efd"
+    },
+    {
+      "File": "code/model_algorithms/SensorFlags.m",
+      "SHA256": "2acad37091061aa68f911771efcb27eee61cd9460b62161e35280e7f46c218a8"
+    },
+    {
+      "File": "code/model_algorithms/StatusIndicators.m",
+      "SHA256": "85c5a5c447e63370c2ef17ae5f5a02f4d222645b9661899ac12e4ec2eb175826"
+    },
+    {
+      "File": "code/model_algorithms/StickToAngleRate.m",
+      "SHA256": "09177f36a1079de79bde75a5ec303b018aaa5a36eb0f6ed57bfdb1977cebd53b"
+    },
+    {
+      "File": "code/model_algorithms/TakeoffLandingCommand.m",
+      "SHA256": "57308e8d663db8e86ef134369ee91489f72084415d9544be816c557a7e20a384"
+    },
+    {
+      "File": "code/model_algorithms/TelemetryValues.m",
+      "SHA256": "46cba87a63473e589b7c3ee35fa77e914bbcf306bc55af95258f85cfae83b4d5"
+    },
+    {
+      "File": "code/model_algorithms/ThrustCorrectionLimits.m",
+      "SHA256": "4ee3057beef8c0abef18f9fe42e0971fd4b49127a81c892fa7b1ca8c20ea16b1"
+    },
+    {
+      "File": "code/model_algorithms/VerticalReference.m",
+      "SHA256": "416078468c530dbab6e8764396f469569d9f250bacaa91ab57c662253b2ca02e"
+    },
+    {
+      "File": "scripts/setup/ensure_simulink_toolkit.m",
+      "SHA256": "bf28e5daa7ab27dca1e605d258a08d79688e4d56eeac76a9a99cfe04c93d0773"
+    },
+    {
+      "File": "scripts/setup/init_basic.m",
+      "SHA256": "721173697b2a1352193cc2da914933a0351266d8e8765b4963f4f3d77aecc85d"
+    },
+    {
+      "File": "scripts/setup/init_horizontal_buses.m",
+      "SHA256": "70f4c4a99d551780e2e8ed10f9dda00816376f0c9347acd55e56ee5fe13e7e10"
+    },
+    {
+      "File": "scripts/setup/init_imu_flight.m",
+      "SHA256": "ed6885b78bc79935bdc2f97b0ee6b9fb045dd20921023b9f0f5f994c17793429"
+    },
+    {
+      "File": "scripts/setup/init_logging_buses.m",
+      "SHA256": "ae0940b92b5cadf9e0295002eb6e964536835480845971eabc82e72bcce1bbb1"
+    },
+    {
+      "File": "scripts/setup/init_official.m",
+      "SHA256": "748e6fd94aa1f32640503c88fed9fcabfabc26d8587f9a4743fb03fbf00f3790"
+    },
+    {
+      "File": "scripts/setup/register_imu_project.m",
+      "SHA256": "e79bc78694b97b134a8bfb44cde42222a71f071e03578e5f1ad6139a85fcabb1"
+    },
+    {
+      "File": "scripts/setup/run_stampfly_imu_app.m",
+      "SHA256": "95f7beabc06aea4d1184b2dd5bb8ca6d6c382adda66756b3263ae1db2f8a0122"
+    },
+    {
+      "File": "scripts/setup/setup_imu_monitor.m",
+      "SHA256": "d07f3bf94b3c1541dae73481d4080197e581f0acbc49814cb7fce14e1b78c3e9"
+    },
+    {
+      "File": "src/bmi270/bmi2.c",
+      "SHA256": "046dfcead51507071ab9e97333ec67caa0bd9e5433ff4de0d293e4862b4e024d"
+    },
+    {
+      "File": "src/bmi270/bmi2.h",
+      "SHA256": "5ba53b24e564d40fbbbefd80815bd92fb5743d36dc3b8ed9448bef9efd446d35"
+    },
+    {
+      "File": "src/bmi270/bmi270.c",
+      "SHA256": "69ef54827569de27ac76ca2f0cf532ee658f4da3d91eaa9546a96c233da330d8"
+    },
+    {
+      "File": "src/bmi270/bmi270.h",
+      "SHA256": "661464189003823bb3061b7a3de56903ad4c4f1aabee0a407712b9b2f3cdd5a1"
+    },
+    {
+      "File": "src/bmi270/bmi270_imu_driver.c",
+      "SHA256": "559431b62f368bc85879ca0bd46d50788457b7ba7e23290e29ca882cd0d9ce50"
+    },
+    {
+      "File": "src/bmi270/bmi270_imu_driver.h",
+      "SHA256": "de077c28f5a9bee15bf7af729859c5cd4345bac1f69e884d41865a52c4e3d4e2"
+    },
+    {
+      "File": "src/bmi270/bmi270_spi_esp32.cpp",
+      "SHA256": "a224be53c4a7cf72da6b7b3fe2ea110f2ae7fac07d4de41327fcd88bee3c6e7c"
+    },
+    {
+      "File": "src/bmi270/bmi270_spi_esp32.h",
+      "SHA256": "90c2c8efcf0f87506648e10d28e6662a3121f94b6314b4a8c92d5c4beb223c33"
+    },
+    {
+      "File": "src/bmi270/bmi2_defs.h",
+      "SHA256": "a28920d734cb1d7eaa127afa74bfe781e3bec37ce9973b5bf23768a0b3da0d2b"
+    },
+    {
+      "File": "src/bmm150/bmm150_driver.c",
+      "SHA256": "86a92e33a2f542d9569dabd69005ab49561276887b6325c951406c92cddb433d"
+    },
+    {
+      "File": "src/bmm150/bmm150_driver.h",
+      "SHA256": "5adecebc75ae2097c257173275703b4d4e23cc0b972d0b178b4280b4c2cdebe3"
+    },
+    {
+      "File": "src/bmm150/bmm150_logger.cpp",
+      "SHA256": "aca4caf55311492b4f7bbb12cd944a83740d5517485e8a595b66d563c304d685"
+    },
+    {
+      "File": "src/bmm150/bmm150_logger.h",
+      "SHA256": "e5f19822fc7d8b173c10d26a45e56deafb76d1dc71356332992af45e56c59a84"
+    },
+    {
+      "File": "src/bmm150/upstream/bmm150.c",
+      "SHA256": "31ada10a700d7456bb1a3a1422714b37e3d40cee09a2491479dbea7ebc57acfb"
+    },
+    {
+      "File": "src/bmm150/upstream/bmm150.h",
+      "SHA256": "bb51f04f957ba372f638ff45f33934a4d150ff57db3f419c604edf426f7c778a"
+    },
+    {
+      "File": "src/bmm150/upstream/bmm150_defs.h",
+      "SHA256": "bccbe06b31f8f1a46de6317de67ce23ae13182b2b5c9e1230ade0491c7078fdb"
+    },
+    {
+      "File": "src/common/i2c_esp32.cpp",
+      "SHA256": "8e23325b935ea258e19db572798375ade8ff92b56cc84c43daa6be9c91ef663f"
+    },
+    {
+      "File": "src/common/i2c_esp32.h",
+      "SHA256": "cbc955f12dce69672bea4d2f778b8fcfad720c974284f918f3ec154564aa6472"
+    },
+    {
+      "File": "src/common/spi_esp32.cpp",
+      "SHA256": "6375c2c3fba889dc6c474a5588f4ba90380ad19f1d95241eed3802503589157e"
+    },
+    {
+      "File": "src/common/spi_esp32.h",
+      "SHA256": "5b9c74096f4d55753713ee2a7cc71935fce007b5f4b37d7abc5e5cf0811de2eb"
+    },
+    {
+      "File": "src/imu_rx.cpp",
+      "SHA256": "55041082c13c81ca909deef063aa0981f8bafb9843c94e971ed819b5344cc0a9"
+    },
+    {
+      "File": "src/imu_rx.h",
+      "SHA256": "6a1761a40b831b2421daab2861f822fb4e80d157638b0d3721402d3183a8db81"
+    },
+    {
+      "File": "src/imu_tx.cpp",
+      "SHA256": "a0d4e68ba90f7e468653ee8d963f9ad2877c3a442d13c7e535b446b38461ff7b"
+    },
+    {
+      "File": "src/imu_tx.h",
+      "SHA256": "194e6686bc0422819fa80f8a0850a24c9832094e39b725192ece40635314dde4"
+    },
+    {
+      "File": "src/official_battery.cpp",
+      "SHA256": "e92ee1288df58e77dbbe32b161c16f8c21d74008d6c86612df4f17e3e142e4e5"
+    },
+    {
+      "File": "src/official_battery.h",
+      "SHA256": "9b6b5c7f75c650e88f59c0aa53db97dbb8fd8cca3f321ee6efa242747b60a157"
+    },
+    {
+      "File": "src/official_pwm.cpp",
+      "SHA256": "6c91fbbe6ea6c4d75fa77f0f6af054c11f5211c3086369ecc578f01288e0bad2"
+    },
+    {
+      "File": "src/official_pwm.h",
+      "SHA256": "d1f7b0705d5bf7e4bd7490fca4e541b82f6d6c4e9efdc6e149b13eb5e32b9b99"
+    },
+    {
+      "File": "src/official_radio.cpp",
+      "SHA256": "3788952f180b85434efd84ed8bbd1c7dc08700861979e584effac9288e79b2c5"
+    },
+    {
+      "File": "src/official_radio.h",
+      "SHA256": "0fa4511537774a2a310df451b3bc818d384fbc79bdb4c650937806608861c171"
+    },
+    {
+      "File": "src/official_scheduler.cpp",
+      "SHA256": "2f3e900dd115bb191ef0f9423bd300676f95c4194ca96a4ca55850bf8a6b7e8a"
+    },
+    {
+      "File": "src/official_scheduler.h",
+      "SHA256": "82a00bd75527a714b81453ed2a8a46c45d8ce8ca16b09585818692c33d37ff4f"
+    },
+    {
+      "File": "src/official_status.cpp",
+      "SHA256": "1c82207edd43f5d6a4ec9f3778e9d34aaec338f826930ab7d787690bd7ee27e3"
+    },
+    {
+      "File": "src/official_status.h",
+      "SHA256": "01122a761a1e23e29dc0c0f49fc0adbfa37cc6a5079b1a936672dc7ab9f9cfd0"
+    },
+    {
+      "File": "src/official_timing.cpp",
+      "SHA256": "df77e924ee575aa73d5a596e53672122cf723375ef440af542c0fd8045ca7afe"
+    },
+    {
+      "File": "src/official_timing.h",
+      "SHA256": "8686ef9ad1c64fbaafb301e3b879987f38d47b802fd7b3d3efd913002bce7eee"
+    },
+    {
+      "File": "src/official_tof.h",
+      "SHA256": "ea4c46ce9ae0caa090883cd3607604729777f00184ae6a7a3180f6121180c3de"
+    },
+    {
+      "File": "src/official_usb.cpp",
+      "SHA256": "922330463966bf0277b619430d27c49f4ae599bfc7544a5a1521d074126939cb"
+    },
+    {
+      "File": "src/official_usb.h",
+      "SHA256": "898812b95b52a8a15658cf34cbfe1d690dc8f53772705af37e7078a288c3fdda"
+    },
+    {
+      "File": "src/pmw3901/pmw3901_driver.h",
+      "SHA256": "52eca9d191dbe1d0a4bc2ea79c9872f4f5dd84fd43a0e3e36aa2338de9c248e7"
+    },
+    {
+      "File": "src/pmw3901/pmw3901_wrapper.cpp",
+      "SHA256": "c87d21ed904ff217fc8ea6ea0f861c65bf27947366db75306b4382d1bbf10c47"
+    },
+    {
+      "File": "src/pmw3901/upstream/Bitcraze_PMW3901.cpp",
+      "SHA256": "33b161ac0e0da5b615ffafbbac400762128a579951a6703e2a582574d6261cae"
+    },
+    {
+      "File": "src/pmw3901/upstream/Bitcraze_PMW3901.h",
+      "SHA256": "77feb5e110463c7c3d88c72c1dd30e145bcba5b3fa0b57d7f465ccb4683be219"
+    },
+    {
+      "File": "src/vl53l3cx/uld/ComponentObject.h",
+      "SHA256": "348e67b9b59c947051b6a8f84e20c5784f40ff675ab05272bdd3439b3d530ca4"
+    },
+    {
+      "File": "src/vl53l3cx/uld/RangeSensor.h",
+      "SHA256": "e1aaaa0b27d13f292207f9ebc1f4acb67b45880b22c09ffa0b49d45833b43e96"
+    },
+    {
+      "File": "src/vl53l3cx/uld/vl53lx_class.cpp",
+      "SHA256": "cb6e92b07a803209fa54f95b599956e75e90d730131ea893721fd78593045c40"
+    },
+    {
+      "File": "src/vl53l3cx/uld/vl53lx_class.h",
+      "SHA256": "0186eeb8fefdcb39a2eb24a3a6aea9789ea42753f9c93ba4f609b5f1dd9e7f23"
+    },
+    {
+      "File": "src/vl53l3cx/uld/vl53lx_def.h",
+      "SHA256": "943c1538a19f5807d716cd8bed44e93cabd691ff9524dc7683c932830c9290be"
+    },
+    {
+      "File": "src/vl53l3cx/vl53l3cx_bottom_official128_driver.h",
+      "SHA256": "b813016a8a36e38c52db2efae90cb67932bd552991fa6b2e6534b4d12724152d"
+    },
+    {
+      "File": "src/vl53l3cx/vl53l3cx_bottom_official128_wrapper.cpp",
+      "SHA256": "aff979993f7a028a8782c889eeee7d9da6201b476a062db8ec613cc5a0c26b41"
+    },
+    {
+      "File": "src/vl53l3cx/vl53l3cx_driver.h",
+      "SHA256": "727ac54b8160a46cabef9ca703bd3c439ee7679c987c4d6dbe428d26b7d6ac7b"
+    },
+    {
+      "File": "src/vl53l3cx/vl53l3cx_uld_wrapper.cpp",
+      "SHA256": "5093018e5729ddc3f0a160e5bb5ea2f59131be95f64777d8e1ae8e6108b61d08"
+    }
+  ],
   "Flashed": false,
   "PhysicalFlightTested": false,
   "HardwareTimingMeasured": false,
-  "Note": "ToFの校正中取得タイミングと処理時間は実機では未測定。比較は同じ入力データに対する制御・ログの一致を確認。"
+  "Purpose": "USB-only incident diagnosis; flight investigation remains open",
+  "FlightCauseConfirmed": false,
+  "FlightReleaseApproved": false,
+  "PreviousFullOutputRegression": "docs/horizontal_off_verification.json",
+  "PreviousFullOutputRegressionAppliesTo": "Revision 1801 before vertical boundary repair"
 }

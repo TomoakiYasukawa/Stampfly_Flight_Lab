@@ -1,6 +1,7 @@
 function log = readRecordingHistory(filePath, rangeMode, maxPoints, expectedBuildID)
-%READRECORDINGHISTORY Read the columns needed by the history viewer.
-% The file is read through matfile, so rawFrames are never loaded.
+%READRECORDINGHISTORY 概要：MAT記録の状態・高度・速度を履歴画面用に読みます。
+% 生フレームを読み込まず、状態遷移と時刻リセット前後を間引きから保護します。
+% 最初の飛行はMode 2の開始を0秒とし、その前2秒を負の時刻で表示します。
 arguments
     filePath (1,1) string
     rangeMode (1,1) string {mustBeMember(rangeMode,["firstFlight","all"])} = "firstFlight"
@@ -39,12 +40,28 @@ step = max(1,ceil(n/maxPoints));
 baseRows = 1:step:n;
 extraRows = n;
 stateColumn = find(columns == "FlightState",1);
+timeColumn = find(columns == "TimeSeconds",1);
+allTime = double(m.telemetry(1:n,timeColumn));
+allSequence=nan(n,1);allStates=nan(n,1);hostAll=nan(n,1);
+sequenceColumn=find(columns=="Sequence",1);
+if ~isempty(sequenceColumn),allSequence=double(m.telemetry(1:n,sequenceColumn));end
+if ~isempty(stateColumn),allStates=double(m.telemetry(1:n,stateColumn));end
+if ismember("hostElapsedSeconds",names)
+    hMeta=meta(names=="hostElapsedSeconds");
+    if isscalar(hMeta) && hMeta.size(1)>=n,hostAll=double(m.hostElapsedSeconds(1:n,1));end
+end
+[allDisplayTime,allBoot,accepted]=imu.recordingTimeline(allTime,allSequence,allStates,hostAll);
+acceptedRows=find(accepted);
+if isempty(acceptedRows),error('imu:HistoryEmptyTimeline','No advancing device timestamps.');end
+boundaryIndices=find(diff(allBoot(acceptedRows))~=0)+1;
+boundaries=acceptedRows(boundaryIndices);
+extraRows=[extraRows acceptedRows(end) boundaries(:)' acceptedRows(boundaryIndices-1)'];
 if step > 1 && ~isempty(stateColumn)
     % Keep short-lived state transitions even when long logs are thinned.
     allStates = double(m.telemetry(1:n,stateColumn));
     transitions = find(isfinite(allStates(2:end)) & ...
         allStates(2:end) ~= allStates(1:end-1)) + 1;
-    extraRows = [extraRows transitions(:)'];
+    extraRows = [extraRows transitions(:)' max(1,transitions(:)'-1)];
 end
 extraRows = setdiff(unique(extraRows),baseRows);
 sample = double(m.telemetry(baseRows,1:tMeta.size(2)));
@@ -56,6 +73,7 @@ end
 [rows,order] = sort([baseRows extraRows]);
 sample = [sample;extraSample];
 sample = sample(order,:);
+selectedTimeline=accepted(rows);sample=sample(selectedTimeline,:);rows=rows(selectedTimeline);
 buildColumn = find(columns == "BuildID",1);
 if expectedBuildID == 0 && isfield(info,'Config') && ...
         isfield(info.Config,'ExpectedBuildID')
@@ -91,18 +109,9 @@ rawTime = col("TimeSeconds");
 if all(~isfinite(rawTime))
     rawTime = sample(:,3);
 end
-if ismember("hostElapsedSeconds",names)
-    hMeta = meta(names == "hostElapsedSeconds");
-    if isscalar(hMeta) && hMeta.size(1) >= n
-        hostAll = double(m.hostElapsedSeconds(1:n,1));
-        hostTime = hostAll(rows);
-    else
-        hostTime = nan(numel(rows),1);
-    end
-else
-    hostTime = nan(numel(rows),1);
-end
-time = localDeviceTime(rawTime,hostTime,rows);
+time=allDisplayTime(rows);boot=allBoot(rows);
+schema=localStateSchema(info,expectedBuildID,col("BuildID"));
+states=imu.flightStateDefinition(schema);
 
 height = col("HeightM");
 heightValid = col("HeightValid");
@@ -115,39 +124,46 @@ motors = [col("MotorFR") col("MotorFL") col("MotorRR") col("MotorRL")];
 motorValid = col("MotorValid");
 motors(isfinite(motorValid) & motorValid < 0.5,:) = NaN;
 state = col("FlightState");
-
-% A flight log can continue after the device restarts. Restrict the first
-% flight to the first emergency/idle transition or device-clock reset.
-if rangeMode == "firstFlight"
-    first = find(state == 1,1);
-    if isempty(first)
-        first = find(state == 2 | state == 3,1);
-    end
-    if isempty(first)
-        first = 1;
-    end
-    last = numel(rows);
-    reset = find(diff(rawTime(first:end)) < -0.5,1);
-    if ~isempty(reset)
-        last = min(last,first+reset-1);
-    end
-    emergency = find(state(first:last) == 4,1);
-    if ~isempty(emergency)
-        k = first+emergency-1;
-        afterSecond = find(time(k:last) >= time(k)+1,1);
-        if ~isempty(afterSecond)
-            last = min(last,k+afterSecond-1);
-        end
-    end
-    idle = find(state(first+1:last) == 0,1);
-    if ~isempty(idle)
-        last = min(last,first+idle);
-    end
-    keep = first:last;
-else
-    keep = 1:numel(rows);
+q=[col("QuatW") col("QuatX") col("QuatY") col("QuatZ")];
+orientationValid=col("OrientationValid")>.5;
+correctedToF=nan(numel(rows),1);
+for k=1:numel(rows)
+    [value,valid]=imu.correctToFHeight(tof(k),isfinite(tof(k)),q(k,:),orientationValid(k));
+    if valid,correctedToF(k)=value;end
 end
-time = time(keep)-time(keep(1));
+fresh=col("ToFFresh")>.5;
+slope=imu.heightVelocity(rawTime,correctedToF,isfinite(correctedToF),fresh);
+stopReason='unknown';
+if isfield(info,'RecordingStop') && isfield(info.RecordingStop,'Reason')
+    stopReason=char(info.RecordingStop.Reason);
+end
+
+% 状態番号はStateflowの定義で解釈し、待機や校正を離陸と扱いません。
+if rangeMode == "firstFlight"
+    flight=find(ismember(state,states.FlightCodes),1);
+    if isempty(flight)
+        keep=1:numel(rows);anchor=1;zeroSource='recording_start';
+    else
+        anchor=flight;zeroSource='flight_mode';
+        first=find(boot==boot(flight) & time>=time(flight)-2,1);
+        last=find(boot==boot(flight),1,'last');
+        if last<numel(rows),stopReason='firmware_restart';end
+        parked=find(state(flight+1:last)==states.ParkedCode,1);
+        if ~isempty(parked)
+            parked=flight+parked;
+            next=find(ismember(state(parked+1:last),states.FlightCodes),1);
+            if ~isempty(next),last=min(last,parked+next-1);end
+            post=find(time(parked:last)>=time(parked)+1,1);
+            if ~isempty(post),last=min(last,parked+post-1);end
+            stopReason='parked';
+        end
+        keep=first:last;
+    end
+else
+    keep = 1:numel(rows);anchor=1;zeroSource='recording_start';
+end
+time = time(keep)-time(anchor);
+rawTime=rawTime(keep);boot=boot(keep);
 height = height(keep);
 tof = tof(keep);
 xy = xy(keep,:);
@@ -159,8 +175,26 @@ log = struct();
 log.FilePath = filePath;
 log.Name = string(base) + string(ext);
 log.Time = time;
+log.DeviceTimeSeconds=rawTime;
+log.BootSegment=boot;
+log.TimeZeroSource=zeroSource;
+log.StateSchema=states.Schema;
+log.StateCodes=states.Codes;
+log.StateNames=states.Names;
+log.StateColors=states.Colors;
+log.RecordingStopReason=stopReason;
+log.RecordingStopName=imu.recordingStopName(stopReason);
+log.RestartReasonName='未記録';
+if strcmp(stopReason,'firmware_restart') && isfield(info,'RecordingStop') && ...
+        isfield(info.RecordingStop,'NewBoot') && isfield(info.RecordingStop.NewBoot,'ResetReason')
+    value=info.RecordingStop.NewBoot.ResetReason;
+    if isfinite(value),log.RestartReasonName=imu.resetReasonName(value);end
+end
+log.Complete=isfield(info,'Complete') && info.Complete;
 log.HeightM = height;
 log.ToFM = tof;
+log.CorrectedToFM=correctedToF(keep);
+log.ToFVerticalVelocityMps=slope(keep);
 log.XYM = xy;
 log.Motors = motors;
 log.FlightState = state;
@@ -183,11 +217,11 @@ log.TotalFrames = n;
 log.DisplayedFrames = numel(keep);
 log.IsDecimated = step > 1;
 log.DurationSeconds = time(end)-time(1);
-hover = height(state == 2 & isfinite(height));
-if isempty(hover)
-    log.HoverMeanCM = NaN;
+flightHeights=height(ismember(state,states.FlightCodes) & isfinite(height));
+if isempty(flightHeights)
+    log.FlightMeanHeightCM=NaN;
 else
-    log.HoverMeanCM = 100*mean(hover);
+    log.FlightMeanHeightCM=100*mean(flightHeights);
 end
 validHeight = height(isfinite(height));
 if isempty(validHeight)
@@ -199,49 +233,27 @@ log.MissingFrames = localInfoNumber(info,'MissingFrames');
 log.CRCRejected = localInfoNumber(info,'CRCRejected');
 log.ExpectedBuildID = expectedBuildID;
 log.ExcludedOtherBuildPoints = foreignFrames;
+log.ExcludedDelayedOrDuplicateFrames=nnz(~accepted);
+% 再起動や長い欠測を線で結ばず、未観測の落下を補間して描きません。
+gaps=[false;diff(boot)~=0 | diff(rawTime)<=0 | diff(rawTime)>.15*max(1,step)];
+log.PlotBreakBefore=gaps;
+log.IsOfficialFixedPID=strcmp(states.Schema,'StampFlyOfficial-v1');
+if log.IsOfficialFixedPID
+    % 旧列名FilteredVerticalVelocityMpsはこのロガーではKalman速度と同じ値。
+    % 固定PID版はKalman速度を直接使用するため、複製した列を別のLPFとして表示しません。
+    log.FilteredVerticalVelocityMps(:)=NaN;
+end
 end
 
-function time = localDeviceTime(rawTime,hostTime,rows)
-% USB serial delivery is bursty. Host arrival times are used only to bridge
-% a device reboot; within each boot segment the device clock is authoritative.
-rawTime = rawTime(:);
-hostTime = hostTime(:);
-if all(isfinite(rawTime))
-    reset = find(diff(rawTime) < -0.5);
-    positive = diff(rawTime);
-    positive = positive(positive > 0 & positive < 1);
-    if isempty(positive)
-        nominalStep = median(diff(rows))/50;
-    else
-        nominalStep = median(positive);
-    end
-    if ~isfinite(nominalStep) || nominalStep <= 0
-        nominalStep = 0.02;
-    end
-    boundaries = [1;reset(:)+1;numel(rawTime)+1];
-    time = zeros(numel(rawTime),1);
-    for segment = 1:numel(boundaries)-1
-        first = boundaries(segment);
-        last = boundaries(segment+1)-1;
-        if segment == 1
-            offset = 0;
-        else
-            offset = time(first-1) + nominalStep;
-            if all(isfinite(hostTime([first-1 first])))
-                offset = time(first-1) + ...
-                    max(nominalStep,hostTime(first)-hostTime(first-1));
-            end
-        end
-        time(first:last) = offset + rawTime(first:last)-rawTime(first);
-    end
-    if all(diff(time) >= 0)
-        return
-    end
-end
-if all(isfinite(hostTime)) && all(diff(hostTime) >= 0)
-    time = hostTime-hostTime(1);
-else
-    time = (rows(:)-rows(1))/50;
+function schema=localStateSchema(info,expectedBuildID,buildIDs)
+% 旧ログはBuildID 1401の公式版だけを既知として補完します。
+schema='unknown';
+if isfield(info,'FlightStateSchema') && ~strcmp(info.FlightStateSchema,'unknown')
+    schema=char(info.FlightStateSchema);
+elseif isfield(info,'Config') && isfield(info.Config,'FlightStateSchema')
+    schema=char(info.Config.FlightStateSchema);
+elseif expectedBuildID==1401 || any(buildIDs==1401)
+    schema='StampFlyOfficial-v1';
 end
 end
 

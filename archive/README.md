@@ -13,4 +13,8 @@
 
 プロジェクトを開いて対象SLXを直接開きます。アーカイブ全体を通常のMATLABパスへ追加しないでください。同名IMUモデルが存在します。古いモデルの設定・モーター出力条件はモデルごとに異なります。
 
+`snapshots/HorizontalBaseline.slx`は水平補助追加前の保存モデルです。補助OFFでの比較に使い、対応するRevision 1701のBINは`firmware/history/imu_cleanup1701/`に保存しています。この整理後版の実飛行成功は未確認です。以前にユーザーが飛行成功を報告したIMU版は`kf400/baseline/StampFly_IMU400.slx`と`firmware/history/imu400_readability/`で区別します。
+
+`snapshots/Horizontal1801.slx`と`firmware/history/horizontal1801/`は、落下を報告された水平補助版を保全したものです。直下の現行1802は高度・記録・診断を修正した机上版で、実機未確認です。[調査結果と確認範囲](../docs/history/horizontal_trials/20261017_fall_review.md)
+
 保守スクリプトを調べる場合は[maintenance/README.md](maintenance/README.md)、検討と飛行報告は[履歴](../docs/history/README.md)を参照してください。

@@ -21,6 +21,130 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
     end
 
     methods (Test)
+        function automaticRecordingThroughAppKeepsAllHeaders(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.RecordingFolder=string(fixture.Folder);
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=basic.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            times=[10 10.05 10.1 10.15 10.2 10.25 11.3];modes=uint8([3 3 2 2 5 3 3]);
+            [~,~,~,~,motion]=horizontal.fixture();
+            bytes=zeros(0,1,'uint8');
+            for k=1:numel(times)
+                raw.Time=single(times(k));control.Mode=modes(k);control.PreviousMode=modes(k);
+                [base,commands,sensors]=packer(raw,estimate,control,extra);
+                horizontalFrame=horizontal.packFrame(uint16(k-1),raw.Time,uint32(1401), ...
+                    uint32(1801),zeros(24,1,'single'),motion);
+                % テキスト・断片化・通常より先のSFIX/SFIHも自動記録へ渡ります。
+                bytes=[bytes;uint8('SFTASK n=400').';uint8(10);horizontalFrame;sensors;commands;base]; %#ok<AGROW>
+                if k==3
+                    testCase.App.processBytes(bytes(1:23));
+                    testCase.App.processBytes(bytes(24:end));bytes=zeros(0,1,'uint8');
+                    status=testCase.App.recordingStatus();
+                    testCase.verifyTrue(status.Active&&status.Automatic);
+                    testCase.verifyEqual(string(testCase.App.RecordButton.Enable),"off");
+                end
+            end
+            testCase.App.processBytes(bytes);
+            status=testCase.App.recordingStatus();
+            testCase.verifyFalse(status.Active);
+            testCase.verifyNumElements(status.SavedFiles,1);
+            saved=load(status.LastFile,'telemetry','extensionTelemetry','info');
+            testCase.verifyEqual(saved.telemetry(:,3),times','AbsTol',.0011);
+            testCase.verifySize(saved.extensionTelemetry,[21 166]);
+            testCase.verifyEqual(saved.info.RecordingStop.Reason,'parked');
+            testCase.verifyEqual(string(testCase.App.RecordButton.Enable),"on");
+            joined=imu.readExtendedTelemetry(status.LastFile);
+            testCase.verifyEqual(joined.FlightMode,double(modes(:)));
+            testCase.verifyTrue(all(isfinite(joined.HorizontalVelocityXMps)));
+        end
+
+        function closingAppSavesFlightAndRemovesItsTimer(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.RecordingFolder=string(fixture.Folder);
+            before=timerfindall('Name','StampFlyFlightRecorder');
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=basic.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            raw.Time=single(20);control.Mode=uint8(2);
+            [base,commands,sensors]=packer(raw,estimate,control,extra);
+            testCase.App.processBytes([sensors;commands;base]);
+            state=testCase.App.recordingStatus();
+            testCase.verifyTrue(state.Active);
+            delete(testCase.App);
+            saved=load(state.CurrentFile,'telemetry','info');
+            testCase.verifySize(saved.telemetry,[1 80]);
+            testCase.verifyEqual(saved.info.RecordingStop.Reason,'app_closed');
+            testCase.verifyTrue(saved.info.Complete);
+            testCase.verifyFalse(isvalid(before));
+        end
+
+        function appTimerSavesAfterTelemetryStops(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.RecordingFolder=string(fixture.Folder);
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=basic.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            raw.Time=single(1);control.Mode=uint8(2);
+            [base,commands,sensors]=packer(raw,estimate,control,extra);
+            testCase.App.processBytes([sensors;commands;base]);
+            state=testCase.App.recordingStatus();testCase.verifyTrue(state.Active);
+            pollClock=tic;
+            while state.Active&&toc(pollClock)<6
+                pause(.1);state=testCase.App.recordingStatus();
+            end
+            testCase.verifyFalse(state.Active);
+            saved=load(state.LastFile,'info');
+            testCase.verifyEqual(saved.info.RecordingStop.Reason,'telemetry_lost');
+        end
+
+        function horizontalStatusDoesNotAddPlotSamples(testCase)
+            [~,~,~,~,motion]=horizontal.fixture();
+            values=zeros(24,1,'single');
+            values(3:6)=single([.1;-.2;.15;-.1]);
+            values(15:17)=single([1;3;1]);values(21)=single(1);
+            frame=horizontal.packFrame(uint16(0),single(1),uint32(1401),uint32(1801),values,motion);
+            testCase.App.processBytes(frame(1:25));
+            testCase.verifyEqual(testCase.App.HorizontalLabel.Text,'水平補助: 未受信');
+            testCase.App.processBytes(frame(26:end));
+            testCase.verifyTrue(contains(testCase.App.HorizontalLabel.Text,'移動'));
+            testCase.verifyTrue(contains(testCase.App.HorizontalLabel.Text,'速度 X 0.10 / Y -0.20'));
+            testCase.verifyTrue(contains(testCase.App.HorizontalLabel.Tooltip,'局所X=基準機首'));
+            testCase.verifyEqual(testCase.App.FrameLabel.Text,'フレーム: 0');
+            foreign=horizontal.packFrame(uint16(1),single(1.02),uint32(9999),uint32(1801),zeros(24,1,'single'),motion);
+            testCase.App.processBytes(foreign);
+            testCase.verifyTrue(contains(testCase.App.HorizontalLabel.Text,'移動'));
+        end
+
+        function historyUsesOfficialStatesAndShowsUnobservedEnd(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            testCase.App.RecordingFolder=string(fixture.Folder);
+            [raw,estimate,control,extra]=logging_fixture();
+            packer=basic.ExtendedLogger50;
+            testCase.addTeardown(@()release(packer));
+            times=[10 10.1 10.2 10.3 10.4];modes=uint8([3 3 2 2 2]);
+            for k=1:numel(times)
+                raw.Time=single(times(k));control.Mode=modes(k);control.PreviousMode=modes(k);
+                [base,commands,sensors]=packer(raw,estimate,control,extra);
+                testCase.App.processBytes([sensors;commands;base]);
+            end
+            testCase.App.stopRecording();state=testCase.App.recordingStatus();
+            imu.RecordingHistoryView.refresh(testCase.App,state.LastFile);
+            testCase.verifyEqual(testCase.App.HistoryStateAxes.YTick,[0 1 2 3 5]);
+            testCase.verifyEqual(string(testCase.App.HistoryStateAxes.YTickLabel), ...
+                ["初期化";"800サンプル校正";"飛行制御";"待機";"自動着陸"]);
+            testCase.verifyLessThan(testCase.App.HistoryHeightAxes.XLim(1),0);
+            markers=findall(testCase.App.HistoryHeightAxes,'Type','constantline');
+            names=string({markers.Label});
+            testCase.verifyTrue(any(names=="待機"));
+            testCase.verifyTrue(any(names=="飛行制御"));
+            testCase.verifyFalse(any(names=="ホバリング"));
+            testCase.verifyTrue(contains(testCase.App.HistoryStatusLabel.Text,'手動停止'));
+            testCase.verifyEqual(testCase.App.HistorySummaryTable.Data{1,8},'手動停止');
+            lines=findall(testCase.App.HistoryVerticalSpeedAxes,'Type','line');
+            testCase.verifyFalse(any(string({lines.DisplayName})=="フィルター後"));
+        end
+
         function tofGraphUsesTiltProjectionNotKalmanHeight(testCase)
             [raw,estimate,control,extra]=logging_fixture();
             packer=official.ExtendedLogger50;
@@ -66,7 +190,7 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
             testCase.verifyEqual(testCase.App.FrameLabel.Text,'フレーム: 101');
             testCase.verifyEqual(testCase.App.ErrorLabel.Text,'欠落: 0 / CRC: 0 / 対象外: 0');
             testCase.verifySize(saved.telemetry,[101 80]);
-            testCase.verifySize(saved.extensionTelemetry,[202 126]);
+            testCase.verifySize(saved.extensionTelemetry,[202 166]);
             testCase.verifyEqual(saved.info.ExtensionFrames,202);
             testCase.verifyEqual(joined.AppliedPWMFR,repmat(100,101,1));
             testCase.verifyEqual(joined.FlowShutter16,repmat(8123,101,1));
@@ -146,8 +270,24 @@ classdef StampFlyIMUAppDisplayTest < matlab.unittest.TestCase
             testCase.verifyTrue(all(diff(time)>=0));
             testCase.verifyGreaterThan(time(end),8);
             testCase.verifyEqual(nnz(isnan(values)),1);
-            testCase.verifyEqual(nnz(isfinite(values)),402);
+            testCase.verifyEqual(nnz(isfinite(values)),400, ...
+                '再起動確定前の2件は表示を保留するが、生データは記録する。');
             testCase.verifyEqual(testCase.App.ErrorLabel.Text,'欠落: 0 / CRC: 0 / 対象外: 0');
+        end
+        function delayedBaseKeepsLiveAndRecordedFlightTogether(testCase)
+            fixture=testCase.applyFixture(matlab.unittest.fixtures.TemporaryFolderFixture());
+            file=testCase.App.startRecording(string(fixture.Folder));
+            packets=testCase.frames(50,1,1401,10);
+            testCase.App.processBytes([packets(:);packets(:,1)]);
+            testCase.App.processBytes(packets(:,end));
+            testCase.App.stopRecording();drawnow;
+            [time,values]=testCase.accelLine();
+            testCase.verifyFalse(any(isnan(values)));
+            testCase.verifyEqual(time(end),1,'AbsTol',.0011);
+            saved=load(file,'telemetry');testCase.verifySize(saved.telemetry,[53 80]);
+            log=imu.readRecordingHistory(file,"all");
+            testCase.verifyEqual(log.BootSegment,ones(51,1));
+            testCase.verifyEqual(log.ExcludedDelayedOrDuplicateFrames,2);
         end
 
         function partialPacketLeavesVisibleHistoryIntact(testCase)

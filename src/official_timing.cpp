@@ -17,11 +17,14 @@ extern "C" void official_timing_end(uint32_t start,uint8_t fresh,const uint8_t a
   for(int i=0;i<8;++i)result[i]=v[i];
 #if defined(ARDUINO_ARCH_ESP32)
   if(count==400) {
+    uint32_t runtime[7];official_runtime_info(runtime);
     uint32_t sched[4];official_scheduler_info(sched);
     // One short line per second; SFI frames on USB share a framed byte stream.
     char line[256];int length=snprintf(line,sizeof(line),"SFTIMING n=%lu fresh=%lu mean_us=%lu max_us=%lu max_gap_us=%lu over=%lu missed=%lu hz=%lu bits=%lu pwm_us=%lu applied=%u,%u,%u,%u\n",count,freshCount,total/count,maxExec,maxGap,over,sched[1],pwm[1],pwm[2],pwm[3],applied[0],applied[1],applied[2],applied[3]);
     official_usb_bytes(reinterpret_cast<const uint8_t*>(line),length>255?255:length);
-    length=snprintf(line,sizeof(line),"SFPROFILE logger_max_us=%lu\n",official_profile_max(0));
+    length=snprintf(line,sizeof(line),"SFRUNTIME reset_reason=%lu idle0_age_us=%lu idle1_age_us=%lu stack_min_bytes=%lu heap_bytes=%lu core=%lu idle_hook_status=%lu\n",runtime[0],runtime[1],runtime[2],runtime[3],runtime[4],runtime[5],runtime[6]);
+    official_usb_bytes(reinterpret_cast<const uint8_t*>(line),length>255?255:length);
+    length=snprintf(line,sizeof(line),"SFPROFILE logger_max_us=%lu flow_motion_max_us=%lu horizontal_log_max_us=%lu\n",official_profile_max(0),official_profile_max(1),official_profile_max(2));
     official_usb_bytes(reinterpret_cast<const uint8_t*>(line),length);
     uint32_t front[6];official_front_info(front);
     length=snprintf(line,sizeof(line),"SFFRONT enabled=0 frames=%lu valid=%lu mm=%lu status=%lu ready=%lu fault=%lu\n",front[0],front[1],front[2],front[3],front[4],front[5]);

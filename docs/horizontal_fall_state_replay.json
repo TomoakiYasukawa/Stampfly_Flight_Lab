@@ -1,0 +1,37 @@
+{
+  "UsesSavedFunctionSource": true,
+  "PhysicalIO": false,
+  "IsFlightTraceReplay": false,
+  "FlightCauseConfirmed": false,
+  "Cases": {
+    "LevelCalibration": {
+      "ZOffsetG": -0.991473376750946,
+      "ParkedZDeltaG": 0.001331862760707736,
+      "AddedUpwardAccelerationG": 0.3,
+      "MaximumNormG": 0.25705713033676147,
+      "FirstOverGAfterAccelerationS": null,
+      "OverGLatchedAtEnd": false,
+      "CalibrationCount": 800,
+      "CalibrationAcceptedZOffsetG": -0.9914700984954834
+    },
+    "ReportedPostFallCalibration": {
+      "ZOffsetG": 0.89507222175598145,
+      "ParkedZDeltaG": -1.8852107524871826,
+      "AddedUpwardAccelerationG": 0.3,
+      "MaximumNormG": 2.1436066627502441,
+      "FirstOverGAfterAccelerationS": 0.0549999987706542,
+      "OverGLatchedAtEnd": true,
+      "CalibrationCount": 800,
+      "CalibrationAcceptedZOffsetG": 0.89507639408111572
+    }
+  },
+  "ParkedKalman": {
+    "InputVerticalAccelerationG": 1.8855662,
+    "Seconds": 30,
+    "HeightM": 0.11000002920627594,
+    "VelocityOutput": 54.496410369873047,
+    "BiasOutput": 0,
+    "QuantizedVelocityClipLimit": 32.767
+  },
+  "CounterexampleReproduced": true
+}

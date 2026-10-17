@@ -1,0 +1,246 @@
+{
+  "Device": "aircraft",
+  "Port": "COM4",
+  "BaudRate": 921600,
+  "CaptureSeconds": 20.0,
+  "CapturedBytes": 821608,
+  "Frames": {
+    "SFI8": 1001,
+    "SFIX": 1001,
+    "SFIY": 1001,
+    "SFIH": 1001
+  },
+  "CRCErrors": {
+    "SFI8": 0,
+    "SFIX": 0,
+    "SFIY": 0,
+    "SFIH": 0
+  },
+  "BuildIDs": [
+    1401
+  ],
+  "FirmwareRevisions": [
+    1801
+  ],
+  "ObservedModes": [
+    3
+  ],
+  "ReservedFieldsZero": true,
+  "MaximumAppliedPWMCount": 0,
+  "FiniteFilteredSensorsAndQuaternion": true,
+  "FiniteAltitudeAndVelocity": true,
+  "FiniteSensorDiagnosticsAndBias": true,
+  "FiniteControlDiagnostics": true,
+  "HeightRange": [
+    0.4231855869293213,
+    0.44479143619537354
+  ],
+  "VerticalVelocityRange": [
+    0.016,
+    0.017
+  ],
+  "AltitudeBiasRange": [
+    0.0,
+    0.0
+  ],
+  "QuaternionNormRange": [
+    0.9999998948772988,
+    1.000000215145992
+  ],
+  "RawToFRangeM": [
+    0.4230000078678131,
+    0.4449999928474426
+  ],
+  "FlowSQUALRange": [
+    112,
+    131
+  ],
+  "EstimatedTiltDegreesRange": [
+    1.864593114187875,
+    1.8964553561334343
+  ],
+  "UnitQuaternions": true,
+  "FirmwareTimeSpanSeconds": 20.0,
+  "TaskTiming": [
+    {
+      "n": 400,
+      "mean_us": 1881,
+      "max_us": 2659,
+      "over": 3,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1879,
+      "max_us": 2665,
+      "over": 4,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1878,
+      "max_us": 2673,
+      "over": 3,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1876,
+      "max_us": 2630,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1874,
+      "max_us": 2652,
+      "over": 2,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1873,
+      "max_us": 2643,
+      "over": 4,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1875,
+      "max_us": 2462,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1882,
+      "max_us": 2530,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1878,
+      "max_us": 2661,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1875,
+      "max_us": 2673,
+      "over": 3,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1885,
+      "max_us": 2668,
+      "over": 3,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1872,
+      "max_us": 2461,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1885,
+      "max_us": 2672,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1873,
+      "max_us": 2695,
+      "over": 5,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1872,
+      "max_us": 2659,
+      "over": 2,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1877,
+      "max_us": 2469,
+      "over": 0,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1890,
+      "max_us": 2669,
+      "over": 3,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1876,
+      "max_us": 2747,
+      "over": 1,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1890,
+      "max_us": 2747,
+      "over": 5,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1886,
+      "max_us": 2661,
+      "over": 1,
+      "missed": 0
+    }
+  ],
+  "TaskTimingSummary": {
+    "SampleCount": 8000,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1878.85,
+    "MaximumMicroseconds": 2747,
+    "DeadlineExceededCount": 43,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  },
+  "ProfileMaxima": {
+    "LoggerMaxUs": 627,
+    "FlowMotionMaxUs": 595,
+    "HorizontalLoggerMaxUs": 338
+  },
+  "CaptureFile": "logs/horizontal_distributed45400_startup_COM4.bin",
+  "FlightCommandsSent": false,
+  "FrameKeysMatchedToBase": {
+    "SFI8": 1001,
+    "SFIX": 1001,
+    "SFIY": 1001,
+    "SFIH": 1001
+  },
+  "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+  "Passed": true,
+  "Horizontal": {
+    "FiniteDiagnostics": true,
+    "WaitingAssistAndBlendZero": true,
+    "SameSequenceTimeBuildMatched": 1001,
+    "SupplementKeyCount": 1001,
+    "MeasurementValidSamples": 989,
+    "LongestValidLogRunSeconds": 7.68,
+    "States": [
+      0.0
+    ],
+    "RejectReasons": [
+      0.0,
+      5.0
+    ],
+    "MaximumIntegralMps2": 0.0
+  }
+}

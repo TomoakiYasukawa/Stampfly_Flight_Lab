@@ -1,0 +1,227 @@
+{
+  "Device": "aircraft",
+  "Port": "COM4",
+  "BaudRate": 921600,
+  "CaptureSeconds": 20.0,
+  "CapturedBytes": 820090,
+  "Frames": {
+    "SFI8": 999,
+    "SFIX": 998,
+    "SFIY": 999,
+    "SFIH": 999
+  },
+  "CRCErrors": {
+    "SFI8": 0,
+    "SFIX": 0,
+    "SFIY": 1,
+    "SFIH": 0
+  },
+  "BuildIDs": [
+    1401
+  ],
+  "FirmwareRevisions": [
+    1801
+  ],
+  "ObservedModes": [
+    3
+  ],
+  "ReservedFieldsZero": true,
+  "MaximumAppliedPWMCount": 0,
+  "FiniteFilteredSensorsAndQuaternion": true,
+  "FiniteAltitudeAndVelocity": true,
+  "FiniteSensorDiagnosticsAndBias": true,
+  "FiniteControlDiagnostics": true,
+  "HeightRange": [
+    0.2053123116493225,
+    0.22087274491786957
+  ],
+  "VerticalVelocityRange": [
+    -0.03,
+    -0.012
+  ],
+  "AltitudeBiasRange": [
+    0.0,
+    0.0
+  ],
+  "QuaternionNormRange": [
+    0.9999999036792298,
+    1.0000002193554192
+  ],
+  "UnitQuaternions": true,
+  "FirmwareTimeSpanSeconds": 19.980000000000004,
+  "TaskTiming": [
+    {
+      "n": 400,
+      "mean_us": 1899,
+      "max_us": 2810,
+      "over": 21,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1904,
+      "max_us": 2858,
+      "over": 17,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1897,
+      "max_us": 2835,
+      "over": 28,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1902,
+      "max_us": 2855,
+      "over": 22,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1896,
+      "max_us": 2860,
+      "over": 24,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1895,
+      "max_us": 2858,
+      "over": 24,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1902,
+      "max_us": 2856,
+      "over": 21,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1910,
+      "max_us": 2850,
+      "over": 31,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1896,
+      "max_us": 2838,
+      "over": 20,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1896,
+      "max_us": 2854,
+      "over": 23,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1897,
+      "max_us": 2859,
+      "over": 25,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1901,
+      "max_us": 2841,
+      "over": 16,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1893,
+      "max_us": 2856,
+      "over": 25,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1896,
+      "max_us": 2868,
+      "over": 22,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1893,
+      "max_us": 2857,
+      "over": 27,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1896,
+      "max_us": 2859,
+      "over": 21,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1899,
+      "max_us": 2863,
+      "over": 26,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1891,
+      "max_us": 2851,
+      "over": 27,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1893,
+      "max_us": 2957,
+      "over": 28,
+      "missed": 0
+    },
+    {
+      "n": 400,
+      "mean_us": 1895,
+      "max_us": 2635,
+      "over": 23,
+      "missed": 0
+    }
+  ],
+  "TaskTimingSummary": {
+    "SampleCount": 8000,
+    "StepBudgetMicroseconds": 2500,
+    "MeanMicroseconds": 1897.55,
+    "MaximumMicroseconds": 2957,
+    "DeadlineExceededCount": 471,
+    "MissedTickCount": 0,
+    "AllObservedTasksWithinBudget": false
+  },
+  "ProfileMaxima": {
+    "LoggerMaxUs": 668,
+    "FlowMotionMaxUs": 648,
+    "HorizontalLoggerMaxUs": 276
+  },
+  "CaptureFile": "logs/horizontal_native400_startup_COM4.bin",
+  "FlightCommandsSent": false,
+  "PassedScope": "USB startup, log integrity and waiting outputs; timing is reported separately",
+  "Passed": false,
+  "Horizontal": {
+    "FiniteDiagnostics": true,
+    "WaitingAssistAndBlendZero": true,
+    "SameSequenceTimeBuildMatched": 998,
+    "SupplementKeyCount": 999,
+    "MeasurementValidSamples": 919,
+    "States": [
+      0.0
+    ],
+    "RejectReasons": [
+      0.0,
+      5.0
+    ],
+    "MaximumIntegralMps2": 0.0
+  }
+}

@@ -4,7 +4,9 @@
 
 | 場所 | 内容 |
 |---|---|
-| `current/` | 今回の整理後IMUモデルから作成したBIN、ブートローダー、パーティションとmanifest |
+| `current/` | 高度・記録・診断を修正したRevision 1802の機体BIN、受信機BIN、ブートローダー、パーティションとmanifest。ビルド済み・実機未確認 |
+| `history/horizontal1801/` | 実飛行で落下した水平補助版。1801の機体BINとビルド時manifestを保全 |
+| `history/imu_cleanup1701/` | 水平補助追加前の整理後IMU版。USB確認済み |
 | `history/imu400_readability/` | 再整理前の実飛行成功IMU版。Revision 1701、CH 3 |
 | `history/imu400/` | 最初にIMU Filterへ置き換えた実飛行成功版 |
 | `history/basic400/` | Flipを削除した基礎版 |
@@ -13,6 +15,8 @@
 
 今回の生成物と過去の成功版を混同しないよう、モデル・BINのSHA-256をmanifestで確認します。機体への最新の書き込み履歴は [docs/history/README.md](../docs/history/README.md) にまとめています。過去の成功報告は各保存版の結果です。
 
-現行IMU版は[機体へ書き込み・USB机上確認済み](../docs/imu_cleanup_aircraft_deployment.json)です。実飛行は未実施です。`manifest.json`の確認フラグはビルドした時点の記録で、実機の確認結果は書き込み記録に保存しています。
+`history/horizontal1801/manifest.json`は当時の原文を保全しているため、内部の`File`は旧保存先`firmware/current/`を指します。1801の照合には同じファイル名を`history/horizontal1801/`から読み、機体モデルは`archive/snapshots/Horizontal1801.slx`を使います。`tools/verify_incident_artifacts.py`で現行版と保存版の対応を確認できます。
+
+機体の最新書き込みは[水平補助1801](../docs/horizontal_aircraft_deployment.json)で、実飛行の落下を調査中です。**currentの1802はまだ書き込み・飛行確認を行っていません。** [調査結果](../docs/history/horizontal_trials/20261017_fall_review.md)で確認範囲を区別します。`manifest.json`の確認フラグはビルドした時点の記録で、実機の結果は書き込み記録に保存します。
 
 通常の生成コードはGit管理外の`build/`、機体から読み出したバックアップは`backups/`です。以前の詳しい版情報は [firmware_before_cleanup.md](../docs/history/firmware_before_cleanup.md) に保存しています。

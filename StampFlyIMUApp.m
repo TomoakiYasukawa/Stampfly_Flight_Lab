@@ -16,6 +16,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         AttitudeLabel                   matlab.ui.control.Label
         MagAxes                         matlab.ui.control.UIAxes
         MotionGrid                      matlab.ui.container.GridLayout
+        HorizontalLabel                 matlab.ui.control.Label
         MotionLabel                     matlab.ui.control.Label
         PathAxes                        matlab.ui.control.UIAxes
         ToFAxes                         matlab.ui.control.UIAxes
@@ -115,6 +116,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         CRCErrorCount = 0
         DrawClock
         FlightCommandSequence = 'uint16(0)'
+        FlightRecorder
         ForeignFrameCount = 0
         FrameCount = 0
         GroundTracker
@@ -123,6 +125,8 @@ classdef StampFlyIMUApp < matlab.apps.App
         HasTuningTelemetry = ""
         HeightData
         HeightLine
+        HorizontalClock = [  ]
+        HorizontalSample = [  ]
         LastFlightHeartbeatClock = '[]'
         LastFlightSendClock = '[]'
         LastFlightState = 'uint8(0)'
@@ -149,6 +153,8 @@ classdef StampFlyIMUApp < matlab.apps.App
         RecordStartCRCCount
         RecordStartMissingCount
         RecordingActive
+        RecordingCleanupListener
+        RecordingTimer
         RecordingWriter
         SerialDevice
         StartClock
@@ -160,7 +166,9 @@ classdef StampFlyIMUApp < matlab.apps.App
     end
 
     properties (Access = public)
+        AutoRecordingEnabled = true
         ExpectedBuildID = 1401
+        RecordingFolder
     end
 
     methods (Access = private)
@@ -177,33 +185,26 @@ classdef StampFlyIMUApp < matlab.apps.App
         end
 
         function captureExtension(app,sample,frame)
-            if ~app.RecordingActive, return; end
-            try
-                app.RecordingWriter.appendExtension(sample,frame);
-            catch err
-                app.RecordingActive = false;
-                app.RecordButton.Text = '保存再試行';
-                app.RecordingStatusLabel.Text = '記録エラー: ボタンで保存再試行';
-                app.RecordingStatusLabel.Tooltip = err.message;
-            end
+            app.captureRecording(sample,frame);
         end
 
-        function captureFrame(app, sample, frame)
-            if ~app.RecordingActive
-                return
+        function captureFrame(app,sample,frame)
+            app.captureRecording(sample,frame);
+        end
+
+        function captureRecording(app,sample,frame)
+            app.ensureFlightRecorder();
+            app.FlightRecorder.accept(sample,frame,toc(app.StartClock),app.MissingCount,app.CRCErrorCount);
+            app.syncRecordingView();
+        end
+
+        function cleanupFlightRecording(app)
+            if ~isempty(app.RecordingTimer) && isvalid(app.RecordingTimer)
+                stop(app.RecordingTimer);delete(app.RecordingTimer);
             end
-            try
-                app.RecordingWriter.append(sample,frame);
-                count = app.RecordingWriter.bufferedCount();
-                if mod(count,25) == 0
-                    app.RecordingStatusLabel.Text = ...
-                        sprintf('記録中: %d フレーム',count);
-                end
-            catch err
-                app.RecordingActive = false;
-                app.RecordButton.Text = '保存再試行';
-                app.RecordingStatusLabel.Text = '記録エラー: ボタンで保存再試行';
-                app.RecordingStatusLabel.Tooltip = err.message;
+            app.RecordingTimer=[];
+            if ~isempty(app.FlightRecorder) && ~isempty(app.FlightRecorder.Writer)
+                app.FlightRecorder.stop(app.MissingCount,app.CRCErrorCount,'app_closed');
             end
         end
 
@@ -239,7 +240,8 @@ classdef StampFlyIMUApp < matlab.apps.App
 
         function disconnectReceiver(app)
             if ~isempty(app.RecordingWriter)
-            app.stopRecording();
+            app.FlightRecorder.stop(app.MissingCount,app.CRCErrorCount,'disconnected');
+                app.syncRecordingView();
         end
         if ~isempty(app.SerialDevice)
             app.sendLedState(uint8(0));
@@ -253,6 +255,7 @@ classdef StampFlyIMUApp < matlab.apps.App
                 end
             end
             app.SerialDevice = [];
+            if ~isempty(app.FlightRecorder),app.FlightRecorder.resetConnection();end
             app.ConnectButton.Text = '接続';
             app.LastFlightHeartbeatClock = [];
             app.PendingFlightSequence = NaN;
@@ -263,15 +266,34 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.StatusLabel.Text = '未接続';
         end
 
-        function name = flightStateName(~,state)
-            switch uint8(state)
-                case 0, name = '初期化';
-                case 1, name = '800サンプル校正';
-                case 2, name = '飛行制御';
-                case 3, name = '待機';
-                case 5, name = '自動着陸';
-                otherwise, name = sprintf('不明 (%d)',state);
+        function ensureFlightRecorder(app)
+            % 受信機の設定だけを保存し、飛行・モーター指令は送らない。
+            config=struct('Port',string(app.PortDropDown.Value),'BaudRate',app.BaudField.Value, ...
+                'RadioChannel',app.ChannelField.Value,'ExpectedBuildID',app.ExpectedBuildID);
+            if isempty(app.FlightRecorder)
+                app.FlightRecorder=imu.FlightRecorder(app.RecordingFolder,config);
             end
+            app.FlightRecorder.Config=config;
+            if strlength(string(app.RecordingFolder))>0
+                app.FlightRecorder.Folder=string(app.RecordingFolder);
+            end
+            app.FlightRecorder.Enabled=logical(app.AutoRecordingEnabled);
+        end
+
+        function name = flightStateName(~,state)
+            name=imu.flightStateName(state);
+        end
+
+        function initializeFlightRecorder(app)
+            app.ensureFlightRecorder();
+            app.RecordingTimer=timer('Name','StampFlyFlightRecorder', ...
+                'ExecutionMode','fixedSpacing','Period',.25,'BusyMode','drop', ...
+                'TimerFcn',@(~,~)app.pollFlightRecording());
+            % delete(app)やウィンドウ終了でもタイマー・未確定記録を片付ける。
+            app.RecordingCleanupListener=addlistener(app.UIFigure,'ObjectBeingDestroyed', ...
+                @(~,~)app.cleanupFlightRecording());
+            start(app.RecordingTimer);
+            app.syncRecordingView();
         end
 
         function initializePlots(app)
@@ -318,7 +340,7 @@ classdef StampFlyIMUApp < matlab.apps.App
                 app.MotorLines(k) = plot(app.MotorAxes,nan,nan);
             end
             legend(app.MotorAxes,{'FR','FL','RR','RL'},'Location','northeast');
-            title(app.MotorAxes,'仮想モーター指令');
+            title(app.MotorAxes,'モーター指令');
             ylabel(app.MotorAxes,'指令 [0-255]');
             grid(app.MotorAxes,'on');
             xlim(app.MotorAxes,[0 10]);
@@ -337,6 +359,12 @@ classdef StampFlyIMUApp < matlab.apps.App
             end
         end
 
+        function pollFlightRecording(app)
+            if isempty(app.FlightRecorder) || ~isgraphics(app.UIFigure),return;end
+            app.FlightRecorder.poll(toc(app.StartClock),app.MissingCount,app.CRCErrorCount);
+            app.syncRecordingView();
+        end
+
         function values = readHeightTuning(app)
             values = single([app.HeightKpPosField.Value; app.HeightKpVelField.Value; ...
                 app.HeightKiVelField.Value; app.HeightFilterTimeField.Value; ...
@@ -348,7 +376,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         function [accepted,positionENU,heightNow] = recordSample(app, sample)
             nowSeconds = toc(app.StartClock);
             [time,restarted,accepted] = app.PlotTimeline.advance( ...
-                sample.TimeSeconds,sample.Sequence,nowSeconds);
+                sample.TimeSeconds,sample.Sequence,nowSeconds,sample.FlightState);
             positionENU = [NaN NaN NaN];
             heightNow = NaN;
             if ~accepted, return; end
@@ -397,6 +425,31 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.MotorData = app.MotorData(keep,:);
             app.RecentTimes(end+1,1) = nowSeconds;
             app.RecentTimes = app.RecentTimes(app.RecentTimes >= nowSeconds-1);
+        end
+
+        function refreshHorizontalStatus(app)
+            % 水平制御専用の局所XYを表示し、従来の東・北の軌跡とは区別します。
+            if isempty(app.HorizontalSample)
+                app.HorizontalLabel.Text = '水平補助: 未受信';
+                return
+            end
+            h = app.HorizontalSample.Values(122:161);
+            states = {'手動','準備・復帰待ち','位置保持','移動','減速'};
+            state = round(h(16));
+            if ~isfinite(state) || state < 0 || state > 4
+                stateText = '状態不明';
+            else
+                stateText = states{state+1};
+            end
+            stale = isempty(app.HorizontalClock) || toc(app.HorizontalClock) > .5;
+            suffix = '';if stale,suffix = ' / 更新停止';end
+            app.HorizontalLabel.Text = sprintf(['水平補助: %s / 有効 %d / 観測 %d%s\n' ...
+                '速度 X %.2f / Y %.2f → 目標 %.2f / %.2f m/s'], ...
+                stateText,h(17)~=0,h(21)~=0,suffix,h(3:6));
+            app.HorizontalLabel.Tooltip = sprintf(['局所X=基準機首、Y=右。東・北の表示軌跡とは別の座標です。\n' ...
+                '位置 %.3f / %.3f m、保持目標 %.3f / %.3f m、混合率 %.2f\n' ...
+                '棄却理由 %.0f（0正常、1区間不整合・低品質、2フロー停止、3姿勢、4ToF、5IMU・時間、6速度外れ値）'], ...
+                h(1:2),h(7:8),h(15),h(24));
         end
 
         function refreshMonitor(app,sample,positionENU,heightNow)
@@ -465,6 +518,7 @@ classdef StampFlyIMUApp < matlab.apps.App
                 app.BatteryLabel.Text = '電池: 未取得';
                 app.BatteryLabel.FontColor = [0.4 0.4 0.4];
             end
+            app.refreshHorizontalStatus();
         end
 
         function refreshPorts(app)
@@ -481,6 +535,8 @@ classdef StampFlyIMUApp < matlab.apps.App
 
         function resetData(app)
             app.ByteBuffer = zeros(0,1,'uint8');
+            app.HorizontalSample = [];app.HorizontalClock = [];
+            app.HorizontalLabel.Text = '水平補助: 未受信';
             if isempty(app.PlotTimeline)
                 app.PlotTimeline = imu.LivePlotTimeline();
             else
@@ -530,7 +586,7 @@ classdef StampFlyIMUApp < matlab.apps.App
         end
 
         function sendFlightCommand(app,~)
-            app.FlightCommandStatusLabel.Text = '公式 JoyStick で操作（実モーターはゼロ固定）';
+            app.FlightCommandStatusLabel.Text = '公式 JoyStick で操作します。実出力は機体モデルの設定に従います。';
         end
 
         function sendHeightTuning(app)
@@ -547,6 +603,27 @@ classdef StampFlyIMUApp < matlab.apps.App
                 app.LastLedCommandClock = tic;
             catch err
                 app.StatusLabel.Text = 'LED指令エラー: ' + string(err.message);
+            end
+        end
+
+        function syncRecordingView(app)
+            if isempty(app.FlightRecorder),return;end
+            recorder=app.FlightRecorder;
+            app.RecordingWriter=recorder.Writer;app.RecordingActive=recorder.Active;
+            app.RecordingStatusLabel.Text=char(recorder.Status);
+            if strlength(recorder.ErrorMessage)>0
+                app.RecordButton.Text='保存再試行';app.RecordButton.Enable='on';
+                app.RecordingStatusLabel.Tooltip=char(recorder.ErrorMessage);
+            elseif recorder.Active
+                app.RecordingStatusLabel.Tooltip=char(recorder.Writer.FilePath);
+                if recorder.Automatic
+                    app.RecordButton.Text='自動記録中';app.RecordButton.Enable='off';
+                else
+                    app.RecordButton.Text='記録停止';app.RecordButton.Enable='on';
+                end
+            else
+                app.RecordButton.Text='手動記録開始';app.RecordButton.Enable='on';
+                app.RecordingStatusLabel.Tooltip=char(recorder.LastPath);
             end
         end
 
@@ -653,7 +730,8 @@ classdef StampFlyIMUApp < matlab.apps.App
                          app.ByteBuffer(4:end) == uint8('7') | ...
                          app.ByteBuffer(4:end) == uint8('8') | ...
                      app.ByteBuffer(4:end) == uint8('X') | ...
-                     app.ByteBuffer(4:end) == uint8('Y')),1);
+                     app.ByteBuffer(4:end) == uint8('Y') | ...
+                         app.ByteBuffer(4:end) == uint8('H')),1);
                     lf = find(app.ByteBuffer == 10,1);
                     if ~isempty(lf) && (isempty(marks) || lf < marks(1))
                         line = strtrim(string(char(app.ByteBuffer(1:lf-1).')));
@@ -688,7 +766,7 @@ classdef StampFlyIMUApp < matlab.apps.App
                 if numel(app.ByteBuffer) < frameBytes, break; end
                 candidate = app.ByteBuffer(1:frameBytes);
                 try
-                    if first(4)==uint8('X') || first(4)==uint8('Y')
+                    if ismember(first(4),uint8('XYH'))
                         sample = imu.decodeExtensionFrame(candidate);
                     else
                         sample = imu.decodeFrame(candidate);
@@ -704,6 +782,10 @@ classdef StampFlyIMUApp < matlab.apps.App
                 if isfield(sample,'Kind')
                     if app.ExpectedBuildID==0 || double(sample.BuildID)==double(app.ExpectedBuildID)
                         app.captureExtension(sample,candidate);
+                        if sample.Kind==3
+                            app.HorizontalSample=sample;app.HorizontalClock=tic;
+                            app.refreshHorizontalStatus();
+                        end
                     end
                     continue
                 end
@@ -713,9 +795,10 @@ classdef StampFlyIMUApp < matlab.apps.App
                     app.ForeignFrameCount = app.ForeignFrameCount + 1;
                     continue
                 end
-                app.captureFrame(sample,candidate);
                 [accepted,positionENU,heightNow] = app.recordSample(sample);
+                    app.captureFrame(sample,candidate); % CRC正常の生データを描画条件によらず保存する。
                 if accepted
+            % 採用した最新サンプルを描画用に保持する。
                     latestSample = sample;
                     latestPosition = positionENU;
                     latestHeight = heightNow;
@@ -740,55 +823,31 @@ classdef StampFlyIMUApp < matlab.apps.App
             end
         end
 
-        function path = startRecording(app, outputFolder)
-            if nargin < 2 || strlength(string(outputFolder)) == 0
-                outputFolder = fullfile(fileparts(which('StampFlyIMUApp')), 'recordings');
-            end
-            if ~isempty(app.RecordingWriter)
-                error('imu:RecordingAlreadyOpen', ...
-                    'Stop or retry saving the previous recording first.');
-            end
-            config = struct('Port',string(app.PortDropDown.Value), ...
-                'BaudRate',app.BaudField.Value, ...
-                'RadioChannel',app.ChannelField.Value, ...
-                'ExpectedBuildID',app.ExpectedBuildID);
-            writer = imu.MatRecordingWriter(string(outputFolder),config);
-            app.RecordingWriter = writer;
-            app.RecordingActive = true;
-            app.RecordStartMissingCount = app.MissingCount;
-            app.RecordStartCRCCount = app.CRCErrorCount;
-            app.RecordButton.Text = '記録停止';
-            app.RecordingStatusLabel.Text = '記録中: 0 フレーム';
-            app.RecordingStatusLabel.Tooltip = char(writer.FilePath);
-            path = writer.FilePath;
-            if ~isempty(app.LastReceivedClock) && toc(app.LastReceivedClock) < 1
+        function state=recordingStatus(app)
+            % 保存状態とファイル名を、機器に触れずプログラムから確認する。
+            app.ensureFlightRecorder();r=app.FlightRecorder;
+            file="";if ~isempty(r.Writer),file=r.Writer.FilePath;end
+            state=struct('Active',r.Active,'Automatic',r.Automatic,'CurrentFile',file, ...
+                'LastFile',r.LastPath,'SavedFiles',r.SavedPaths,'Status',r.Status,'Error',r.ErrorMessage);
+        end
+
+        function path=startRecording(app,outputFolder)
+            if nargin<2,outputFolder="";end
+            app.ensureFlightRecorder();
+            path=app.FlightRecorder.startManual(outputFolder,app.MissingCount,app.CRCErrorCount);
+            app.syncRecordingView();
+            if ~isempty(app.LastReceivedClock) && toc(app.LastReceivedClock)<1
                 app.sendLedState(uint8(2));
             end
         end
 
-        function path = stopRecording(app)
-            path = "";
-            if isempty(app.RecordingWriter)
-                return
-            end
-            app.RecordingActive = false;
-            writer = app.RecordingWriter;
-            try
-                missing = max(0,app.MissingCount-app.RecordStartMissingCount);
-                crcRejected = max(0,app.CRCErrorCount-app.RecordStartCRCCount);
-                path = writer.finish(missing,crcRejected);
-                count = writer.Count;
-                app.RecordingWriter = [];
-                app.RecordButton.Text = '記録開始';
-                app.RecordingStatusLabel.Text = sprintf('保存完了: %d フレーム',count);
-                app.RecordingStatusLabel.Tooltip = char(path);
-                fprintf('RECORDED_MAT=%s\n',path);
-            catch err
-                app.RecordButton.Text = '保存再試行';
-                app.RecordingStatusLabel.Text = '保存失敗: ボタンで再試行';
-                app.RecordingStatusLabel.Tooltip = err.message;
-            end
-            if ~isempty(app.LastReceivedClock) && toc(app.LastReceivedClock) < 1
+        function path=stopRecording(app)
+            path="";
+            if isempty(app.FlightRecorder),return;end
+            path=app.FlightRecorder.stop(app.MissingCount,app.CRCErrorCount,'manual_stop');
+            app.syncRecordingView();
+            if strlength(path)>0,fprintf('RECORDED_MAT=%s\n',path);end
+            if ~isempty(app.LastReceivedClock) && toc(app.LastReceivedClock)<1
                 app.sendLedState(uint8(1));
             else
                 app.sendLedState(uint8(0));
@@ -851,10 +910,14 @@ classdef StampFlyIMUApp < matlab.apps.App
             app.HeightApplyButton.Enable = 'off';
             app.FlightHelpLabel.Text = '離着陸と操縦は公式 JoyStick で行います。実モーター出力は機体に書き込んだモデルの設定に従います。';
             title(app.MotorAxes,'モーター指令');
+            app.RecordingFolder="";
+            app.AutoRecordingEnabled=true;
+            app.initializeFlightRecorder();
         end
 
         % Close request function: UIFigure
         function closeApp(app, event)
+            app.cleanupFlightRecording();
             app.disconnectReceiver();
             if ~isempty(app.RecordingWriter)
                 uialert(app.UIFigure, ...
@@ -906,20 +969,18 @@ classdef StampFlyIMUApp < matlab.apps.App
 
         % Button pushed function: RecordButton
         function recordButtonPushed(app, event)
-            if isempty(app.RecordingWriter)
-                if isempty(app.SerialDevice)
-                    app.RecordingStatusLabel.Text = '先にCOMポートへ接続してください';
-                    return
-                end
+            if ~isempty(app.RecordingWriter)
+                app.stopRecording();
+            elseif isempty(app.SerialDevice)
+                app.RecordingStatusLabel.Text='先にCOMポートへ接続してください';
+            else
                 try
                     app.startRecording();
                 catch err
-                    app.RecordingStatusLabel.Text = '記録開始失敗';
-                    app.RecordingStatusLabel.Tooltip = err.message;
+                    app.RecordingStatusLabel.Text='記録開始失敗';
+                    app.RecordingStatusLabel.Tooltip=err.message;
                     uialert(app.UIFigure,err.message,'記録開始失敗');
                 end
-            else
-                app.stopRecording();
             end
         end
 

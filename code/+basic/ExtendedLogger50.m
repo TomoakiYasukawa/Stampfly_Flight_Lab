@@ -16,6 +16,14 @@ classdef ExtendedLogger50 < matlab.System
         function [base,commands,sensors]=stepImpl(o,raw,estimate,control,extra)
             profile=uint32(0);
             if coder.target('Rtw'),coder.cinclude('official_scheduler.h');profile=coder.ceval('official_now_us');end
+            base=packBaseImpl(o,o.Sequence,raw,estimate,control,extra);
+            commands=basic.packCommandExtension(o.Sequence,raw.Time,o.BuildID,o.FirmwareRevision,estimate,control);
+            sensors=imu.packSensorExtension(o.Sequence,raw.Time,o.BuildID,o.FirmwareRevision,raw,estimate,control,extra);
+            o.Sequence=uint16(bitand(uint32(o.Sequence)+1,uint32(65535)));
+            if coder.target('Rtw'),coder.ceval('official_profile_record',uint8(0),profile);end
+        end
+        function base=packBaseImpl(o,sequence,raw,estimate,control,extra)
+            % 通常パケットの値・CRCを共通化し、分散版も同じ形式を使用します。
             tofNew=uint8(raw.ToFInfo(1)~=o.LastToF);o.LastToF=raw.ToFInfo(1);
             magFresh=uint8(extra.Mag.Info(1)~=o.LastMag);o.LastMag=extra.Mag.Info(1);
             flowSum=zeros(2,1,'single');
@@ -33,8 +41,8 @@ classdef ExtendedLogger50 < matlab.System
             diag(15:18)=[single(double(cd(5))/3.7);single(double(cd(5))/3.7);single(control.Mode==2);single(any(control.Duty>=single(.95)))];
             diag(19:22)=cd(14:17);diag(24)=cd(1);
             % No height-tuning namespace is claimed for this fixed-PID model.
-            q=official.eulerQuaternion(estimate.Angles);nan2=nan(2,1,'single');
-            base=imu.packFlightTuningFrame(o.Sequence,raw.Time,raw.Acceleration,raw.AngularRate,raw.IMUFresh, ...
+            q=official.eulerQuaternion(estimate.Angles);
+            base=imu.packFlightTuningFrame(sequence,raw.Time,raw.Acceleration,raw.AngularRate,raw.IMUFresh, ...
                 single(raw.BottomMm)/single(1000),uint8(raw.BottomMm>0 && raw.ToFStatus==0),raw.ToFStatus, ...
                 flowSum,uint8(extra.Flow.Raw(1)),uint8(extra.Flow.Raw(8)),uint8(bitshift(extra.Flow.Raw(2),-8)), ...
                 extra.Distance.PositionEN,extra.Distance.Used,extra.Mag.Field,extra.Mag.Flags(1),q,uint8(control.Mode>1), ...
@@ -45,10 +53,6 @@ classdef ExtendedLogger50 < matlab.System
             base(105:108)=uint8(floor(single(255)*control.Duty));base(109)=uint8(1);
             base(188)=uint8(0);
             base(189:190)=reshape(typecast(imu.crc16(base(1:188)),'uint8'),2,1);
-            commands=basic.packCommandExtension(o.Sequence,raw.Time,o.BuildID,o.FirmwareRevision,estimate,control);
-            sensors=imu.packSensorExtension(o.Sequence,raw.Time,o.BuildID,o.FirmwareRevision,raw,estimate,control,extra);
-            o.Sequence=uint16(bitand(uint32(o.Sequence)+1,uint32(65535)));
-            if coder.target('Rtw'),coder.ceval('official_profile_record',uint8(0),profile);end
         end
         function n=getNumInputsImpl(~),n=4;end
         function n=getNumOutputsImpl(~),n=3;end

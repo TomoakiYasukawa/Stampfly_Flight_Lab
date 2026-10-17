@@ -1,0 +1,15 @@
+{
+  "Passed": true,
+  "FirmwareRevision": 1802,
+  "Groups": 64,
+  "ByteIdenticalPackets": 192,
+  "ChangingInputsDuringPacking": true,
+  "CumulativeCounterWrap": true,
+  "SameSavedTimeAndSequence": true,
+  "Legacy50HzBytesPreserved": true,
+  "CaptureToSendDelayMs": [
+    10,
+    2.5,
+    5
+  ]
+}

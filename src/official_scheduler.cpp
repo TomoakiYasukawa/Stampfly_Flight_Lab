@@ -6,6 +6,8 @@
 #include <Arduino.h>
 #include <driver/gptimer.h>
 #include <esp_timer.h>
+#include <esp_system.h>
+#include <esp_freertos_hooks.h>
 #include "official_usb.h"
 #include "mw_timer.h"
 #include "mw_semaphore.h"
@@ -107,6 +109,44 @@ extern "C" uint32_t official_now_us(void) {
   return static_cast<uint32_t>(esp_timer_get_time());
 #else
   return 0;
+#endif
+}
+namespace {
+#if defined(ARDUINO_ARCH_ESP32)
+volatile uint32_t idleAt0=0,idleAt1=0;
+bool idle0(){idleAt0=official_now_us();return true;}
+bool idle1(){idleAt1=official_now_us();return true;}
+uint32_t idleHookStatus=0;
+bool runtimeInitialized=false;
+uint32_t stackMinimum=0xffffffff;
+#endif
+}
+extern "C" uint8_t official_reset_reason(void) {
+#if defined(ARDUINO_ARCH_ESP32)
+  return static_cast<uint8_t>(esp_reset_reason());
+#else
+  return 0;
+#endif
+}
+extern "C" void official_runtime_setup(void) {
+#if defined(ARDUINO_ARCH_ESP32)
+  if(runtimeInitialized)return;
+  idleAt0=idleAt1=official_now_us();
+  esp_err_t e0=esp_register_freertos_idle_hook_for_cpu(idle0,0);
+  esp_err_t e1=esp_register_freertos_idle_hook_for_cpu(idle1,1);
+  idleHookStatus=(e0==ESP_OK?0u:1u)|(e1==ESP_OK?0u:2u);
+  runtimeInitialized=true;
+#endif
+}
+extern "C" void official_runtime_info(uint32_t info[7]) {
+  memset(info,0,7*sizeof(uint32_t));
+#if defined(ARDUINO_ARCH_ESP32)
+  const uint32_t now=official_now_us();
+  const uint32_t stack=uxTaskGetStackHighWaterMark(nullptr);
+  if(stack<stackMinimum)stackMinimum=stack;
+  info[0]=official_reset_reason();info[1]=now-idleAt0;info[2]=now-idleAt1;
+  info[3]=stackMinimum;info[4]=xPortGetFreeHeapSize();
+  info[5]=xPortGetCoreID();info[6]=idleHookStatus;
 #endif
 }
 static uint32_t profileMax[4]={};

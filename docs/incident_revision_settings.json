@@ -1,0 +1,9 @@
+{
+  "Passed": true,
+  "FirmwareRevision": 1802,
+  "ResetReasonTelemetry": true,
+  "WatchdogDisabled": false,
+  "HorizontalPackPhase": 6,
+  "HorizontalSendPhase": 7,
+  "Flashed": false
+}

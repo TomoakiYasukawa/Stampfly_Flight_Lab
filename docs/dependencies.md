@@ -20,6 +20,7 @@
 |---|---|
 | `code/+stampfly`、`code/+official`、`code/+basic` | センサー、通信、タイマー、モーター、ログのSystemブロック |
 | `code/+imu` | アプリの表示・記録・ログ解読、ログ受信機 |
+| `code/+horizontal` | 水平速度・相対位置推定、速度目標、速度PI、姿勢選択、IMU読出し状態、ログの負荷分散 |
 | `src/bmi270`、`src/bmm150`、`src/pmw3901` | BMI270、BMM150、PMW3901のドライバーと接続処理 |
 | `src/vl53l3cx`、`third_party/M5StampFly_official_5d6c3417` | ST VL53L3CXのドライバーと公式版ULD |
 | `src/official_*`、`src/imu_*` | 無線、USB、GPIO/PWM、I2C排他、非同期取得、周期実行 |
@@ -36,6 +37,6 @@
 
 モデル構造の編集スクリプトは **Simulink Agentic Toolkit** を使用します。保存済みモデルの閲覧、GUIからの設定・ビルド・書き込み、アプリ利用には必要ありません。
 
-Pythonのシリアル・書き込み補助ツールを使う場合はPython、pyserial、esptoolが必要です。通常の操作はSimulink画面から行えます。過去の構築・展開ツールは`archive/maintenance/`に保存しています。
+Pythonのシリアル・書き込み補助ツールを使う場合はPython、pyserial、esptoolが必要です。通常の操作はSimulink画面から行えます。水平補助のモデル試験はSimulink TestとSimulink Agentic Toolkit、生成MEX比較はMATLAB Coderと対応C/C++コンパイラーを使用します。通常の機体ビルド・アプリ利用にはこれらの追加試験製品は不要です。過去の構築・展開ツールは`archive/maintenance/`に保存しています。
 
 第三者コードの再配布条件・著作権表示は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と各ソースのヘッダー・LICENSEを参照してください。

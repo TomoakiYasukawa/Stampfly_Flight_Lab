@@ -4,7 +4,7 @@
 
 ## 最上位から読む
 
-![モデル全体](images/imu/layout_root.png)
+![モデル全体](images/horizontal/layout_root.png)
 
 | 開く場所 | 役割 |
 |---|---|
@@ -12,6 +12,7 @@
 | IMUSensor／BottomRangeSensor／BatterySensor | 生センサー値の取得。ToFにはMode入力がありません |
 | SensorCorrection | 軸・単位変換、800周期の静止校正、IMU平滑化、ToF保持・外れ値処理 |
 | AttitudeAltitudeEstimation | 姿勢・高度・鉛直速度推定、センサーフラグ、推定結果のログ公開 |
+| HorizontalMotionEstimation | 光学フローと同一区間の角速度を集計。ToF・姿勢で局所水平速度・相対位置へ換算 |
 | CommandPreparation | JoyStick、電池、センサーフラグ、dtを操縦入力バスへまとめる |
 | OfficialFlightSupervisor | 最上位Stateflow。校正・待機・飛行・着陸の判断 |
 | FlightControl | 離着陸指令、7 PID、モーター配分、飛行状態、次周期フィードバック |
@@ -20,6 +21,8 @@
 | JoystickFeedback40／LEDAndBuzzer／CycleTiming | 送信機画面、機体表示、処理時間の観測 |
 
 主要ブロックの端子名と日本語説明から内部をたどります。マスク付きブロックは、右クリック **［マスク］→［マスク内を表示］** で開けます。MATLAB Functionはダブルクリックでコードを開くと、最初の概要と機能別コメントを読めます。Systemブロックは設定画面の冒頭にも日本語説明があります。
+
+IMUSensorのBMI270は`horizontal.IMUSource`を使い、従来4出力に読出し成功`ReadValid`を追加しています。ログのTelemetryPacker50／RadioUSBTransport50は400 Hz内の別周期に計算・送信を分散し、50 Hzの保存時刻・Sequenceと値を保ちます。[条件と流れ](horizontal_control.md)
 
 ## 配列の順序と単位
 
@@ -60,9 +63,11 @@ FusionStateはMode 0・1で推定を停止するEnabled subsystem、UpdateWhenRe
 
 ## 高度推定とToF
 
-**AttitudeAltitudeEstimation → AltitudeKalman** をダブルクリックすると、予測・補正・リセットを1つのMATLAB Functionで読めます。状態は **[鉛直速度; 高度; 加速度バイアス]**、観測は保持・平滑化済みの下向き距離です。加速度入力は従来実装のg基準、dtは実測値です。
+**AttitudeAltitudeEstimation → AltitudeKalman** をダブルクリックすると、予測・補正・リセットを1つのMATLAB Functionで読めます。状態は **[鉛直速度m/s; 高度m; 加速度バイアスm/s²]**、観測は保持・平滑化済みの下向き距離です。**VerticalAccelGToMps2** で加速度をgからm/s²へ換算し、dtは実測値を渡します。ログのバイアスは **KalmanBiasMps2ToG** でgへ戻します。
 
-予測共分散、ゲイン、観測分散`(0.004 m)²`の更新順序は公式実装を維持しています。待機リセットで公開出力と共分散を初期化し、内部の推定状態を保持する処理もコメントで説明しています。標準Kalmanブロックの比較版は[archive/kf400](../archive/kf400/README.md)です。
+予測共分散、ゲイン、観測分散`(0.004 m)²`の更新順序は維持しています。**PreviousParkingReset → NOT → ParkingResetEdge** で待機へ入る瞬間だけ共分散を初期化します。毎周期の初期化による切替直後の速度ジャンプを防ぎます。速度は **VerticalSpeedPIDへ直接**渡します。標準Kalmanブロックの比較版は[archive/kf400](../archive/kf400/README.md)です。
+
+高度推定は従来の機体Z加速度・斜距離を使い、姿勢からの鉛直加速度投影や高度制御用のToF傾き補正は未実装です。傾いた飛行では鉛直速度との差が生じます。今回の単位・待機リセット修正の試験結果と、落下の調査は[別記録](history/horizontal_trials/20261017_fall_review.md)で示します。
 
 **BottomRangeSensor → BottomToFSource** は、初期化・ウォームアップ後にModeに依存せず取得します。新規結果でFreshが1になり、結果のない周期は最新値を返します。割り込み、最小取得間隔、ワーカー実行中の確認、I2C排他を保ち、400 Hzの制御は読み出しを待ちません。前方ToFは未使用です。
 
@@ -71,6 +76,8 @@ FusionStateはMode 0・1で推定を停止するEnabled subsystem、UpdateWhenRe
 ## PIDと残した階層
 
 **FlightControl → TakeoffHoverControl** から、次の制御へ進みます。
+
+**AttitudeControl → HorizontalControl** に水平補助の目標生成・速度PI・姿勢選択があります。既存の角度・角速度PIDの前段です。[水平補助の設定とデータ順](horizontal_control.md)
 
 | 制御 | PID |
 |---|---|
@@ -92,6 +99,7 @@ FusionStateはMode 0・1で推定を停止するEnabled subsystem、UpdateWhenRe
 | BottomDistanceMm／BottomRangeFresh／BottomRangeStatus／BottomToFDiagnostics | 下向きToFの生値・更新・状態・診断 |
 | AttitudeAngles／AttitudeQuaternion／FilteredAngularRate | 姿勢とPIDへ渡す角速度 |
 | EstimatedAltitude／VerticalVelocity | 高度・鉛直速度 |
+| HorizontalMotion／HorizontalControlDiagnostics | 局所[基準機首, 右]の位置・速度と、保持目標・制御状態・有効性 |
 
 DataLogging50の **ReadLogMagneticField** などをダブルクリックし、**Goto source** から出所を確認します。**Ctrl+F** でタグ名を検索する方法もあります。Goto／Fromは周期遅れを追加しません。50 Hzなどへの保持は明示したRate Transition・保持ブロックで行います。
 

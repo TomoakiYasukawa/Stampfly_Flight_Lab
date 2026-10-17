@@ -52,7 +52,7 @@ for n=1:numel(models)
         end
         if strcmp(get_param(p,'BlockType'),'MATLABSystem')
             cls=get_param(p,'System');
-            if startsWith(cls,{'official.','stampfly.','basic.','imu.'})
+            if startsWith(cls,{'official.','stampfly.','basic.','imu.','horizontal.'})
                 source=fileread(which(cls));
                 assert(contains(source,'function header=getHeaderImpl()') || ...
                     contains(source,'function header = getHeaderImpl()'), ...

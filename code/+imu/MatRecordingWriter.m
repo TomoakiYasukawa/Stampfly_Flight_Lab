@@ -49,7 +49,7 @@ classdef MatRecordingWriter < handle
             obj.RawBuffer = zeros(obj.Capacity, 190, 'uint8');
             obj.LengthBuffer = zeros(obj.Capacity, 1, 'uint8');
             obj.HostTimeBuffer = zeros(obj.Capacity, 1);
-            obj.ExtensionBuffer = zeros(obj.Capacity,126);
+            obj.ExtensionBuffer = zeros(obj.Capacity,166);
             obj.ExtensionRawBuffer = zeros(obj.Capacity,246,'uint8');
             obj.ExtensionLengthBuffer = zeros(obj.Capacity,1,'uint8');
             obj.ExtensionHostTimeBuffer = zeros(obj.Capacity,1);
@@ -58,14 +58,21 @@ classdef MatRecordingWriter < handle
             rawFrames = zeros(0, 190, 'uint8');
             frameLength = zeros(0, 1, 'uint8');
             hostElapsedSeconds = zeros(0, 1);
-            extensionTelemetry=zeros(0,126);
+            extensionTelemetry=zeros(0,166);
             extensionFrames=zeros(0,246,'uint8');
             extensionFrameLength=zeros(0,1,'uint8');
             extensionHostElapsedSeconds=zeros(0,1);
             diagnosticNames = imu.flightDiagnosticNames();
             extensionNames = imu.extensionNames();
+            stateSchema='unknown';
+            if isfield(config,'FlightStateSchema')
+                stateSchema=char(config.FlightStateSchema);
+            elseif isfield(config,'ExpectedBuildID') && config.ExpectedBuildID==1401
+                stateSchema='StampFlyOfficial-v1';
+            end
             info = struct( ...
                 'Format', 'StampFlyIMURecordingV8WithExtensions', ...
+                'FlightStateSchema', stateSchema, ...
                 'StartedAt', datetime('now'), ...
                 'StoppedAt', NaT, ...
                 'Complete', false, ...
@@ -93,7 +100,7 @@ classdef MatRecordingWriter < handle
                     'rawFrames rows are zero-padded to 190 bytes; use frameLength.', ...
                 'ExtensionColumns',{{'Kind','Sequence','TimeSeconds','BuildID','FirmwareRevision',extensionNames{:}}}, ...
                 'ExtensionFrames',0, ...
-                'ExtensionNote','SFIX190 commands (Kind1) and SFIY246 sensors (Kind2), matched by Sequence/TimeSeconds/BuildID. Missing fields are NaN.');
+                'ExtensionNote','SFIX190 commands (Kind1), SFIY246 sensors (Kind2), SFIH182 horizontal (Kind3). Match by Sequence/TimeSeconds/BuildID. Missing fields are NaN.');
             save(obj.FilePath, 'telemetry', 'rawFrames', 'frameLength', ...
                 'hostElapsedSeconds','extensionTelemetry','extensionFrames','extensionFrameLength', ...
                 'extensionHostElapsedSeconds','info','-v7.3');
@@ -166,11 +173,12 @@ classdef MatRecordingWriter < handle
             obj.Buffered = 0;
         end
 
-        function path = finish(obj, missingFrames, crcRejected)
+        function path = finish(obj, missingFrames, crcRejected, stopDetails)
             arguments
                 obj
                 missingFrames (1,1) double {mustBeNonnegative}
                 crcRejected (1,1) double {mustBeNonnegative}
+                stopDetails (1,1) struct = struct()
             end
             if ~obj.IsComplete
                 obj.flush();
@@ -181,6 +189,7 @@ classdef MatRecordingWriter < handle
                 info.MissingFrames = missingFrames;
                 info.CRCRejected = crcRejected;
                 info.ExtensionFrames = obj.ExtensionCount;
+                info.RecordingStop = stopDetails;
                 obj.MatFile.info = info;
                 obj.IsComplete = true;
             end
@@ -193,7 +202,7 @@ classdef MatRecordingWriter < handle
 
         function appendExtension(obj,sample,rawFrame)
             assert(~obj.IsComplete,'imu:RecordingClosed','Recording is already complete.');
-            assert(numel(rawFrame)==190 || numel(rawFrame)==246,'imu:RecordingExtensionLength');
+            assert(ismember(numel(rawFrame),[182 190 246]),'imu:RecordingExtensionLength');
             k=obj.ExtensionBuffered+1;
             obj.ExtensionBuffer(k,:)=[double(sample.Kind),double(sample.Sequence),sample.TimeSeconds, ...
                 double(sample.BuildID),double(sample.FirmwareRevision),sample.Values];
@@ -211,7 +220,7 @@ classdef MatRecordingWriter < handle
             n=obj.ExtensionBuffered;
             if n==0,return;end
             first=obj.ExtensionCount+1;last=obj.ExtensionCount+n;
-            obj.MatFile.extensionTelemetry(first:last,1:126)=obj.ExtensionBuffer(1:n,:);
+            obj.MatFile.extensionTelemetry(first:last,1:166)=obj.ExtensionBuffer(1:n,:);
             obj.MatFile.extensionFrames(first:last,1:246)=obj.ExtensionRawBuffer(1:n,:);
             obj.MatFile.extensionFrameLength(first:last,1)=obj.ExtensionLengthBuffer(1:n);
             obj.MatFile.extensionHostElapsedSeconds(first:last,1)=obj.ExtensionHostTimeBuffer(1:n);

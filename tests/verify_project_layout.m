@@ -2,11 +2,11 @@
 projectRoot=fileparts(fileparts(mfilename('fullpath')));
 cd(projectRoot);
 run(fullfile(projectRoot,'config','startup.m'));
-init_official();
+init_imu_flight();
 assert(strcmp(stampfly.BMI270IMU.libsRoot(),projectRoot));
 assert(strcmp(stampfly.VL53L3CX.libsRoot(),projectRoot));
 assert(isfile(StampFlyIMUApp.AppConfigFilename));
-models={'StampFly_Official_FlightTest400','M5Stamp_IMU_Rx'};
+models={'StampFly_IMU400','M5Stamp_IMU_Rx'};
 for modelIndex=1:numel(models)
     open_system(stampfly_model_file(models{modelIndex}));
     set_param(models{modelIndex},'SimulationCommand','update');

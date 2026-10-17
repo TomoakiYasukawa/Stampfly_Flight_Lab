@@ -215,7 +215,8 @@
                                                             <Column>7</Column>
                                                             <Row>2</Row>
                                                         </Layout>
-                                                        <Text>'記録開始'</Text>
+                                                        <Text>'手動記録開始'</Text>
+                                                        <Tooltip>'飛行は自動で記録します。机上確認はこのボタンで記録開始・停止できます。'</Tooltip>
                                                     </Button>
                                                 </Children>
                                             </GridLayout>
@@ -262,7 +263,7 @@
                                                     <Row>4</Row>
                                                 </Layout>
                                                 <Padding>[4 4 4 4]</Padding>
-                                                <RowHeight>{'1x', '1x', 24}</RowHeight>
+                                                <RowHeight>{'1x', '1x', 24, 42}</RowHeight>
                                                 <RowSpacing>4</RowSpacing>
                                                 <Children>
                                                     <UIAxes name='ToFAxes'>
@@ -282,6 +283,14 @@
                                                             <Column>[1 2]</Column>
                                                             <Row>3</Row>
                                                         </Layout>
+                                                    </Label>
+                                                    <Label name='HorizontalLabel'>
+                                                        <Layout>
+                                                            <Column>[1 2]</Column>
+                                                            <Row>4</Row>
+                                                        </Layout>
+                                                        <Text>'水平補助: 未受信'</Text>
+                                                        <FontSize>11</FontSize>
                                                     </Label>
                                                 </Children>
                                             </GridLayout>
@@ -724,7 +733,7 @@
                                                         </Children>
                                                     </GridLayout>
                                                     <Table name='HistorySummaryTable'>
-                                                        <ColumnName>{'記録'; 'フレーム'; '期間(s)'; 'ホバリング平均(cm)'; '高度範囲(cm)'; '欠落'; 'CRC'}</ColumnName>
+                                                        <ColumnName>{'記録'; 'フレーム'; '期間(s)'; '飛行平均高度(cm)'; '高度範囲(cm)'; '欠落'; 'CRC'; '保存終了理由'}</ColumnName>
                                                         <Layout>
                                                             <Column>1</Column>
                                                             <Row>2</Row>

@@ -3,12 +3,12 @@
     {
       "Model": "StampFly_IMU400",
       "FullUpdatePassed": true,
-      "CheckedScopes": 77,
+      "CheckedScopes": 79,
       "ConnectionIssues": [],
       "MATLABFunctionCount": 14,
       "JapaneseFunctionComments": true,
-      "CustomSystemHeaders": 15,
-      "MaskedSubsystemPortLabels": 48
+      "CustomSystemHeaders": 20,
+      "MaskedSubsystemPortLabels": 50
     },
     {
       "Model": "M5Stamp_IMU_Rx",

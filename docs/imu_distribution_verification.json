@@ -11,21 +11,6 @@
   "ExternalCustomDependencies": 0,
   "ProjectChecks": [
     {
-      "ID": "Project:Checks:ProjectDefinitionFilesAreUnderSourceControl",
-      "Passed": true,
-      "ProblemFileCount": 0
-    },
-    {
-      "ID": "Project:Checks:AllProjectFilesUnderSourceControl",
-      "Passed": false,
-      "ProblemFileCount": 1057
-    },
-    {
-      "ID": "Project:Checks:AllFilesUnderSourceControlAreInProject",
-      "Passed": true,
-      "ProblemFileCount": 0
-    },
-    {
       "ID": "Project:Checks:ProjectFilesExist",
       "Passed": true,
       "ProblemFileCount": 0
@@ -71,18 +56,19 @@
       "ProblemFileCount": 0
     }
   ],
-  "ProjectChecksPassed": false,
-  "Passed": true,
+  "ProjectChecksPassed": true,
   "RuntimeChecksPassed": true,
   "NonSourceControlProjectChecksPassed": true,
   "GitMetadataIncluded": false,
-  "SourceControlCheckNote": "Fresh copy excludes .git; AllProjectFilesUnderSourceControl reports untracked files. Registered source checkout is checked separately.",
-  "CopiedFileCount": 3830,
-  "CopyManifestSHA256": "d2a60f64e13551c2a9ddc787f65a5ca40aaebb601bfa937f9637e2d81c6cd737",
+  "Passed": true,
+  "SourceControlCheckNote": "配布用コピーは.gitを含まないためGit管理のチェックを実行可否の判定から除きます。ファイル存在・パス・起動・モデル更新・アプリと、元リポジトリの登録は別に検証します。",
+  "CopiedFileCount": 4317,
+  "CopyManifestSHA256": "c549063bdb5cddc5206aee9651c854db2c84d746e43ff1f7c4e5d92ba4808405",
+  "VerifiedAtUTC": "2026-10-17T07:13:42.790407+00:00",
   "TestedModels": [
     {
       "File": "StampFly_IMU400.slx",
-      "SHA256": "3e2547aeb792d8e340f9975993f871000265b75186b1a046c50ced3a59d40ebc",
+      "SHA256": "15748428d752e51cc60ab3288415fd6f80b51e3a9ab90f4c4ec469ffafa018a0",
       "MatchesCurrentSavedModel": true
     },
     {
@@ -90,5 +76,22 @@
       "SHA256": "35f1a5a1f529db3cf77f63ebaa8193b99f485d726d5a17df32fdd5602af55d32",
       "MatchesCurrentSavedModel": true
     }
-  ]
+  ],
+  "TestedAppFiles": [
+    {
+      "File": "StampFlyIMUApp.m",
+      "SHA256": "ec5a2bb813c5c000784704ddd9217012074b0890450e6155d7716e1b0a99dfb3",
+      "MatchesCurrentSavedFile": true,
+      "TestedBytesSHA256": "ec5a2bb813c5c000784704ddd9217012074b0890450e6155d7716e1b0a99dfb3",
+      "HashNormalization": "LF"
+    },
+    {
+      "File": "StampFlyIMUApp.xml",
+      "SHA256": "9f1ce629bb9a46d9116822e2ced467e95f2b17ed33d14ef5f776b31c03dca504",
+      "MatchesCurrentSavedFile": true,
+      "TestedBytesSHA256": "2d1962ee777ff305707fd1e933e4a3b8ecc7044fe24422ebe1dd87a9ebf68a94",
+      "HashNormalization": "LF"
+    }
+  ],
+  "AppTextHashNote": "App text SHA-256 uses LF to match Git checkout; TestedBytesSHA256 preserves the actual copy bytes."
 }

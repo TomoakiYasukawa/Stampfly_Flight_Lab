@@ -35,7 +35,7 @@ assert(isequal(a2.FlowDelta,single([24 -16])) && ~a2.MagFresh && ~a2.ToFFresh);
 writer.append(a2,base2);writer.appendExtension(c2,sensors2);file=writer.finish(0,0);
 stored=load(file,'info','telemetry','rawFrames','extensionTelemetry','extensionFrames');
 assert(isequal(size(stored.telemetry),[2 80]));
-assert(isequal(size(stored.extensionTelemetry),[3 126]));
+assert(isequal(size(stored.extensionTelemetry),[3 166]));
 assert(stored.info.ExtensionFrames==3);
 joined=imu.readExtendedTelemetry(file);
 assert(joined.AppliedPWMFR(1)==100 && isnan(joined.AppliedPWMFR(2)));

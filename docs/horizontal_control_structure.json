@@ -1,0 +1,14 @@
+{
+  "Model": "StampFly_IMU400.slx",
+  "Estimator": "blk_4274",
+  "Controller": "blk_4316",
+  "Command": "blk_4325",
+  "PreviousMotorSaturation": "blk_4313",
+  "FlightMotionInput": "blk_4303",
+  "TakeoffMotionInput": "blk_4304",
+  "AttitudeMotionInput": "blk_4314",
+  "AttitudeSaturationInput": "blk_4315",
+  "FirmwareRevision": 1801,
+  "PIDCount": 7,
+  "PhysicalFlightTested": false
+}

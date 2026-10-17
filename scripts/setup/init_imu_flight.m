@@ -1,6 +1,7 @@
 function parameters=init_imu_flight()
 %INIT_IMU_FLIGHT Initialize the IMU Filter copy without hardware operations.
 parameters=init_basic();
+init_horizontal_buses();
 filter=imufilter;
 settings=struct('SampleRate',400,'Gravity',single(9.80665), ...
     'InitialProcessNoise',filter.InitialProcessNoise, ...

@@ -49,8 +49,9 @@ void onReceive(const esp_now_recv_info_t *, const uint8_t *data, int length) {
   const bool isV8 = length == 190 && memcmp(data, "SFI8", 4) == 0;
   const bool isCommands = length == 190 && memcmp(data, "SFIX", 4) == 0;
   const bool isSensors = length == 246 && memcmp(data, "SFIY", 4) == 0;
+  const bool isHorizontal = length == 182 && memcmp(data, "SFIH", 4) == 0;
   if (!isV1 && !isV2 && !isV3 && !isV4 && !isV5 && !isV6 &&
-      !isV7 && !isV8 && !isCommands && !isSensors) return;
+      !isV7 && !isV8 && !isCommands && !isSensors && !isHorizontal) return;
   const uint16_t expected = static_cast<uint16_t>(data[length - 2]) |
                             (static_cast<uint16_t>(data[length - 1]) << 8);
   if (crc16(data, static_cast<size_t>(length - 2)) != expected) return;

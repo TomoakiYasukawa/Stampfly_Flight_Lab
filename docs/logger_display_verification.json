@@ -1,0 +1,29 @@
+{
+  "Tests": 13,
+  "Passed": 13,
+  "Failed": 0,
+  "Incomplete": 0,
+  "ExpectedBuildID": 1401,
+  "ReceiveRatesHz": [
+    25,
+    50,
+    400
+  ],
+  "WindowSeconds": 10,
+  "SerialConnectionsOpened": 0,
+  "Cases": [
+    "StampFlyIMUAppDisplayTest/horizontalStatusDoesNotAddPlotSamples",
+    "StampFlyIMUAppDisplayTest/tofGraphUsesTiltProjectionNotKalmanHeight",
+    "StampFlyIMUAppDisplayTest/supplementalFramesKeepOnePlotSamplePerSequence",
+    "StampFlyIMUAppDisplayTest/opticalFlowDistanceIsVisibleInMeters",
+    "StampFlyIMUAppDisplayTest/mixedBuildsDoNotClearPlots",
+    "StampFlyIMUAppDisplayTest/tenSecondHistoryDoesNotDependOnReceiveRate(ReceiveRate=ToF25Hz)",
+    "StampFlyIMUAppDisplayTest/tenSecondHistoryDoesNotDependOnReceiveRate(ReceiveRate=Logger50Hz)",
+    "StampFlyIMUAppDisplayTest/tenSecondHistoryDoesNotDependOnReceiveRate(ReceiveRate=Control400Hz)",
+    "StampFlyIMUAppDisplayTest/firstSampleStartsAtConnectionTime",
+    "StampFlyIMUAppDisplayTest/rebootKeepsHistoryWithLineBreak",
+    "StampFlyIMUAppDisplayTest/partialPacketLeavesVisibleHistoryIntact",
+    "StampFlyIMUAppDisplayTest/foreignFramesAreExcludedFromRecording",
+    "StampFlyIMUAppDisplayTest/droppedAndCorruptPacketsAreCountedWithoutClearing"
+  ]
+}

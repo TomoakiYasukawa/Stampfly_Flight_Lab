@@ -3,7 +3,7 @@
   "CurrentAircraft": "StampFly_IMU400.slx",
   "CurrentReceiver": "M5Stamp_IMU_Rx.slx",
   "RegistrationComplete": true,
-  "RegisteredFileCount": 1066,
+  "RegisteredFileCount": 1207,
   "RemovedMissingEntries": [],
   "ProjectPath": [
     "",
@@ -98,7 +98,7 @@
     }
   ],
   "ChecksPassed": true,
-  "DependencyNodeCount": 780,
-  "DependencyEdgeCount": 3573,
+  "DependencyNodeCount": 850,
+  "DependencyEdgeCount": 4373,
   "SourceControlIntegration": "Git"
 }

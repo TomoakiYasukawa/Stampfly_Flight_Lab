@@ -21,6 +21,12 @@ frame(173:176)=reshape(typecast(single(control.Dt),'uint8'),4,1);
 frame(177:208)=reshape(typecast(uint32(extra.Timing),'uint8'),32,1);
 frame(209:224)=reshape(typecast(uint32(extra.Scheduler),'uint8'),16,1);
 frame(225:240)=reshape(typecast(uint32(raw.ToFInfo),'uint8'),16,1);
-frame(241:244)=uint8([raw.IMUFresh;raw.BatteryValid;control.OutputEnabled;0]);
+% Revision 1802以降は最後の予約バイトへESP32の再起動理由を保存します。
+% モーター・センサーには指令せず、OSの起動時情報だけを読みます。
+resetReason=uint8(0);
+if coder.target('Rtw') && revision>=uint32(1802)
+    coder.cinclude('official_scheduler.h');resetReason=coder.ceval('official_reset_reason');
+end
+frame(241:244)=uint8([raw.IMUFresh;raw.BatteryValid;control.OutputEnabled;resetReason]);
 frame(245:246)=reshape(typecast(imu.crc16(frame(1:244)),'uint8'),2,1);
 end

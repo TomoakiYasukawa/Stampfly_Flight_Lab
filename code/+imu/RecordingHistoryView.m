@@ -44,7 +44,7 @@ classdef RecordingHistoryView
                 app.HistoryList.Items = {'記録なし'};
                 app.HistoryList.Enable = 'off';
                 app.HistoryStatusLabel.Text = 'recordings にMAT記録がありません';
-                app.HistorySummaryTable.Data = cell(0,7);
+                app.HistorySummaryTable.Data = cell(0,8);
                 return
             end
             chosen = previous(ismember(previous,paths));
@@ -84,12 +84,12 @@ classdef RecordingHistoryView
                 grid(ax,'on');
                 hold(ax,'on');
             end
-            title(app.HistoryHeightAxes,'高度: 補正値 / 生ToF');
-            xlabel(app.HistoryHeightAxes,'離陸・記録開始からの時間 (s)');
+            title(app.HistoryHeightAxes,'高度: 制御用推定 / ToF');
+            xlabel(app.HistoryHeightAxes,'飛行制御開始からの時間 (s、負値は直前記録)');
             ylabel(app.HistoryHeightAxes,'高さ (cm)');
-            title(app.HistoryVerticalSpeedAxes,'鉛直速度: 生 / フィルター / 目標');
+            title(app.HistoryVerticalSpeedAxes,'鉛直速度: 推定 / 高度変化率 / 目標（上昇＋）');
             xlabel(app.HistoryVerticalSpeedAxes,'時間 (s)');
-            ylabel(app.HistoryVerticalSpeedAxes,'速度 (m/s)');
+            ylabel(app.HistoryVerticalSpeedAxes,'上昇速度 (m/s)');
             title(app.HistoryHeightErrorAxes,'高度誤差');
             xlabel(app.HistoryHeightErrorAxes,'時間 (s)');
             ylabel(app.HistoryHeightErrorAxes,'誤差 (cm)');
@@ -101,24 +101,27 @@ classdef RecordingHistoryView
             ylabel(app.HistoryControlAxes,'補正 (PWM)');
             title(app.HistoryThrottleAxes,'スロットル: 基準 / 制限前 / 制限後');
             xlabel(app.HistoryThrottleAxes,'時間 (s)');
-            ylabel(app.HistoryThrottleAxes,'指令値 (0–255)');
-            ylim(app.HistoryThrottleAxes,[0 255]);
+            ylabel(app.HistoryThrottleAxes,'デューティ指令 (0–1)');
+            ylim(app.HistoryThrottleAxes,[0 1]);
             title(app.HistoryMotorAxes,'モーター指令: 単独は4軸 / 比較は平均');
-            xlabel(app.HistoryMotorAxes,'離陸・記録開始からの時間 (s)');
+            xlabel(app.HistoryMotorAxes,'飛行制御開始からの時間 (s)');
             ylabel(app.HistoryMotorAxes,'指令値 (0–255)');
             ylim(app.HistoryMotorAxes,[0 255]);
             title(app.HistoryXYAxes,'相対XY (区間開始=0)');
             xlabel(app.HistoryXYAxes,'ΔX (m)');
             ylabel(app.HistoryXYAxes,'ΔY (m)');
             title(app.HistoryStateAxes,'飛行状態');
-            xlabel(app.HistoryStateAxes,'離陸・記録開始からの時間 (s)');
-            app.HistoryStateAxes.YTick = 0:4;
-            app.HistoryStateAxes.YTickLabel = {'待機','離陸','ホバリング','着陸','非常停止'};
-            ylim(app.HistoryStateAxes,[-0.3 4.3]);
+            xlabel(app.HistoryStateAxes,'飛行制御開始からの時間 (s)');
+            states=imu.flightStateDefinition();
+            app.HistoryStateAxes.YTick = states.Codes;
+            app.HistoryStateAxes.YTickLabel = states.Names;
+            ylim(app.HistoryStateAxes,[-0.3 5.3]);
             title(app.HistoryValidityAxes,'診断フラグ（各段の下=0・上=1）');
             xlabel(app.HistoryValidityAxes,'時間 (s)');
             ylabel(app.HistoryValidityAxes,'状態');
-            app.HistorySummaryTable.Data = cell(0,7);
+            app.HistorySummaryTable.Data = cell(0,8);
+            app.HistorySummaryTable.ColumnName={'記録','フレーム','期間(s)', ...
+                '飛行平均高度(cm)','高度範囲(cm)','欠落','CRC','保存終了理由'};
             if strcmp(app.HistoryList.Enable,'off')
                 return
             end
@@ -148,22 +151,25 @@ classdef RecordingHistoryView
                 return
             end
             if isscalar(logs)
-                title(app.HistoryHeightAxes,'高度: 補正値 / 生ToF');
+                title(app.HistoryHeightAxes,'高度: 制御用推定 / ToF斜距離 / ToF鉛直投影');
                 title(app.HistoryMotorAxes,'モーター指令: FR / FL / RR / RL');
                 app.HistoryValidityAxes.YTick = 0.5:2:10.5;
                 app.HistoryValidityAxes.YTickLabel = { ...
-                    'ToF新規','ToF有効','補正高度','姿勢','高度制御','スロットル飽和'};
+                    'ToF新規','ToF有効','推定高度','姿勢','高度制御','スロットル飽和'};
                 ylim(app.HistoryValidityAxes,[-0.5 11.5]);
             else
-                title(app.HistoryHeightAxes,'補正高度の比較');
+                title(app.HistoryHeightAxes,'制御用推定高度の比較');
                 title(app.HistoryMotorAxes,'モーター指令の平均値');
-                title(app.HistoryValidityAxes,'補正高度の有効状態');
+                title(app.HistoryValidityAxes,'推定高度の有効状態');
                 app.HistoryValidityAxes.YTick = [0 1];
                 app.HistoryValidityAxes.YTickLabel = {'無効','有効'};
                 ylim(app.HistoryValidityAxes,[-0.2 1.2]);
             end
             colors = lines(numel(logs));
-            summary = cell(numel(logs),7);
+            app.HistoryStateAxes.YTick=logs{1}.StateCodes;
+            app.HistoryStateAxes.YTickLabel=logs{1}.StateNames;
+            ylim(app.HistoryStateAxes,[min(logs{1}.StateCodes)-.3 max(logs{1}.StateCodes)+.3]);
+            summary = cell(numel(logs),8);
             stateEvents = zeros(0,2);
             for k = 1:numel(logs)
                 log = logs{k};
@@ -177,23 +183,27 @@ classdef RecordingHistoryView
                         stamp{2},stamp{3},stamp{4},stamp{5},stamp{6});
                 end
                 t = log.Time;
+                plotLog=imu.RecordingHistoryView.breakLines(log);
+                tp=plotLog.Time;
                 color = colors(k,:);
                 stateNow = log.FlightState(:);
                 changed = find(isfinite(stateNow) & ...
                     [false;stateNow(2:end) ~= stateNow(1:end-1)]);
-                if mode == "firstFlight" && isfinite(stateNow(1)) && ...
-                        stateNow(1) ~= 0
+                if isfinite(stateNow(1))
                     changed = [1;changed]; %#ok<AGROW>
                 end
                 stateEvents = [stateEvents; t(changed) stateNow(changed)]; %#ok<AGROW>
                 if isscalar(logs) && any(isfinite(log.ToFM))
-                    plot(app.HistoryHeightAxes,t,100*log.ToFM, ...
+                    plot(app.HistoryHeightAxes,tp,100*plotLog.ToFM, ...
                         'Color',[0.35 0.35 0.35],'LineWidth',1.1, ...
                         'DisplayName','ToF斜距離');
+                    plot(app.HistoryHeightAxes,tp,100*plotLog.CorrectedToFM, ...
+                        ':','Color',[.20 .55 .20],'LineWidth',1.1, ...
+                        'DisplayName','ToF鉛直投影（傾き補正）');
                 end
                 if any(isfinite(log.HeightM))
-                    plot(app.HistoryHeightAxes,t,100*log.HeightM, ...
-                        'Color',color,'LineWidth',1.4,'DisplayName',[name ' 補正']);
+                    plot(app.HistoryHeightAxes,tp,100*plotLog.HeightM, ...
+                        'Color',color,'LineWidth',1.4,'DisplayName',[name ' 推定']);
                 end
                 if any(isfinite(log.ZReferenceM))
                     if isscalar(logs)
@@ -203,70 +213,75 @@ classdef RecordingHistoryView
                         referenceName = [name ' 目標'];
                         referenceColor = color;
                     end
-                    plot(app.HistoryHeightAxes,t,100*log.ZReferenceM, ...
+                    plot(app.HistoryHeightAxes,tp,100*plotLog.ZReferenceM, ...
                         '--','Color',referenceColor,'LineWidth',1.0, ...
                         'DisplayName',referenceName);
                 end
                 if isscalar(logs)
                     if any(isfinite(log.RawVerticalVelocityMps))
-                        plot(app.HistoryVerticalSpeedAxes,t,log.RawVerticalVelocityMps, ...
-                            'Color',[0.60 0.60 0.60],'LineWidth',0.9, ...
-                            'DisplayName','生速度');
+                        plot(app.HistoryVerticalSpeedAxes,tp,plotLog.RawVerticalVelocityMps, ...
+                            'Color',[0.00 0.45 0.74],'LineWidth',1.4, ...
+                            'DisplayName','機体の速度推定（Kalman）');
                     end
                     if any(isfinite(log.FilteredVerticalVelocityMps))
-                        plot(app.HistoryVerticalSpeedAxes,t,log.FilteredVerticalVelocityMps, ...
+                        plot(app.HistoryVerticalSpeedAxes,tp,plotLog.FilteredVerticalVelocityMps, ...
                             'Color',[0.00 0.45 0.74],'LineWidth',1.4, ...
                             'DisplayName','フィルター後');
                     end
                     if any(isfinite(log.VerticalVelocityReferenceMps))
-                        plot(app.HistoryVerticalSpeedAxes,t, ...
-                            log.VerticalVelocityReferenceMps,'k--', ...
+                        plot(app.HistoryVerticalSpeedAxes,tp, ...
+                            plotLog.VerticalVelocityReferenceMps,'k--', ...
                             'LineWidth',1.0,'DisplayName','目標速度');
                     end
+                    if any(isfinite(log.ToFVerticalVelocityMps))
+                        plot(app.HistoryVerticalSpeedAxes,tp,plotLog.ToFVerticalVelocityMps, ...
+                            'o-','Color',[.85 .33 .10],'MarkerSize',3, ...
+                            'LineWidth',.8,'DisplayName','ToF高度変化率（直前0.25秒）');
+                    end
                 else
-                    if any(isfinite(log.FilteredVerticalVelocityMps))
-                        plot(app.HistoryVerticalSpeedAxes,t, ...
-                            log.FilteredVerticalVelocityMps, ...
+                    if any(isfinite(log.RawVerticalVelocityMps))
+                        plot(app.HistoryVerticalSpeedAxes,tp, ...
+                            plotLog.RawVerticalVelocityMps, ...
                             'Color',color,'LineWidth',1.2,'DisplayName',name);
                     end
                 end
                 if any(isfinite(log.ZErrorM))
-                    plot(app.HistoryHeightErrorAxes,t,100*log.ZErrorM, ...
+                    plot(app.HistoryHeightErrorAxes,tp,100*plotLog.ZErrorM, ...
                         'Color',color,'LineWidth',1.2,'DisplayName',name);
                 end
                 if any(isfinite(log.VerticalVelocityErrorMps))
-                    plot(app.HistoryVelocityErrorAxes,t, ...
-                        log.VerticalVelocityErrorMps, ...
+                    plot(app.HistoryVelocityErrorAxes,tp, ...
+                        plotLog.VerticalVelocityErrorMps, ...
                         'Color',color,'LineWidth',1.2,'DisplayName',name);
                 end
                 if isscalar(logs)
-                    controlValues = {log.VerticalPTerm,log.VerticalIResidual, ...
-                        log.VerticalPIOutput,log.AppliedHeightCorrection};
+                    controlValues = {plotLog.VerticalPTerm,plotLog.VerticalIResidual, ...
+                        plotLog.VerticalPIOutput,plotLog.AppliedHeightCorrection};
                     controlLabels = {'速度P','速度I残差','PI出力','適用補正'};
                     controlColors = [0.00 0.45 0.74; 0.85 0.33 0.10; ...
                         0.47 0.20 0.60; 0.20 0.60 0.30];
                     for j = 1:numel(controlValues)
                         if any(isfinite(controlValues{j}))
-                            plot(app.HistoryControlAxes,t,controlValues{j}, ...
+                            plot(app.HistoryControlAxes,tp,controlValues{j}, ...
                                 'Color',controlColors(j,:), ...
                                 'LineWidth',1.2,'DisplayName',controlLabels{j});
                         end
                     end
-                    throttleValues = {log.BaseThrottle, ...
-                        log.ThrottleBeforeLimit,log.ThrottleAfterLimit};
+                    throttleValues = {plotLog.BaseThrottle, ...
+                        plotLog.ThrottleBeforeLimit,plotLog.ThrottleAfterLimit};
                     throttleLabels = {'基準','制限前','制限後'};
                     throttleColors = [0.55 0.55 0.55; 0.85 0.33 0.10; ...
                         0.00 0.45 0.74];
                     for j = 1:numel(throttleValues)
                         if any(isfinite(throttleValues{j}))
-                            plot(app.HistoryThrottleAxes,t,throttleValues{j}, ...
+                            plot(app.HistoryThrottleAxes,tp,throttleValues{j}, ...
                                 'Color',throttleColors(j,:), ...
                                 'LineWidth',1.2,'DisplayName',throttleLabels{j});
                         end
                     end
-                    flags = {log.ToFFresh,log.ToFValid, ...
-                        log.HeightValid,log.OrientationValid, ...
-                        log.HeightControlEnabled,log.ThrottleSaturated};
+                    flags = {plotLog.ToFFresh,plotLog.ToFValid, ...
+                        plotLog.HeightValid,plotLog.OrientationValid, ...
+                        plotLog.HeightControlEnabled,plotLog.ThrottleSaturated};
                     flagColors = lines(numel(flags));
                     for j = 1:numel(flags)
                         if any(isfinite(flags{j}))
@@ -274,7 +289,7 @@ classdef RecordingHistoryView
                             known = isfinite(flags{j});
                             flagValue(known) = 2*(j-1) + ...
                                 double(flags{j}(known) >= 0.5);
-                            stairs(app.HistoryValidityAxes,t, ...
+                            stairs(app.HistoryValidityAxes,tp, ...
                                 flagValue, ...
                                 'Color',flagColors(j,:), ...
                                 'LineWidth',1.1,'HandleVisibility','off');
@@ -282,19 +297,19 @@ classdef RecordingHistoryView
                     end
                 else
                     if any(isfinite(log.AppliedHeightCorrection))
-                        plot(app.HistoryControlAxes,t, ...
-                            log.AppliedHeightCorrection,'Color',color, ...
+                        plot(app.HistoryControlAxes,tp, ...
+                            plotLog.AppliedHeightCorrection,'Color',color, ...
                             'LineWidth',1.2,'DisplayName',name);
                     end
                     if any(isfinite(log.ThrottleAfterLimit))
-                        plot(app.HistoryThrottleAxes,t,log.ThrottleAfterLimit, ...
+                        plot(app.HistoryThrottleAxes,tp,plotLog.ThrottleAfterLimit, ...
                             'Color',color,'LineWidth',1.2,'DisplayName',name);
                     end
                     if any(isfinite(log.HeightValid))
-                        heightValid = nan(size(log.HeightValid));
-                        known = isfinite(log.HeightValid);
-                        heightValid(known) = double(log.HeightValid(known) >= 0.5);
-                        stairs(app.HistoryValidityAxes,t, ...
+                        heightValid = nan(size(plotLog.HeightValid));
+                        known = isfinite(plotLog.HeightValid);
+                        heightValid(known) = double(plotLog.HeightValid(known) >= 0.5);
+                        stairs(app.HistoryValidityAxes,tp, ...
                             heightValid, ...
                             'Color',color,'LineWidth',1.1,'DisplayName',name);
                     end
@@ -304,33 +319,33 @@ classdef RecordingHistoryView
                     motorColors = lines(4);
                     for j = 1:4
                         if any(isfinite(log.Motors(:,j)))
-                            plot(app.HistoryMotorAxes,t,log.Motors(:,j), ...
+                            plot(app.HistoryMotorAxes,tp,plotLog.Motors(:,j), ...
                                 'Color',motorColors(j,:),'LineWidth',1.1, ...
                                 'DisplayName',motorNames{j});
                         end
                     end
                 else
-                    motorMean = mean(log.Motors,2,'omitnan');
+                    motorMean = mean(plotLog.Motors,2,'omitnan');
                     if any(isfinite(motorMean))
-                        plot(app.HistoryMotorAxes,t,motorMean, ...
+                        plot(app.HistoryMotorAxes,tp,motorMean, ...
                             'Color',color,'LineWidth',1.2,'DisplayName',name);
                     end
                 end
                 if any(all(isfinite(log.XYM),2))
-                    xy = log.XYM;
+                    xy = plotLog.XYM;
                     origin = find(all(isfinite(xy),2),1);
                     xy = xy-xy(origin,:);
                     plot(app.HistoryXYAxes,xy(:,1),xy(:,2), ...
                         'Color',color,'DisplayName',name);
                 end
                 if any(isfinite(log.FlightState))
-                    stairs(app.HistoryStateAxes,t,log.FlightState, ...
+                    stairs(app.HistoryStateAxes,tp,plotLog.FlightState, ...
                         'Color',color,'LineWidth',1.2,'DisplayName',name);
                 end
                 summary{k,1} = char(log.Name);
                 summary{k,2} = log.TotalFrames;
                 summary{k,3} = round(log.DurationSeconds,1);
-                summary{k,4} = round(log.HoverMeanCM,1);
+                summary{k,4} = round(log.FlightMeanHeightCM,1);
                 if all(isfinite(log.HeightRangeCM))
                     summary{k,5} = sprintf('%.1f–%.1f',log.HeightRangeCM);
                 else
@@ -338,15 +353,17 @@ classdef RecordingHistoryView
                 end
                 summary{k,6} = log.MissingFrames;
                 summary{k,7} = log.CRCRejected;
+                summary{k,8} = log.RecordingStopName;
             end
             app.HistorySummaryTable.Data = summary;
             % Align every diagnostic time series at each flight-state change.
             stateEvents(:,1) = round(stateEvents(:,1),2);
             stateEvents = unique(stateEvents,'rows','stable');
             stateEvents = sortrows(stateEvents,1);
-            stateNames = {'待機','離陸','ホバリング','着陸','非常停止'};
-            stateColors = [0.45 0.45 0.45; 0.10 0.55 0.20; ...
-                0.00 0.45 0.74; 0.85 0.35 0.05; 0.75 0.10 0.10];
+            stateNames = logs{1}.StateNames;
+            stateCodes = logs{1}.StateCodes;
+            stateColors = logs{1}.StateColors;
+            firstTime = min(cellfun(@(item) item.Time(1),logs));
             lastTime = max(cellfun(@(item) item.Time(end),logs));
             for ax = timeAxes
                 hasPlot = ~isempty(allchild(ax));
@@ -357,7 +374,8 @@ classdef RecordingHistoryView
                     end
                     eventTime = stateEvents(eventIndex,1);
                     stateId = stateEvents(eventIndex,2);
-                    if stateId < 0 || stateId > 4 || stateId ~= fix(stateId)
+                    stateIndex=find(stateCodes==stateId,1);
+                    if isempty(stateIndex)
                         continue
                     end
                     alignment = 'right';
@@ -367,22 +385,22 @@ classdef RecordingHistoryView
                     label = '';
                     showLabel = ax == app.HistoryHeightAxes || ...
                         ax == app.HistoryMotorAxes;
-                    if showLabel && (isscalar(logs) || ~labeledStates(stateId+1))
-                        label = stateNames{stateId+1};
-                        labeledStates(stateId+1) = true;
+                    if showLabel && (isscalar(logs) || ~labeledStates(stateIndex))
+                        label = stateNames{stateIndex};
+                        labeledStates(stateIndex) = true;
                     end
                     xline(ax,eventTime,'--',label, ...
-                        'Color',stateColors(stateId+1,:), ...
+                        'Color',stateColors(stateIndex,:), ...
                         'LineWidth',1.2,'FontSize',10, ...
                         'LabelOrientation','horizontal', ...
                         'LabelVerticalAlignment','bottom', ...
                         'LabelHorizontalAlignment',alignment, ...
                         'HandleVisibility','off');
                 end
-                padding = max(0.2,0.02*lastTime);
-                xlim(ax,[0 lastTime+padding]);
+                padding = max(0.2,0.02*(lastTime-firstTime));
+                xlim(ax,[firstTime lastTime+padding]);
             end
-            xlim(app.HistoryStateAxes,[0 lastTime+max(0.2,0.02*lastTime)]);
+            xlim(app.HistoryStateAxes,[firstTime lastTime+max(0.2,0.02*(lastTime-firstTime))]);
             for ax = axesList
                 hold(ax,'off');
                 if any(arrayfun(@(item) isprop(item,'DisplayName') && ...
@@ -401,8 +419,37 @@ classdef RecordingHistoryView
             if ~isempty(errors)
                 message = sprintf('%s、読込失敗%d件',message,numel(errors));
             end
+            if isscalar(logs)
+                message=sprintf('%s / 保存終了: %s',message,logs{1}.RecordingStopName);
+                if strcmp(logs{1}.RecordingStopReason,'firmware_restart')
+                    message=sprintf('%s / 起動理由: %s',message,logs{1}.RestartReasonName);
+                end
+                if ~logs{1}.Complete,message=[message ' / 保存未完了'];end
+            end
+            if any(cellfun(@(item)strcmp(item.TimeZeroSource,'recording_start'),logs))
+                for ax=[timeAxes app.HistoryStateAxes],xlabel(ax,'記録開始からの時間 (s)');end
+            end
             app.HistoryStatusLabel.Text = message;
-            app.HistoryStatusLabel.Tooltip = char(strjoin(errors,newline));
+            note=['0秒は飛行制御開始です。浮上・ホバリング達成とは異なります。' ...
+                '機体の速度推定は直接測定値ではありません。ToF変化率は直前0.25秒の比較値です。' ...
+                '現在の固定PID版はカルマン推定速度をPIDへ直接渡します。旧ログの同じ速度を複製した列は重ねて表示しません。'];
+            app.HistoryStatusLabel.Tooltip = char(strjoin([string(note);errors],newline));
+        end
+    end
+    methods (Static,Access=private)
+        function output=breakLines(log)
+            % すべての時系列に共通の欠測区間を挿入し、再起動前後を接続しません。
+            output=log;breaks=find(log.PlotBreakBefore);
+            if isempty(breaks),return;end
+            n=numel(log.Time);positions=(1:n)'+cumsum(log.PlotBreakBefore);
+            names=fieldnames(log);
+            for k=1:numel(names)
+                values=log.(names{k});
+                if ~isnumeric(values) || size(values,1)~=n,continue;end
+                expanded=nan(n+numel(breaks),size(values,2));
+                expanded(positions,:)=values;output.(names{k})=expanded;
+            end
+            output.Time(positions(breaks)-1)=log.Time(breaks);
         end
     end
 end

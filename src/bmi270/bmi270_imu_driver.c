@@ -27,6 +27,7 @@
 static struct bmi2_dev s_bmi;
 static uint8_t         s_intf = 0;      /* non-NULL intf_ptr placeholder */
 static uint8_t         s_ready = 0;
+static uint8_t         s_last_read_valid = 0;
 static float           s_last_temp = 0.0f;
 
 /* ----- Bosch API interface callbacks bridging to the ESP32 SPI layer ----- */
@@ -135,6 +136,7 @@ void bmi270_imu_step(float accel[3], float gyro[3], float temp[1], uint8_t statu
     gyro[0]  = gyro[1]  = gyro[2]  = 0.0f;
     temp[0]  = s_last_temp;
     status[0] = 0u;
+    s_last_read_valid = 0u;
 
     if (!s_ready) { return; }
 
@@ -153,6 +155,8 @@ void bmi270_imu_step(float accel[3], float gyro[3], float temp[1], uint8_t statu
      * the gyro cross-axis (zx) compensation from the chip's stored factor. */
     memset(&data, 0, sizeof(data));
     if (bmi2_get_sensor_data(&data, &s_bmi) != BMI2_OK) { status[0] = 0u; return; }
+    /* Keep the legacy Fresh flag unchanged; expose read success separately. */
+    s_last_read_valid = 1u;
 
     bw = s_bmi.resolution;   /* 16-bit for BMI270 */
 
@@ -173,5 +177,10 @@ void bmi270_imu_step(float accel[3], float gyro[3], float temp[1], uint8_t statu
         s_last_temp = ((float)temp_raw / 512.0f) + 23.0f;
         temp[0]     = s_last_temp;
     }
+}
+
+uint8_t bmi270_imu_read_valid(void)
+{
+    return s_last_read_valid;
 }
 
