@@ -9,10 +9,24 @@ classdef StampFlyPoseView < handle
         BodyPatch
         BodyAxes
         GroundPatch
+        GroundPath
+        PathStart
+        PathEnd
+        VerticalPath
+    end
+
+    properties
+        VerticalProjectionsEnabled (1,1) logical = true
     end
 
     properties (Access = private)
         MeshVertices double
+        BodyTransform
+        PoseTitle
+        PoseTitleText = ''
+        LastOrientation (1,4) double = [NaN NaN NaN NaN]
+        LastHorizontalSign (1,1) double = NaN
+        MeshRotation double = eye(3)
         LastPositionENU (1,3) double = [0 0 0]
         ViewCenterEN (1,2) double = [0 0]
         ViewBaseHeightM (1,1) double = 0
@@ -35,7 +49,9 @@ classdef StampFlyPoseView < handle
                 max(obj.MeshVertices,[],1))/2;
             obj.MeshVertices = obj.MeshVertices - boundsCenter;
             hold(axesHandle,'on');
+            obj.BodyTransform = hgtransform('Parent',axesHandle);
             obj.BodyPatch = patch(axesHandle, ...
+                'Parent',obj.BodyTransform, ...
                 'Faces',mesh.ConnectivityList, ...
                 'Vertices',obj.MeshVertices, ...
                 'FaceColor',[0.72 0.76 0.80], ...
@@ -43,9 +59,14 @@ classdef StampFlyPoseView < handle
                 'FaceLighting','gouraud');
             obj.BodyAxes = gobjects(1,3);
             axisColors = [0.85 0.18 0.18;0.18 0.60 0.25;0.15 0.35 0.85];
+            % The body directions share the mesh transform. In source STL
+            % coordinates: Z forward, X left, Y up. Their local data is fixed.
+            axisEnds = .06*[0 1 0;0 0 1;1 0 0];
             for k = 1:3
-                obj.BodyAxes(k) = plot3(axesHandle,[0 0],[0 0],[0 0], ...
-                    'Color',axisColors(k,:), 'LineWidth',2);
+                obj.BodyAxes(k) = line('Parent',obj.BodyTransform, ...
+                    'XData',[0 axisEnds(1,k)],'YData',[0 axisEnds(2,k)], ...
+                    'ZData',[0 axisEnds(3,k)],'Color',axisColors(k,:), ...
+                    'LineWidth',2,'HitTest','off','PickableParts','none');
             end
             obj.GroundPatch = patch(axesHandle, ...
                 'XData',[-0.25 0.25 0.25 -0.25], ...
@@ -53,22 +74,35 @@ classdef StampFlyPoseView < handle
                 'ZData',[0 0 0 0], ...
                 'FaceColor',[0.58 0.70 0.60], ...
                 'FaceAlpha',0.10,'EdgeColor','none');
+            obj.GroundPath = plot3(axesHandle,nan,nan,nan, ...
+                'Color',[0 .45 .74],'LineWidth',1.3,'Tag','GroundXYPath', ...
+                'DisplayName','Optical Flow XY（床面）');
+            obj.PathStart = plot3(axesHandle,nan,nan,nan,'o', ...
+                'Color',[0 .45 .74],'MarkerFaceColor',[0 .45 .74], ...
+                'MarkerSize',7,'Tag','XYStart','DisplayName','開始');
+            obj.PathEnd = plot3(axesHandle,nan,nan,nan,'x', ...
+                'Color',[.85 .33 .1],'MarkerSize',9,'LineWidth',1.8, ...
+                'Tag','XYEnd','DisplayName','最新');
+            obj.VerticalPath=plot3(axesHandle,nan,nan,nan, ...
+                'Color',[.47 .67 .19],'LineWidth',1.1,'Tag','VerticalPlanePaths', ...
+                'DisplayName','YZ / ZX: 北N・東Eと高さU');
             grid(axesHandle,'on');
             axis(axesHandle,'equal');
             xlabel(axesHandle,'東 E [m]');
             ylabel(axesHandle,'北 N [m]');
             zlabel(axesHandle,'上 U [m]');
-            title(axesHandle,'姿勢: データ待機中');
+            obj.PoseTitle = title(axesHandle,'姿勢: データ待機中');
+            obj.PoseTitleText = '姿勢: データ待機中';
             view(axesHandle,35,25);
             camlight(axesHandle,'headlight');
             obj.update(single([1 0 0 0]),true);
-            title(axesHandle,'姿勢: データ待機中');
+            obj.setTitle('姿勢: データ待機中');
             axis(axesHandle,[-0.25 0.25 -0.25 0.25 0 0.5]);
         end
 
-        function update(obj,orientation,isValid,positionENU)
+        function update(obj,orientation,isValid,positionENU,horizontalSign)
             if ~isValid
-                title(obj.Axes,'姿勢: データ待機中');
+                obj.setTitle('姿勢: データ待機中');
                 return
             end
             if nargin >= 4
@@ -81,29 +115,55 @@ classdef StampFlyPoseView < handle
             q = double(orientation(:).');
             qNorm = norm(q);
             if numel(q) ~= 4 || ~all(isfinite(q)) || qNorm < 1e-8
-                title(obj.Axes,'姿勢: 無効');
+                obj.setTitle('姿勢: 無効');
                 return
             end
             q = q/qNorm;
-            bodyToNED = rotmat(quaternion(q),'point');
-            % The source STL has Y up. Match the conversion used by the
-            % RoadRunner project before applying the filter orientation.
-            meshToBody = [0 0 1;-1 0 0;0 -1 0];
-            nedToENU = [0 1 0;1 0 0;0 0 -1];
-            meshToENU = nedToENU * bodyToNED * meshToBody;
-            obj.BodyPatch.Vertices = (meshToENU*obj.MeshVertices.').'+p;
-            % Draw the labeled FRD body directions, not the STL axes.
-            % Red: forward (+X), green: left (-Y), blue: up (-Z).
-            bodyToENU = nedToENU * bodyToNED;
-            axisEnds = 0.06*bodyToENU*diag([1 -1 -1]);
-            for k = 1:3
-                obj.BodyAxes(k).XData = [p(1) p(1)+axisEnds(1,k)];
-                obj.BodyAxes(k).YData = [p(2) p(2)+axisEnds(2,k)];
-                obj.BodyAxes(k).ZData = [p(3) p(3)+axisEnds(3,k)];
+            if nargin < 5,horizontalSign=1;end
+            if ~isequal(q,obj.LastOrientation) || horizontalSign~=obj.LastHorizontalSign
+                bodyToNED = rotmat(quaternion(q),'point');
+                % Apply the same horizontal frame change as the position/path.
+                bodyToNED(1:2,:) = horizontalSign*bodyToNED(1:2,:);
+                meshToBody = [0 0 1;-1 0 0;0 -1 0];
+                nedToENU = [0 1 0;1 0 0;0 0 -1];
+                obj.MeshRotation = nedToENU * bodyToNED * meshToBody;
+                obj.LastOrientation=q;obj.LastHorizontalSign=horizontalSign;
             end
-            title(obj.Axes,sprintf( ...
-                '姿勢・位置  E %.2f  N %.2f  高さ %.2f m',p));
+            transform=[obj.MeshRotation p';0 0 0 1];
+            if ~isequal(obj.BodyTransform.Matrix,transform),obj.BodyTransform.Matrix=transform;end
+            % Exact position/height already appears in the monitor readout.
+            % A stable title prevents relayout on every centimetre of motion.
+            obj.setTitle('機体3D / XY・YZ・ZX軌跡');
             obj.followPosition(p);
+        end
+
+        function updatePath(obj,xy,height)
+            % Reuse the same bounded history on all three projections.
+            % NaNs preserve gaps; invalid ToF never becomes a height sample.
+            if nargin<3,height=nan(size(xy,1),1);end
+            floorZ=obj.ViewBaseHeightM+.001;
+            valid=all(isfinite(xy),2);
+            set(obj.GroundPath,'XData',xy(:,1),'YData',xy(:,2), ...
+                'ZData',floorZ*ones(size(xy,1),1));
+            if obj.VerticalProjectionsEnabled && numel(height)==size(xy,1)
+                height=height(:);
+                height(~valid)=NaN;
+                wallE=obj.Axes.XLim(1)+.001;
+                wallN=obj.Axes.YLim(2)-.001;
+                fixedE=wallE*ones(size(height));fixedN=wallN*ones(size(height));
+                set(obj.VerticalPath,'XData',[fixedE;NaN;xy(:,1)], ...
+                    'YData',[xy(:,2);NaN;fixedN],'ZData',[height;NaN;height]);
+            else
+                set(obj.VerticalPath, ...
+                    'XData',nan,'YData',nan,'ZData',nan);
+            end
+            if ~any(valid)
+                set([obj.PathStart obj.PathEnd],'XData',nan,'YData',nan,'ZData',nan);
+                return
+            end
+            first=find(valid,1);last=find(valid,1,'last');
+            set(obj.PathStart,'XData',xy(first,1),'YData',xy(first,2),'ZData',floorZ);
+            set(obj.PathEnd,'XData',xy(last,1),'YData',xy(last,2),'ZData',floorZ);
         end
 
         function reset(obj)
@@ -112,11 +172,19 @@ classdef StampFlyPoseView < handle
             obj.ViewBaseHeightM = 0;
             obj.setViewBounds();
             obj.update([1 0 0 0],true,[0 0 0]);
-            title(obj.Axes,'姿勢・位置: データ待機中');
+            obj.updatePath(zeros(0,2));
+            obj.setTitle('姿勢・位置: データ待機中');
         end
     end
 
     methods (Access = private)
+        function setTitle(obj,text)
+            % Reuse the Text handle; title() also validates and lays out axes.
+            if ~strcmp(obj.PoseTitleText,text)
+                obj.PoseTitle.String=text;obj.PoseTitleText=text;
+            end
+        end
+
         function followPosition(obj,p)
             % Follow in steps to keep the 0.5 m cube stable while moving.
             center = obj.ViewCenterEN;
@@ -142,6 +210,7 @@ classdef StampFlyPoseView < handle
             zlim(obj.Axes,obj.ViewBaseHeightM+[0 0.5]);
             obj.GroundPatch.XData = east([1 2 2 1]);
             obj.GroundPatch.YData = north([1 1 2 2]);
+            obj.GroundPatch.ZData = repmat(obj.ViewBaseHeightM,1,4);
         end
     end
 end

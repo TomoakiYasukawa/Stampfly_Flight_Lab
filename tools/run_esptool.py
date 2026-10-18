@@ -1,4 +1,4 @@
-"""Run bundled esptool with a saved transcript and concise progress."""
+"""Run installed esptool with a saved transcript and concise progress."""
 import re
 import subprocess
 import sys
@@ -9,7 +9,7 @@ root = Path(__file__).resolve().parents[1]
 label, *args = sys.argv[1:]
 log = root / 'logs' / f'{label}.log'
 log.parent.mkdir(exist_ok=True)
-process = subprocess.Popen([str(root / 'tools' / 'esptool.exe'), *args], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+process = subprocess.Popen([sys.executable, '-m', 'esptool', *args], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 last_pct = -10
 buffer = ''
 with log.open('w', encoding='utf-8') as output:

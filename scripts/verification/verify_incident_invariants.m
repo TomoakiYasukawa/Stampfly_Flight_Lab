@@ -3,7 +3,7 @@ function report=verify_incident_invariants()
 % 高度修正は制御出力へ影響するため、旧版との全出力一致とは区別します。
 root=stampfly_project_root();configure_stampfly_project();ensure_simulink_toolkit();
 assert(library.settingsLookup().gatePass);init_imu_flight();
-old='Horizontal1801';m='StampFly_IMU400';
+old='Horizontal1801';m='Stampfly_Tx';
 oldFile=fullfile(root,'archive','snapshots',[old '.slx']);file=fullfile(root,[m '.slx']);
 open_system(oldFile);open_system(file);
 set_param(m,'SimulationCommand','update');
@@ -43,14 +43,14 @@ for cls={'Stateflow.State','Stateflow.Transition','Stateflow.Junction','Stateflo
 end
 check=char(model_check(m,'blk_2231','["unconnected_ports","unconnected_lines"]'));disp(check);
 assert(~contains(check,'severity: error')&&~contains(check,'status: error'));
-report=struct('Passed',true,'Model','StampFly_IMU400.slx','ModelSHA256',sha256(file), ...
+report=struct('Passed',true,'Model','Stampfly_Tx.slx','ModelSHA256',sha256(file), ...
     'BaselineSnapshot','archive/snapshots/Horizontal1801.slx','BaselineSHA256',sha256(oldFile), ...
     'PreservedBlockCount',numel(a),'AddedBoundaryBlocks',{added},'ChangedExistingBlocks',{changed}, ...
     'MATLABFunctionCount',functions,'MATLABFunctionSourcesUnchanged',true, ...
     'PIDCount',7,'PIDParametersPreserved',true,'SupervisorUnchanged',true, ...
     'EstimatorBoundaryChangesExplicit',true,'FullOutputEquivalenceClaimed',false, ...
     'WatchdogDisabled',false,'FlightCauseConfirmed',false,'HardwareIO',false);
-fid=fopen(fullfile(root,'docs','incident_invariants_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/incident_invariants_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('INCIDENT_INVARIANTS_VERIFIED\n');
 end

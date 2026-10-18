@@ -2,8 +2,8 @@ function report=verify_horizontal_robustness()
 %VERIFY_HORIZONTAL_ROBUSTNESS 実PIDを含む閉ループで遅延・倍率・方位ずれを確認。
 % 機体同定値ではない合成条件です。実飛行の精度・安定性は別途確認します。
 root=stampfly_project_root();addpath(fullfile(root,'tests'));horizontaltest.init();
-folder=fullfile(root,'build','horizontal_control','harnesses');addpath(folder);
-m='HorizontalClosedLoop';plant=find_system(m,'SearchDepth',1,'BlockType','MATLABSystem','System','horizontaltest.Plant');
+folder=fullfile(root,'tests','models');addpath(folder);
+m='HorizontalClosedLoop';load_system(fullfile(folder,[m '.slx']));plant=find_system(m,'SearchDepth',1,'BlockType','MATLABSystem','System','horizontaltest.Plant');
 assert(isscalar(plant));plant=plant{1};
 % [Flow倍率, ToF遅延s, gyro遅延s, 方位誤差deg/s, モーター遅延s]
 conditions=[.8 .035 0 0 .04;1.2 .035 0 0 .04;1 .07 0 0 .04; ...
@@ -42,7 +42,7 @@ for c=1:size(conditions,1)
 end
 report=struct('Passed',true,'CaseCount',size(conditions,1),'Cases',cases, ...
     'UsesTrueAltitude',true,'UncalibratedPlant',true,'PhysicalFlightTested',false);
-fid=fopen(fullfile(root,'docs','horizontal_robustness_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/horizontal_robustness_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('HORIZONTAL_ROBUSTNESS_VERIFICATION_PASSED\n');
 end

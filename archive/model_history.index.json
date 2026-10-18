@@ -1,0 +1,182 @@
+[
+  {
+    "Entry": "archive/aircraft/manifest.json",
+    "SHA256": "193e0253d179e8ba74c4192897f1551fe7349f16e7b0a8517bbb9274c1e53d7b",
+    "Bytes": 3815
+  },
+  {
+    "Entry": "archive/aircraft/PIDBlockComparison400.slx",
+    "SHA256": "32dcf4b1864d7de5284abd508eeb797a45caaddbc8d360b8cc59d946b94140d7",
+    "Bytes": 57878
+  },
+  {
+    "Entry": "archive/aircraft/README.md",
+    "SHA256": "fe18d28508d434cf698c3241c194803497859aa3b258ae3b55b8254833fb9e81",
+    "Bytes": 1075
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Basic400.slx",
+    "SHA256": "a24794d51ecef266a95f58c272160bc5ddfa95fca1a7fd7d59fc3f18bd9236b1",
+    "Bytes": 921992
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Official_Bench400.slx",
+    "SHA256": "31417f2cd71a73454d9a63bc2c6b77b9e1c3e30690284275b77d2a885a84bb63",
+    "Bytes": 958759
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Official_EstimatorReplay400.slx",
+    "SHA256": "d18cabfc589e3da910e37eb0d9493cb33b3e4f7ddfe5cf0894108824f9b6239a",
+    "Bytes": 53333
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Official_FlightSim400.slx",
+    "SHA256": "aedc0eae4892246889e0b4ad3d84d0577d05529c9f8b549df852b04c8cf982b5",
+    "Bytes": 740049
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Official_FlightTest400.slx",
+    "SHA256": "c0a492b6953c7844e05034ae93c7b90b815ea1e961a8ea488d46fa2dda9e1be8",
+    "Bytes": 1016947
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_Official_FullReplay400.slx",
+    "SHA256": "3757713881f53c46465f18ebf21451782775c5c39de3fdd7a8551518eaffa589",
+    "Bytes": 484002
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_PIDBlock_FlightTest400.slx",
+    "SHA256": "d8e1231ab67ae1626679d1bd63fe8ec5e2f719fec46632616e2e47c4b8efa60e",
+    "Bytes": 1005978
+  },
+  {
+    "Entry": "archive/aircraft/StampFly_PWM400_Probe.slx",
+    "SHA256": "3ee94f31bc08320d38b300b87b9fd0ea98a96d2d8ff02a1663aa170cdd33c8db",
+    "Bytes": 50078
+  },
+  {
+    "Entry": "archive/aircraft/config/startup.m",
+    "SHA256": "7ecbcf8e12f902b18a392cd06c45b24ec376780d723ec09013b9197097afd681",
+    "Bytes": 319
+  },
+  {
+    "Entry": "archive/before_tof_tilt_20261015/StampFly_PIDBlock_FlightTest400.bin",
+    "SHA256": "38d656ccc2dd37930c37b7c6521d72402ba1104e11c3f67126dfd5bb43cdce59",
+    "Bytes": 982768
+  },
+  {
+    "Entry": "archive/before_tof_tilt_20261015/StampFly_PIDBlock_FlightTest400.slx",
+    "SHA256": "61ca23ec9f2d7834f07deece2f0633ba27838a8161e1503fe7dd8569c37b3d17",
+    "Bytes": 1005945
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packAttitudeFrame.m",
+    "SHA256": "8bfcd0574d3419686afdcf48b00b9e9fec956812426abef5bc34727b8f0f76e0",
+    "Bytes": 1486
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packFlightDiagnosticsFrame.m",
+    "SHA256": "09e86d8e344a28e7a4471b2dbc0831fd139cacf7b1f50eab728fb8bb580a3402",
+    "Bytes": 1693
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packFlightFrame.m",
+    "SHA256": "a06472f7bea6b22ee9e65906bb0bae450b86df2a0e3e769b742e8d64c1365372",
+    "Bytes": 1005
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packFlightTuningFrame.m",
+    "SHA256": "71640a036f90717f0189210cf96c30c86a26f7d434f724573b5838a56ef91d50",
+    "Bytes": 1911
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packHeightFrame.m",
+    "SHA256": "42cc2e62af50e4fb1eba84b63d32c3a70be75b878f40ae46393187f901e5161a",
+    "Bytes": 1185
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packMotorFrame.m",
+    "SHA256": "61b246afb5e742ef43fff8592b796a426293eba40cfce64d16110b257ff4b5fe",
+    "Bytes": 1188
+  },
+  {
+    "Entry": "archive/logger_packers/+legacyframe/packTelemetryFrame.m",
+    "SHA256": "2d4c23d75bc0601bb8b6e516a6b463251d325cd685b7065a6ddcce76337fd085",
+    "Bytes": 1292
+  },
+  {
+    "Entry": "archive/logging_before_20261015/M5Stamp_IMU_Rx.slx",
+    "SHA256": "8c09054cd9af25796b170ff5550e4fb7f2c13425324e147a431e5f2a0afc59fd",
+    "Bytes": 37672
+  },
+  {
+    "Entry": "archive/logging_before_20261015/StampFlyIMUApp.m",
+    "SHA256": "c67b94ccfdb06c37de5c84d28f91858c85d7b96091d0439ad03aac4999decb56",
+    "Bytes": 43830
+  },
+  {
+    "Entry": "archive/logging_before_20261015/StampFlyIMUApp.xml",
+    "SHA256": "206e1ac9f5485fe7f07d8c8be27cfb813a219c45461d07b462d1aa205ec36c84",
+    "Bytes": 60292
+  },
+  {
+    "Entry": "archive/logging_before_20261015/StampFly_PIDBlock_FlightTest400.slx",
+    "SHA256": "d1b34e0cba9e7bed896a805bcb9feeb5c190d5414a5e499629adf1b5b4f9ab51",
+    "Bytes": 988741
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_before_compact_logging.slx",
+    "SHA256": "364dda040c204bbe65c4e7eb2cc9c980ea723787f34c63dbd859b9824bf1da82",
+    "Bytes": 907980
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_before_control_layout_20261015_145343.slx",
+    "SHA256": "6ac992a7bdb27c4dc325c487171cfd5738c8e9ebb8c4b7396a0e45c394db80f5",
+    "Bytes": 940274
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_before_refresh_20261015_085254.slx",
+    "SHA256": "b9db92101ccf443d5304ad420ebce7e24f5030c77d9686593fae094a83e9c5cd",
+    "Bytes": 951847
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_before_sensor_blocks_20261015_092114.slx",
+    "SHA256": "14bcdd092d007f084bde05985107a2f15958d186372d3e6e320adeefe66e99d7",
+    "Bytes": 958738
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_before_state_diagrams_20261015_104413.slx",
+    "SHA256": "dd8ea60a666ee606de8a54f25da15e5b3c8820fa7d39cbfda2ff6503d53a1ebe",
+    "Bytes": 964821
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_disk_before_control_layout_20261015_145333.slx",
+    "SHA256": "6f3b7635bf0b4f3ca61b7bf9857b4d952810848bd2216bcefd198f73e12bddca",
+    "Bytes": 940523
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_disk_before_sensor_blocks_20261015_092114.slx",
+    "SHA256": "b5cabadef1b01827e4c64de3069e1f7f8dd839adcef636113272f7afee5dd87b",
+    "Bytes": 958625
+  },
+  {
+    "Entry": "archive/snapshots/FlightTest_verified_before_root_reorganization.slx",
+    "SHA256": "ddcadf51093aafb3b56b6a491684a08b44b699bf57237f542f457579a0343ab5",
+    "Bytes": 871195
+  },
+  {
+    "Entry": "archive/snapshots/StampFly_Official_Bench400.before_full_modes.slx",
+    "SHA256": "f1fbf022c16d34d39b7bfe702ece19239c9ae75624e4ed129615b1fadf06e67e",
+    "Bytes": 561915
+  },
+  {
+    "Entry": "archive/snapshots/StampFly_Official_Bench400.before_modular.slx",
+    "SHA256": "b516ef11b4fa052915c20e4bb02d695c070b5d279a4c31b2dafbb734c99c26c4",
+    "Bytes": 85711
+  },
+  {
+    "Entry": "archive/snapshots/StampFly_Official_Replay400.slx",
+    "SHA256": "a81cd157dd625ae63ce8859e278b84ca2a0aa2978ff168041ac7b45e4d7a9f80",
+    "Bytes": 347975
+  }
+]

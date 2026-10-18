@@ -2,8 +2,8 @@ function report=verify_vertical_boundary()
 %VERIFY_VERTICAL_BOUNDARY 概要：保存モデルの実ブロックを用いて高度推定境界を検証。
 % 機器I/Oを含まない比較モデル。ToF量子化、既知運動、繰返し飛行切替を確認。
 root=stampfly_project_root();ensure_simulink_toolkit();assert(library.settingsLookup().gatePass);
-init_imu_flight();m='StampFly_IMU400';open_system(fullfile(root,[m '.slx']));
-settings=jsondecode(fileread(fullfile(root,'docs','vertical_boundary_repair.json')));
+init_imu_flight();m='Stampfly_Tx';open_system(fullfile(root,[m '.slx']));
+settings=jsondecode(fileread(stampfly_record_file('docs/vertical_boundary_repair.json')));
 h='VerticalBoundaryTest';if bdIsLoaded(h),close_system(h,0);end
 new_system(h);open_system(h);disp(model_read(h,'root','0'));
 ops={reorg.configure(['config:' h],struct('Solver','FixedStepDiscrete','FixedStep','.0025','StopTime','10', ...
@@ -77,7 +77,7 @@ legend('Legacy reset each tick','Rising-edge reset');ylabel('velocity (m/s)');ti
 nexttile;plot(t,truthVelocity,t,motionData(:,5));grid on;legend('Known upward velocity','Corrected estimator');
 ylabel('velocity (m/s)');xlabel('time (s)');
 exportgraphics(fig,fullfile(folder,'vertical_boundary_tests.png'),'Resolution',140);close(fig);
-fid=fopen(fullfile(root,'docs','vertical_boundary_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/vertical_boundary_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('VERTICAL_BOUNDARY_VERIFICATION_PASSED\n');
 end

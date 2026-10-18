@@ -3,6 +3,6 @@ function folder=recordingFolder(app)
 % 空の設定はプロジェクト直下のrecordingsを意味します。
 folder=string(app.RecordingFolder);
 if isempty(folder) || strlength(folder)==0
-    folder=string(fullfile(fileparts(which('StampFlyIMUApp')),'recordings'));
+    folder=string(fullfile(fileparts(which('DataLogger')),'recordings'));
 end
 end

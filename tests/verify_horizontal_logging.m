@@ -22,7 +22,7 @@ for k=0:15
         assert(isequal(single(decoded.Values(122:145)'),values+single(snapshotTick)));
     end
 end
-app=StampFlyIMUApp();app.UIFigure.Visible='off';clean=onCleanup(@()delete(app)); %#ok<NASGU>
+app=DataLogger();app.UIFigure.Visible='off';clean=onCleanup(@()delete(app)); %#ok<NASGU>
 folder=string(fullfile(root,'build','horizontal_control','logs'));file=app.startRecording(folder);
 [raw,estimate,control,extra]=logging_fixture();packer=basic.ExtendedLogger50;
 cleanPacker=onCleanup(@()release(packer)); %#ok<NASGU>
@@ -32,7 +32,9 @@ for k=1:3
     if k~=2,app.processBytes(h);end
     app.processBytes([sensors;commands;base]);
 end
-app.stopRecording();saved=load(file,'info','extensionTelemetry');joined=imu.readExtendedTelemetry(file);
+app.stopRecording();
+assert(app.waitForRecordingSave(),'horizontal:SaveTimeout','Recording save did not finish.');
+saved=load(file,'info','extensionTelemetry');joined=imu.readExtendedTelemetry(file);
 assert(isequal(size(saved.extensionTelemetry),[8 166]));
 assert(isnan(joined.HorizontalState(2))&&all(joined.HorizontalState([1 3])==double(values(16))));
 assert(all(joined.FlowTotalXModulo==double(extra.Flow.Totals(1))));

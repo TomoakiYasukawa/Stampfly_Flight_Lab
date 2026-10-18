@@ -1,6 +1,7 @@
 classdef FlatGroundPoseTracker < handle
     %FLATGROUNDPOSETRACKER Estimate display position above a flat floor.
     % SFI4 carries cumulative east/north estimated on the transmitter.
+    % The official logger's horizontal display axes are reversed together.
     % Older packets carry right/forward XY and are converted here for
     % playback compatibility.
 
@@ -27,7 +28,7 @@ classdef FlatGroundPoseTracker < handle
             sourceXY = double(sample.XYDisplacementM(:).');
             if sample.Version >= 4
                 if numel(sourceXY) == 2 && all(isfinite(sourceXY))
-                    obj.EastNorthM = sourceXY;
+                    obj.EastNorthM = imu.flowDisplaySign(sample.BuildID)*sourceXY;
                 end
                 positionENU = [obj.EastNorthM,obj.HeightM];
                 return

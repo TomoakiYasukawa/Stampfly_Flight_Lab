@@ -1,0 +1,262 @@
+[
+  {
+    "Entry": "firmware/history/basic400/StampFly_Basic400.bin",
+    "SHA256": "fccc066a953f4cf17f1e8c986948fe901ee26577aeddd401eef60175b423a7de",
+    "Bytes": 980272
+  },
+  {
+    "Entry": "firmware/history/basic400/StampFly_Basic400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/basic400/StampFly_Basic400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/before_control_layout_20261015_175607/deployment.json",
+    "SHA256": "9f383fa05a40ed8decb14ca314ec00756f1e247adfd46d3ad54a2e58cff5be76",
+    "Bytes": 986
+  },
+  {
+    "Entry": "firmware/history/before_control_layout_20261015_175607/StampFly_Official_FlightTest400.bin",
+    "SHA256": "4f8fde9013cd943aab884ade2f9f7e2532b55e086b510bb405d92e823b0190b2",
+    "Bytes": 970448
+  },
+  {
+    "Entry": "firmware/history/before_control_layout_20261015_175607/StampFly_Official_FlightTest400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/before_control_layout_20261015_175607/StampFly_Official_FlightTest400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/current/StampFly_Official_FlightTest400.bin",
+    "SHA256": "276049cbb0723367d9b74944e5b491f468ed289da0a66c580672ca63510ea49b",
+    "Bytes": 970448
+  },
+  {
+    "Entry": "firmware/history/current/StampFly_Official_FlightTest400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/current/StampFly_Official_FlightTest400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/build.json",
+    "SHA256": "9b5ae75e2ab2982f1d70005f03f1d6c0a62e4f98ac540a54606f4f222a0f9fac",
+    "Bytes": 40423
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/M5Stamp_IMU_Rx.bin",
+    "SHA256": "9c4b4c3f6cd2f287bdd80fdbc21ea09220e27246a255eb9500356435df672212",
+    "Bytes": 853888
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/M5Stamp_IMU_Rx.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/M5Stamp_IMU_Rx.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/manifest.json",
+    "SHA256": "9b5ae75e2ab2982f1d70005f03f1d6c0a62e4f98ac540a54606f4f222a0f9fac",
+    "Bytes": 40423
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/StampFly_IMU400.bin",
+    "SHA256": "14c977b6decec74373051c5e7453b34d03ae1914e558eceb293aa359107639b1",
+    "Bytes": 1001328
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/horizontal1801/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/build.json",
+    "SHA256": "d2975909350758f2627388cc21bf0f38f99ce364c7c3822cec4669a3f61870be",
+    "Bytes": 41661
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/incident1802_reconnect_usb_startup.json",
+    "SHA256": "8a217b653e5d3aacc1289c67bd128933dcf91f064ab1e43b5abfbfadd2ddda1b",
+    "Bytes": 7144
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/incident1802_usb_startup.json",
+    "SHA256": "edbdbe4bfe8bd6d3c4432c260e2414e6c6e7fa1ea6b67da67e2a2804594f3da7",
+    "Bytes": 10088
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/incident_aircraft_deployment.json",
+    "SHA256": "d06546891ce1c6f645b6116233a215505ec7574680b60f96d16bd5f277343c74",
+    "Bytes": 2208
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/M5Stamp_IMU_Rx.bin",
+    "SHA256": "9c4b4c3f6cd2f287bdd80fdbc21ea09220e27246a255eb9500356435df672212",
+    "Bytes": 853888
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/M5Stamp_IMU_Rx.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/M5Stamp_IMU_Rx.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/manifest.json",
+    "SHA256": "d2975909350758f2627388cc21bf0f38f99ce364c7c3822cec4669a3f61870be",
+    "Bytes": 41661
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/StampFly_IMU400.bin",
+    "SHA256": "f6e3a81990920195fb06625b15cb395ae5b68de193cafc71d0a24343f2f6354f",
+    "Bytes": 1002304
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/horizontal1802/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/imu400/StampFly_IMU400.bin",
+    "SHA256": "12c1dc6a8b5cfb897d1649a048ee25e7d59bdf898f43e7299b4bf8a08bfac40f",
+    "Bytes": 986656
+  },
+  {
+    "Entry": "firmware/history/imu400/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/imu400/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/imu400_readability/StampFly_IMU400.bin",
+    "SHA256": "d6fa440fcfb5cc5e6d9b15b0d590a15f42edeeb6b1ff68126fb94c161d60deab",
+    "Bytes": 986400
+  },
+  {
+    "Entry": "firmware/history/imu400_readability/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/imu400_readability/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/M5Stamp_IMU_Rx.bin",
+    "SHA256": "eca3100fd75546e234e259cf0b0b3409cb2f060510b45182e7bc050eafc1f23c",
+    "Bytes": 853824
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/M5Stamp_IMU_Rx.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/M5Stamp_IMU_Rx.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/manifest.json",
+    "SHA256": "d142dab34c67b3a3fb6eb4fd5cd0f1ef988b84758fa33a77d24cad90cf619355",
+    "Bytes": 7101
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/StampFly_IMU400.bin",
+    "SHA256": "4f3f84b25f389132a8a1b7a00f60d09ca21044c559d96f0c0f40378ea492a402",
+    "Bytes": 986528
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/imu_cleanup1701/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/logging400/M5Stamp_IMU_Rx.bin",
+    "SHA256": "9931be524fcbb25f15ebf24326aa9f3bf9ba180e488f53079115aeec0402ac57",
+    "Bytes": 853824
+  },
+  {
+    "Entry": "firmware/history/logging400/M5Stamp_IMU_Rx.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/logging400/M5Stamp_IMU_Rx.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/logging400/StampFly_PIDBlock_FlightTest400.bin",
+    "SHA256": "38d656ccc2dd37930c37b7c6521d72402ba1104e11c3f67126dfd5bb43cdce59",
+    "Bytes": 982768
+  },
+  {
+    "Entry": "firmware/history/logging400/StampFly_PIDBlock_FlightTest400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/logging400/StampFly_PIDBlock_FlightTest400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/pid_experiment/StampFly_PIDBlock_FlightTest400.bin",
+    "SHA256": "235c4e34099e0a53b848499929e9b61c006b55aef7f2df52dc25bd475e15ab98",
+    "Bytes": 969104
+  },
+  {
+    "Entry": "firmware/history/pid_experiment/StampFly_PIDBlock_FlightTest400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/history/pid_experiment/StampFly_PIDBlock_FlightTest400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/history/previous_successful/StampFly_Official_FlightTest400.bin",
+    "SHA256": "5a3d486b4152bb3328e481755a2e93826a5616160fb5929266d73ab4eafc7c14",
+    "Bytes": 969200
+  }
+]

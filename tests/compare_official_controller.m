@@ -2,10 +2,11 @@ function result = compare_official_controller()
 %COMPARE_OFFICIAL_CONTROLLER Compare the MATLAB port with active official C++.
 root=fileparts(fileparts(mfilename('fullpath')));addpath(root);
 ref=fullfile(root,'tests','reference');addpath(ref);
-if ~isfile(fullfile(ref,['official_controller_reference.' mexext]))
+folder=reference_mex_folder();
+if ~isfile(fullfile(folder,['official_controller_reference.' mexext]))
     mex('-R2018a','COMPFLAGS=$COMPFLAGS /utf-8 /wd4305 /wd4244',['-I' ref],['-I' fullfile(root,'official_sources','M5StampFly','src')], ...
         fullfile(ref,'official_controller_reference.cpp'),fullfile(ref,'pid_reference.cpp'), ...
-        '-outdir',ref,'-output','official_controller_reference');
+        '-outdir',folder,'-output','official_controller_reference');
 end
 n=4000;u=zeros(n,21,'single');u(:,6)=4;u(:,15)=3.8;u(:,18)=2;u(:,19)=.0025;
 u(1:20,18)=3; t=single((0:n-1)'*.0025);
@@ -27,7 +28,7 @@ end
 delta=abs(actual(:,1:9)-expected(:,1:9));
 result=struct('Samples',n,'MaxDutyError',max(delta(:,1:4),[],'all'), ...
     'MaxCoreError',max(delta(:,5:9),[],'all'),'ComparedColumns',1:9);
-save(fullfile(root,'tests','controller_comparison.mat'),'u','expected','actual','result');
+save(fullfile(folder,'controller_comparison.mat'),'u','expected','actual','result');
 disp(result);
 assert(result.MaxDutyError<single(3e-6),'Controller duty differs from official C++.');
 assert(result.MaxCoreError<single(3e-5),'Controller core state differs from official C++.');

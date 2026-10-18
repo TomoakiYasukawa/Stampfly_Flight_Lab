@@ -1,8 +1,0 @@
-{
-  "Passed": true,
-  "ActualSavedBlocks": true,
-  "DraftMode": false,
-  "ScenarioCount": 4,
-  "AssessmentCount": 16,
-  "Output": "\n================== test session starts ==================\n\n  model: HorizontalControllerTest.slx\n  gherkin: C:\\Users\\tyasukaw\\OneDrive - MathWorks\\Documents\\MATLAB\\stampfly\\StampFly_lib-main\\project\\Official_setup\\tests\\horizontal_controller.feature\n  scenarios: 4\n\n  Summary: 4 passed in 12.48s\n    Assessments: 16 passed, 0 failed, 0 untested of 16\n\n  PASSED scenario: Invalid measurement preserves manual command (5.66s)\n  PASSED scenario: Healthy neutral input engages stopping position hold (2.60s)\n  PASSED scenario: Forward movement changes pitch reference after engagement (2.04s)\n  PASSED scenario: Measurement loss resets PI and returns to manual (2.18s)\n\n================== Execution time: 12.48s ================\n"
-}

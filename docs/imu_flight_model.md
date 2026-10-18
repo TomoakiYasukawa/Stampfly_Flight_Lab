@@ -1,10 +1,10 @@
 # 現行IMUモデルの読み方
 
-**[StampFly_IMU400.slx](../StampFly_IMU400.slx)** が現行の機体実装です。姿勢はMathWorksの **[IMU Filter](https://jp.mathworks.com/help/nav/ref/imufilter.html)**、高度はMATLAB Functionの **AltitudeKalman**、制御は7個のPIDで構成しています。基本周期は400 Hzです。設定・書き込みは[セットアップ](setup.md)、過去の比較や飛行報告は[履歴](history/README.md)へまとめています。
+**[Stampfly_Tx.slx](../Stampfly_Tx.slx)** が現行の機体実装です。姿勢はMathWorksの **[IMU Filter](https://jp.mathworks.com/help/nav/ref/imufilter.html)**、高度はMATLAB Functionの **AltitudeKalman**、制御は7個のPIDで構成しています。基本周期は400 Hzです。設定・書き込みは[セットアップ](setup.md)、過去の比較や飛行報告は[履歴](history/README.md)へまとめています。
 
 ## 最上位から読む
 
-![モデル全体](images/horizontal/layout_root.png)
+モデル画面は`Stampfly_Tx.slx`を開いて確認してください。過去の配置画像は[履歴の記録集](history/README.md)に保全しています。
 
 | 開く場所 | 役割 |
 |---|---|
@@ -67,7 +67,7 @@ FusionStateはMode 0・1で推定を停止するEnabled subsystem、UpdateWhenRe
 
 予測共分散、ゲイン、観測分散`(0.004 m)²`の更新順序は維持しています。**PreviousParkingReset → NOT → ParkingResetEdge** で待機へ入る瞬間だけ共分散を初期化します。毎周期の初期化による切替直後の速度ジャンプを防ぎます。速度は **VerticalSpeedPIDへ直接**渡します。標準Kalmanブロックの比較版は[archive/kf400](../archive/kf400/README.md)です。
 
-高度推定は従来の機体Z加速度・斜距離を使い、姿勢からの鉛直加速度投影や高度制御用のToF傾き補正は未実装です。傾いた飛行では鉛直速度との差が生じます。今回の単位・待機リセット修正の試験結果と、落下の調査は[別記録](history/horizontal_trials/20261017_fall_review.md)で示します。
+高度推定は従来の機体Z加速度・斜距離を使い、姿勢からの鉛直加速度投影や高度制御用のToF傾き補正は未実装です。傾いた飛行では鉛直速度との差が生じます。今回の単位・待機リセット修正の試験結果と、落下の調査は[別記録](history/README.md)で示します。
 
 **BottomRangeSensor → BottomToFSource** は、初期化・ウォームアップ後にModeに依存せず取得します。新規結果でFreshが1になり、結果のない周期は最新値を返します。割り込み、最小取得間隔、ワーカー実行中の確認、I2C排他を保ち、400 Hzの制御は読み出しを待ちません。前方ToFは未使用です。
 

@@ -45,6 +45,6 @@ assert(all(abs(saved.telemetry(1:2,rangeCol)-.35)<1e-6));
 assert(abs(saved.telemetry(3,rangeCol)-.35)<1e-6 && saved.telemetry(4,rangeCol)==0);
 result = struct('Cases',4,'Passed',true,'MATFile',file, ...
     'OpticalFlowImplemented',false);
-save(fullfile(root,'tests','bottom_logger_verification.mat'),'result');
+save(fullfile(reference_mex_folder(),'bottom_logger_verification.mat'),'result');
 disp(result);
 end

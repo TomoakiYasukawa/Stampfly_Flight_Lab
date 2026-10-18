@@ -80,7 +80,7 @@ for k=1:numel(names)
     exportgraphics(fig,fullfile(folder,[names{k} '.controls.png']),'Resolution',120);close(fig);
     save(fullfile(folder,[names{k} '.controls.mat']),'data','item','h');
     % 2. 新版アプリの履歴表示を旧ログで描画し、表示ラベルと集計も照合します。
-    app=StampFlyIMUApp();cleanup=onCleanup(@()delete(app));app.UIFigure.Visible='on';
+    app=DataLogger();cleanup=onCleanup(@()delete(app));app.UIFigure.Visible='on';
     app.MainTabs.SelectedTab=app.HistoryTab;
     imu.RecordingHistoryView.refresh(app,string(file));scroll(app.HistoryChartGrid,'top');drawnow;
     assert(isequal(app.HistoryStateAxes.YTick,[0 1 2 3 5]));
@@ -102,7 +102,7 @@ end
 report=struct('RecordedDataOnly',true,'InterpolationUsed',false,'SerialConnectionsOpened',0, ...
     'FlightCauseConfirmed',false,'CurrentAppReplayedAllThree',true, ...
     'HeightVelocityPlotValuesChecked',true,'RenderedWindowCaptureAvailable',false,'Recordings',{reports});
-fid=fopen(fullfile(root,'docs','incident_recording_replay.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/incident_recording_replay.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('INCIDENT_RECORDING_REPLAY_COMPLETE\n');
 end

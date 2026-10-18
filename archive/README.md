@@ -1,20 +1,18 @@
-# アーカイブ
+# 開発・比較用アーカイブ
 
-現行の機体実装は直下の **`StampFly_IMU400.slx`** です。直下の **`M5Stamp_IMU_Rx.slx`** はログ受信機です。以下は過去の比較・再生・実験用として保存しています。
+通常の入口はプロジェクト直下の`Stampfly_Tx.slx`、`M5Stamp_Rx.slx`、`DataLogger`です。このフォルダは比較基準と判断根拠を残すためのものです。
 
-| フォルダー | 内容 |
+| 場所 | 内容 |
 |---|---|
-| [aircraft](aircraft/README.md) | 基礎版、FlipありPID版、公式版、机上・再生モデル |
-| [kf400](kf400/README.md) | 標準高度Kalman版、比較時のIMU基準モデル、書き込み済みBIN |
-| snapshots | センサー・Stateflow・配線整理などの各時点のモデルコピー |
-| maintenance | 過去の構築・比較・ビルド・書き込みスクリプト |
-| logging_before_20261015、before_tof_tilt_20261015 | 過去のロガー、モデル、ファームウェアのセット |
-| logger_packers | 旧ログ形式と比較するためのパッカー |
+| `snapshots/HorizontalBaseline.slx` | 水平補助追加前のOFF回帰基準 |
+| `snapshots/Horizontal1801.slx` | 実飛行で落下報告のあった版。高度・待機修正の比較基準 |
+| `snapshots/Horizontal1804.slx` | CPU1固定・区間計測を維持した安定飛行の報告版 |
+| [kf400](kf400/README.md) | 標準高度Kalman比較。飛行したモデル・BINと比較基準 |
+| `model_history.zip`、`model_history.index.json` | 公式・PID・再生モデルと過去の段階モデル。元のバイト・SHA-256を保全 |
+| `development_history.zip` | 一度だけ使った移植・配置・編集・展開スクリプトとモデル内Functionの書き出し |
 
-プロジェクトを開いて対象SLXを直接開きます。アーカイブ全体を通常のMATLABパスへ追加しないでください。同名IMUモデルが存在します。古いモデルの設定・モーター出力条件はモデルごとに異なります。
+過去モデルは`stampfly_model_file('モデル名')`からキャッシュへ展開し、明示的に開けます。過去の開発スクリプトはZIPを直接読むか`configure_stampfly_archive()`で展開します。展開先は`build/history/`です。
 
-`snapshots/HorizontalBaseline.slx`は水平補助追加前の保存モデルです。補助OFFでの比較に使い、対応するRevision 1701のBINは`firmware/history/imu_cleanup1701/`に保存しています。この整理後版の実飛行成功は未確認です。以前にユーザーが飛行成功を報告したIMU版は`kf400/baseline/StampFly_IMU400.slx`と`firmware/history/imu400_readability/`で区別します。
+同名のモデルがあるため、フォルダ全体を通常検索パスへ追加しないでください。モデルごとにモーター出力・初期化・飛行確認の条件が異なります。古い編集・展開スクリプトを現行モデルへそのまま再実行しません。
 
-`snapshots/Horizontal1801.slx`と`firmware/history/horizontal1801/`は、落下を報告された水平補助版を保全したものです。直下の現行1802は高度・記録・診断を修正した机上版で、実機未確認です。[調査結果と確認範囲](../docs/history/horizontal_trials/20261017_fall_review.md)
-
-保守スクリプトを調べる場合は[maintenance/README.md](maintenance/README.md)、検討と飛行報告は[履歴](../docs/history/README.md)を参照してください。
+判断の経緯と原文検証記録は[履歴](../docs/history/README.md)、BINの場所は[firmware/README.md](../firmware/README.md)を参照してください。

@@ -1,0 +1,67 @@
+[
+  {
+    "Entry": "firmware/current/M5Stamp_IMU_Rx.bin",
+    "SHA256": "9c4b4c3f6cd2f287bdd80fdbc21ea09220e27246a255eb9500356435df672212",
+    "Bytes": 853888
+  },
+  {
+    "Entry": "firmware/current/M5Stamp_IMU_Rx.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/current/M5Stamp_IMU_Rx.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "firmware/current/manifest.json",
+    "SHA256": "5463f45b94cf3481e2d4d9228aa4ef96f9e62b3c519a902974c10e5fa8ccc5c8",
+    "Bytes": 41967
+  },
+  {
+    "Entry": "firmware/current/StampFly_IMU400.bin",
+    "SHA256": "5cb8851359673573ffce6ca20d9b12da0c6076325a38b3136dceca7b66de79e6",
+    "Bytes": 1003616
+  },
+  {
+    "Entry": "firmware/current/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "firmware/current/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "build/deploy_latest_20261018/firmware/StampFly_IMU400.bin",
+    "SHA256": "da692fc971a3ee2bd673ba46660be57620ff1f1b90f13b4b8b209cd758cb7e3e",
+    "Bytes": 1003616
+  },
+  {
+    "Entry": "build/deploy_latest_20261018/firmware/StampFly_IMU400.bootloader.bin",
+    "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+    "Bytes": 20112
+  },
+  {
+    "Entry": "build/deploy_latest_20261018/firmware/StampFly_IMU400.partitions.bin",
+    "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+    "Bytes": 3072
+  },
+  {
+    "Entry": "StampFly_IMU400.slx",
+    "SHA256": "7b78007d0e8724927c283c419c437ed6ad372d620fc699c2a3acd6fe242c219f",
+    "Bytes": 1010067
+  },
+  {
+    "Entry": "M5Stamp_IMU_Rx.slx",
+    "SHA256": "35f1a5a1f529db3cf77f63ebaa8193b99f485d726d5a17df32fdd5602af55d32",
+    "Bytes": 43506
+  },
+  {
+    "Entry": "build/deploy_latest_20261018/model_comparison.json",
+    "SHA256": "4144ac573807d555efaa578e4434cec145e39db0611210a321ff11623feb98eb",
+    "Bytes": 58
+  }
+]

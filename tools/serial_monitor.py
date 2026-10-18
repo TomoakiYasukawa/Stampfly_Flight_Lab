@@ -16,6 +16,7 @@ parser.add_argument('--label', default='serial')
 parser.add_argument('--reset', action='store_true', help='Reset via the USB Serial/JTAG RTS line before monitoring')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
+(root / 'logs').mkdir(exist_ok=True)
 
 def monitor(port):
     link = serial.Serial()

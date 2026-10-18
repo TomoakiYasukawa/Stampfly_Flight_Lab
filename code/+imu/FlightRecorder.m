@@ -10,6 +10,7 @@ classdef FlightRecorder < handle
         PreRollSeconds (1,1) double = 2
         PostRollSeconds (1,1) double = 1
         LossTimeoutSeconds (1,1) double = 2
+        WriteBatchFcn = []
     end
     properties (SetAccess = private)
         Writer = []
@@ -22,6 +23,8 @@ classdef FlightRecorder < handle
     end
     properties (Access = private)
         PrePackets cell = cell(0,1)
+        PreTimes double = zeros(0,1)
+        PreHosts double = zeros(0,1)
         LastDeviceTime (1,1) double = NaN
         LastBaseTime (1,1) double = NaN
         LastBaseSequence (1,1) double = NaN
@@ -108,6 +111,7 @@ classdef FlightRecorder < handle
                         entry=obj.PrePackets{k};obj.append(entry.Sample,entry.Frame);
                     end
                     obj.PrePackets=cell(0,1);
+                    obj.PreTimes=zeros(0,1);obj.PreHosts=zeros(0,1);
                 end
                 if obj.Active
                     % 3. 通常/全補足を受信順に保存し、ヘッダーの対応づけを保持。
@@ -137,10 +141,15 @@ classdef FlightRecorder < handle
                 % 次回離陸用の直前受信バッファ。時間と件数の両方を制限します。
                 obj.PrePackets{end+1,1}=struct('Sample',sample,'Frame',uint8(frame(:)), ...
                     'Time',deviceTime,'Host',hostSeconds,'MissingCount',missingCount,'CRCCount',crcCount);
-                keep=cellfun(@(e)e.Time>=deviceTime-obj.PreRollSeconds && ...
-                    e.Host>=hostSeconds-obj.PreRollSeconds,obj.PrePackets);
+                obj.PreTimes(end+1,1)=deviceTime;obj.PreHosts(end+1,1)=hostSeconds;
+                keep=obj.PreTimes>=deviceTime-obj.PreRollSeconds & ...
+                    obj.PreHosts>=hostSeconds-obj.PreRollSeconds;
                 obj.PrePackets=obj.PrePackets(keep);
-                if numel(obj.PrePackets)>2000,obj.PrePackets=obj.PrePackets(end-1999:end);end
+                obj.PreTimes=obj.PreTimes(keep);obj.PreHosts=obj.PreHosts(keep);
+                if numel(obj.PrePackets)>2000
+                    obj.PrePackets=obj.PrePackets(end-1999:end);
+                    obj.PreTimes=obj.PreTimes(end-1999:end);obj.PreHosts=obj.PreHosts(end-1999:end);
+                end
             catch err
                 obj.fail(err);
             end
@@ -254,7 +263,9 @@ classdef FlightRecorder < handle
         function yes=isFlightMode(obj,mode)
             schema='StampFlyOfficial-v1';
             if isfield(obj.Config,'FlightStateSchema'),schema=char(obj.Config.FlightStateSchema);end
-            states=imu.flightStateDefinition(schema);yes=ismember(mode,states.FlightCodes);
+            if strcmp(schema,'StampFlyOfficial-v1'),yes=mode==2 || mode==5;
+            elseif strcmp(schema,'StampFlyHover-v1'),yes=mode==1 || mode==2 || mode==3;
+            else,yes=false;end
         end
 
         function begin(obj,automatic,missingCount,crcCount,trigger,hostTime,deviceTime)
@@ -263,8 +274,8 @@ classdef FlightRecorder < handle
                 'PreRollSeconds',obj.PreRollSeconds,'PostRollSeconds',obj.PostRollSeconds, ...
                 'LossTimeoutSeconds',obj.LossTimeoutSeconds);
             folder=obj.Folder;
-            if strlength(folder)==0,folder=fullfile(fileparts(which('StampFlyIMUApp')),'recordings');end
-            obj.Writer=imu.MatRecordingWriter(folder,config);
+            if strlength(folder)==0,folder=fullfile(fileparts(which('DataLogger')),'recordings');end
+            obj.Writer=imu.MatRecordingWriter(folder,config,obj.WriteBatchFcn);
             obj.Active=true;obj.Automatic=automatic;
             obj.MissingStart=missingCount;obj.CRCStart=crcCount;
             obj.LastFlushDeviceTime=deviceTime;obj.LastFlushHostTime=hostTime;
@@ -291,6 +302,7 @@ classdef FlightRecorder < handle
 
         function resetObservation(obj)
             obj.PrePackets=cell(0,1);obj.LastDeviceTime=NaN;obj.LastModeTime=NaN;
+            obj.PreTimes=zeros(0,1);obj.PreHosts=zeros(0,1);
             obj.LastBaseTime=NaN;obj.LastBaseSequence=NaN;obj.clearRestartPackets();
             obj.DeviceClockOffset=0;
             obj.LastMode=NaN;obj.LastPacketHost=NaN;

@@ -1,6 +1,7 @@
 function result=compare_full_model()
 %COMPARE_FULL_MODEL Mode transitions and Flip against unchanged official C++.
 root=fileparts(fileparts(mfilename('fullpath')));init_official;ref=fullfile(root,'tests','reference');addpath(ref);
+folder=build_full_reference_mex();configure_stampfly_archive();
 m='StampFly_Official_FullReplay400';n=9000;u=zeros(n,23,'single');
 u(:,6)=4;u(:,15)=3.8;u(:,19)=.0025;u(:,22)=1;
 t=(0:n-1)'*.0025;
@@ -28,7 +29,7 @@ result=struct('Samples',n,'MaxDutyError',max(abs(actual-expected(:,1:4)),[],'all
  'MaxCoreError',max(abs(diag(:,1:5)-expected(:,5:9)),[],'all'), ...
  'StateMismatches',nnz(single(state)~=expected(:,18)),'AltFlagMismatches',nnz(single(altFlag)~=expected(:,19)), ...
  'FlipFlagMismatches',nnz(single(phase)~=expected(:,20)),'BranchMismatches',nnz(single(branch)~=expected(:,22)));
-save(fullfile(root,'tests','full_model_comparison.mat'),'u','expected','actual','diag','state','altFlag','phase','branch','result');disp(result);
+save(fullfile(folder,'full_model_comparison.mat'),'u','expected','actual','diag','state','altFlag','phase','branch','result');disp(result);
 assert(result.MaxDutyError<single(3e-6),'official:FullDutyMismatch','Duty differs from official C++.');
 assert(result.MaxCoreError<single(3e-5),'official:FullCoreMismatch','Controller state differs from official C++.');
 assert(result.StateMismatches+result.AltFlagMismatches+result.FlipFlagMismatches+result.BranchMismatches==0, ...

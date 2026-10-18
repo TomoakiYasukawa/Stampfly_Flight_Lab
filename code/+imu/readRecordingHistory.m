@@ -120,6 +120,8 @@ tof = col("ToFDistanceM");
 tofValid = col("ToFValid");
 tof(isfinite(tofValid) & tofValid < 0.5) = NaN;
 xy = [col("XYX") col("XYY")];
+% Match the monitor's display frame without changing saved telemetry columns.
+xy = imu.flowDisplaySign(col("BuildID")).*xy;
 motors = [col("MotorFR") col("MotorFL") col("MotorRR") col("MotorRL")];
 motorValid = col("MotorValid");
 motors(isfinite(motorValid) & motorValid < 0.5,:) = NaN;
@@ -127,9 +129,14 @@ state = col("FlightState");
 q=[col("QuatW") col("QuatX") col("QuatY") col("QuatZ")];
 orientationValid=col("OrientationValid")>.5;
 correctedToF=nan(numel(rows),1);
-for k=1:numel(rows)
-    [value,valid]=imu.correctToFHeight(tof(k),isfinite(tof(k)),q(k,:),orientationValid(k));
-    if valid,correctedToF(k)=value;end
+norms=vecnorm(q,2,2);
+validPose=orientationValid & all(isfinite(q),2) & norms>1e-8 & isfinite(tof) & tof>=0;
+if any(validPose)
+    % Navigation/positioning quaternion APIs handle a batch of point rotations.
+    rotations=rotmat(normalize(quaternion(q(validPose,:))),'point');
+    projection=reshape(rotations(3,3,:),[],1);
+    projected=tof(validPose).*projection;projected(projection<=0)=NaN;
+    correctedToF(validPose)=projected;
 end
 fresh=col("ToFFresh")>.5;
 slope=imu.heightVelocity(rawTime,correctedToF,isfinite(correctedToF),fresh);
@@ -294,16 +301,23 @@ extensionColumns=string(info.ExtensionColumns);
 names={'BaseDuty','ThrustCommand','AltitudeEnabled', ...
     'MixerBeforeLimitFR','MixerBeforeLimitFL','MixerBeforeLimitRR','MixerBeforeLimitRL', ...
     'ComputedDutyFR','ComputedDutyFL','ComputedDutyRR','ComputedDutyRL'};
+columnIds=zeros(1,numel(names));
 for k=1:numel(names)
     column=find(extensionColumns==names{k},1);
-    if isempty(column) || column>extensionMeta.size(2),continue;end
-    values=nan(n,1);
-    for block=blocks(:)'
-        first=block*blockSize+1;last=min(first+blockSize-1,extensionMeta.size(1));
-        selected=blockIds==block;
-        chunk=double(m.extensionTelemetry(first:last,column));
-        values(matchedSamples(selected))=chunk(extensionRows(selected)-first+1);
-    end
+    if ~isempty(column) && column<=extensionMeta.size(2),columnIds(k)=column;end
+end
+present=find(columnIds>0);joined=nan(n,numel(names));
+if isempty(present),return;end
+firstColumn=min(columnIds(present));lastColumn=max(columnIds(present));
+for block=blocks(:)'
+    first=block*blockSize+1;last=min(first+blockSize-1,extensionMeta.size(1));
+    selected=blockIds==block;
+    chunk=double(m.extensionTelemetry(first:last,firstColumn:lastColumn));
+    joined(matchedSamples(selected),present)=chunk( ...
+        extensionRows(selected)-first+1,columnIds(present)-firstColumn+1);
+end
+for k=present
+    values=joined(:,k);
     if k<=3,details.(names{k})=values;
     elseif k<=7,details.MixerBeforeLimit(:,k-3)=values;
     else,details.ComputedDuty(:,k-7)=values;end

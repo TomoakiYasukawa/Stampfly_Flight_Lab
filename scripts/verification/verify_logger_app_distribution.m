@@ -8,15 +8,15 @@ end
 % 新規取得先と同じ状態にし、プロジェクトの起動処理だけでパスを設定します。
 root=string(pwd);restoredefaultpath;
 removeToolkitPath();
-project=matlab.project.loadProject(fullfile(root,'StampFly_Official.prj'));
+project=matlab.project.loadProject(fullfile(root,'StampFly_Lab.prj'));
 report=verify_imu_distribution();
 fprintf('LOGGER_APP_DISTRIBUTION_RUNTIME_PASSED; CHECKING_HASHES\n');
-modelNames={'StampFly_IMU400.slx','M5Stamp_IMU_Rx.slx'};
+modelNames={'Stampfly_Tx.slx','M5Stamp_Rx.slx'};
 report.TestedModels=records(root,modelNames,false);
 for k=1:numel(modelNames)
     assert(strcmp(report.TestedModels(k).SHA256,sha256(fullfile(originalRoot,modelNames{k}),false)));
 end
-appNames={'StampFlyIMUApp.m','StampFlyIMUApp.xml'};
+appNames={'DataLogger.m','DataLogger.xml'};
 report.TestedAppFiles=records(root,appNames,true);
 for k=1:numel(appNames)
     assert(strcmp(report.TestedAppFiles(k).SHA256,sha256(fullfile(originalRoot,appNames{k}),true)));
@@ -29,7 +29,7 @@ for k=1:numel(report.TestedHostSources)
 end
 % このPCのSimulink起動で自動登録されるToolkitも検証プロセスだけから除外。
 removeToolkitPath();
-app=StampFlyIMUApp();
+app=DataLogger();
 settings=imu.ControlSettings.read();
 app.controlLoadButtonPushed([]);
 assert(isequal(app.ControlPIDTable.Data,settings.PIDValues));
@@ -44,11 +44,11 @@ report.PIDAndHorizontalSettingsUIVerified=true;
 report.ControlSettingsWithoutToolkitVerified=true;
 report.FirmwareRevision=1804;report.HardwareIO=false;
 report.SavedModelChanged=false;
-delete(app);close_system('StampFly_IMU400',0);
+delete(app);close_system('Stampfly_Tx',0);
 assert(strcmp(report.TestedModels(1).SHA256,sha256(fullfile(root,modelNames{1}),false)));
 report.CopyManifestSHA256=sha256(copyManifest,false);
 report.Passed=report.Passed && report.ControlSettingsWithoutToolkitVerified;
-fid=fopen(fullfile(originalRoot,'docs','logger_app_distribution_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/logger_app_distribution_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 close(project);
 fprintf('LOGGER_APP_FRESH_COPY_MODEL_APP_AND_SETTINGS_PASSED\n');

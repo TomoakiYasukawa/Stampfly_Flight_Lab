@@ -5,7 +5,7 @@ classdef ControlSettings
     methods (Static)
         function settings=read(model)
             % 1. 現行モデルを読み、制御対象名からPIDを特定します。
-            if nargin<1,model='StampFly_IMU400';end
+            if nargin<1,model='Stampfly_Tx';end
             if ~bdIsLoaded(model)
                 load_system(fullfile(stampfly_project_root(),[char(model) '.slx']));
             end

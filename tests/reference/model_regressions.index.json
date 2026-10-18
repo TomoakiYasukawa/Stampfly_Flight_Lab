@@ -1,0 +1,59 @@
+{
+  "Archive": "model_regressions.zip",
+  "Records": [
+    {
+      "OriginalPath": "tests/models/ControlLayoutEquivalence400.slx",
+      "Entry": "tests/models/ControlLayoutEquivalence400.slx",
+      "Bytes": 1528321,
+      "SHA256": "d0d1d95bc291130b53453632156d56ef3f90441bee789d4176922618e1aa0c22"
+    },
+    {
+      "OriginalPath": "tests/models/FinalPipelineEquivalence400.slx",
+      "Entry": "tests/models/FinalPipelineEquivalence400.slx",
+      "Bytes": 1510743,
+      "SHA256": "e088758b9ddff72ca64458551b3503fbec55e8d7e6f8c76d86a19ece12d30f58"
+    },
+    {
+      "OriginalPath": "tests/models/GraphicalSupervisorEquivalence400.slx",
+      "Entry": "tests/models/GraphicalSupervisorEquivalence400.slx",
+      "Bytes": 80881,
+      "SHA256": "260d67dbbbd0b71e8ea0e09de6329c34b0ec047e79cd9b3619032ca62eb848cb"
+    },
+    {
+      "OriginalPath": "tests/models/PhaseEquivalence126.slx",
+      "Entry": "tests/models/PhaseEquivalence126.slx",
+      "Bytes": 88683,
+      "SHA256": "a1b4b711087d1b9a2f7ff0554d0f2d7f37dc3759418674941f271cdae9af8786"
+    },
+    {
+      "OriginalPath": "tests/models/PhaseEquivalence531.slx",
+      "Entry": "tests/models/PhaseEquivalence531.slx",
+      "Bytes": 96755,
+      "SHA256": "1bce419e25e5e24c97bad8c6530aa5a1a9d3ee3af952769b076d644e44713b15"
+    },
+    {
+      "OriginalPath": "tests/models/PhaseEquivalence553.slx",
+      "Entry": "tests/models/PhaseEquivalence553.slx",
+      "Bytes": 58060,
+      "SHA256": "6bffc37900c59238b34083119d1e69185a12411fad72af931c7c5c66ba4962f4"
+    },
+    {
+      "OriginalPath": "tests/models/PIDFlightComparison400.slx",
+      "Entry": "tests/models/PIDFlightComparison400.slx",
+      "Bytes": 1494539,
+      "SHA256": "b11286279654cdd4edaf0ecb635c42e5357c98bfd5676949b631f888b10efd57"
+    },
+    {
+      "OriginalPath": "tests/models/ReorganizedCoreEquivalence400.slx",
+      "Entry": "tests/models/ReorganizedCoreEquivalence400.slx",
+      "Bytes": 1474421,
+      "SHA256": "317b0367802343fedbac5e31e0af36e61d11d8c81c65cb8135c6818d1f5fbee4"
+    },
+    {
+      "OriginalPath": "tests/models/SensorProcessingEquivalence400.slx",
+      "Entry": "tests/models/SensorProcessingEquivalence400.slx",
+      "Bytes": 402982,
+      "SHA256": "3556e5e680acd2f91191850ec50c2748fd569f22192be0fcff5e216fd2fb0a4c"
+    }
+  ]
+}

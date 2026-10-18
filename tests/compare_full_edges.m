@@ -1,7 +1,8 @@
 function results=compare_full_edges()
 %COMPARE_FULL_EDGES Exercise interruptions during each original Flip phase.
 root=fileparts(fileparts(mfilename('fullpath')));init_official;addpath(fullfile(root,'tests','reference'));
-model='StampFly_Official_FullReplay400';load_system(model);
+folder=build_full_reference_mex();
+model='StampFly_Official_FullReplay400';load_system(stampfly_model_file(model));
 cases={'FlipLinkLoss','FlipOverG','FlipArmLanding','LowThrustFlip','AHRSAndModeChanges'};
 results=struct;
 for c=1:numel(cases)
@@ -30,11 +31,11 @@ for c=1:numel(cases)
   'FlipMismatches',nnz(single(phase)~=expected(:,20)), ...
   'BranchMismatches',nnz(single(branch)~=expected(:,22)));
  results.(cases{c})=r;disp(cases{c});disp(r);
- save(fullfile(root,'tests',[cases{c} '.mat']),'u','expected','duty','diag','state','alt','phase','branch','r');
+ save(fullfile(folder,[cases{c} '.mat']),'u','expected','duty','diag','state','alt','phase','branch','r');
  assert(r.MaxDutyError<single(3e-6) && r.MaxCoreError<single(3e-5), ...
   'official:EdgeNumericMismatch','%s numeric difference.',cases{c});
  assert(r.ModeMismatches+r.AltMismatches+r.FlipMismatches+r.BranchMismatches==0, ...
   'official:EdgeStateMismatch','%s state difference.',cases{c});
 end
-save(fullfile(root,'tests','full_edge_comparison.mat'),'results');
+save(fullfile(folder,'full_edge_comparison.mat'),'results');
 end

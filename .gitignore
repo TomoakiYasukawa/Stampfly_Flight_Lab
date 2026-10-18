@@ -17,6 +17,7 @@ backups/
 archive/copied_project_metadata/
 official_sources/verification/
 official_sources/*.zip
+!official_sources/controller_source.zip
 official_sources/*.html
 official_sources/firmware.txt
 tests/reference/*.obj

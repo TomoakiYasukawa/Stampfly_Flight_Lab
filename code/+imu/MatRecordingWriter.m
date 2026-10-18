@@ -9,7 +9,6 @@ classdef MatRecordingWriter < handle
     end
 
     properties (Access = private)
-        MatFile
         Clock
         Capacity (1,1) double = 512
         Buffered (1,1) double = 0
@@ -23,13 +22,16 @@ classdef MatRecordingWriter < handle
         ExtensionHostTimeBuffer double
         ExtensionBuffered = 0
         ExtensionCount = 0
+        Info
+        WriteBatchFcn = []
     end
 
     methods
-        function obj = MatRecordingWriter(folder, config)
+        function obj = MatRecordingWriter(folder, config, writeBatchFcn)
             arguments
                 folder (1,1) string
                 config (1,1) struct = struct()
+                writeBatchFcn = []
             end
             if ~isfolder(folder)
                 mkdir(folder);
@@ -54,14 +56,6 @@ classdef MatRecordingWriter < handle
             obj.ExtensionLengthBuffer = zeros(obj.Capacity,1,'uint8');
             obj.ExtensionHostTimeBuffer = zeros(obj.Capacity,1);
 
-            telemetry = zeros(0, 80);
-            rawFrames = zeros(0, 190, 'uint8');
-            frameLength = zeros(0, 1, 'uint8');
-            hostElapsedSeconds = zeros(0, 1);
-            extensionTelemetry=zeros(0,166);
-            extensionFrames=zeros(0,246,'uint8');
-            extensionFrameLength=zeros(0,1,'uint8');
-            extensionHostElapsedSeconds=zeros(0,1);
             diagnosticNames = imu.flightDiagnosticNames();
             extensionNames = imu.extensionNames();
             stateSchema='unknown';
@@ -101,10 +95,9 @@ classdef MatRecordingWriter < handle
                 'ExtensionColumns',{{'Kind','Sequence','TimeSeconds','BuildID','FirmwareRevision',extensionNames{:}}}, ...
                 'ExtensionFrames',0, ...
                 'ExtensionNote','SFIX190 commands (Kind1), SFIY246 sensors (Kind2), SFIH182 horizontal (Kind3). Match by Sequence/TimeSeconds/BuildID. Missing fields are NaN.');
-            save(obj.FilePath, 'telemetry', 'rawFrames', 'frameLength', ...
-                'hostElapsedSeconds','extensionTelemetry','extensionFrames','extensionFrameLength', ...
-                'extensionHostElapsedSeconds','info','-v7.3');
-            obj.MatFile = matfile(obj.FilePath, 'Writable', true);
+            obj.Info = info;
+            obj.WriteBatchFcn = writeBatchFcn;
+            obj.submit(struct('FilePath',obj.FilePath,'Initialize',true,'Info',info));
             obj.Clock = tic;
         end
 
@@ -154,23 +147,21 @@ classdef MatRecordingWriter < handle
         end
 
         function flush(obj)
-            obj.flushExtensions();
-            if obj.Buffered == 0
-                return
-            end
-            n = obj.Buffered;
-            first = obj.Count + 1;
-            last = obj.Count + n;
-            obj.MatFile.telemetry(first:last,1:80) = ...
-                obj.TelemetryBuffer(1:n,:);
-            obj.MatFile.rawFrames(first:last,1:190) = ...
-                obj.RawBuffer(1:n,:);
-            obj.MatFile.frameLength(first:last,1) = ...
-                obj.LengthBuffer(1:n);
-            obj.MatFile.hostElapsedSeconds(first:last,1) = ...
-                obj.HostTimeBuffer(1:n);
-            obj.Count = last;
-            obj.Buffered = 0;
+            if obj.Buffered == 0 && obj.ExtensionBuffered == 0, return; end
+            n = obj.Buffered; e = obj.ExtensionBuffered;
+            job = struct('FilePath',obj.FilePath,'Initialize',false, ...
+                'First',obj.Count+1,'ExtensionFirst',obj.ExtensionCount+1, ...
+                'Telemetry',obj.TelemetryBuffer(1:n,:), ...
+                'RawFrames',obj.RawBuffer(1:n,:), ...
+                'FrameLength',obj.LengthBuffer(1:n,:), ...
+                'HostTime',obj.HostTimeBuffer(1:n,:), ...
+                'ExtensionTelemetry',obj.ExtensionBuffer(1:e,:), ...
+                'ExtensionFrames',obj.ExtensionRawBuffer(1:e,:), ...
+                'ExtensionFrameLength',obj.ExtensionLengthBuffer(1:e,:), ...
+                'ExtensionHostTime',obj.ExtensionHostTimeBuffer(1:e,:));
+            obj.submit(job);
+            obj.Count = obj.Count+n; obj.Buffered = 0;
+            obj.ExtensionCount = obj.ExtensionCount+e; obj.ExtensionBuffered = 0;
         end
 
         function path = finish(obj, missingFrames, crcRejected, stopDetails)
@@ -182,7 +173,7 @@ classdef MatRecordingWriter < handle
             end
             if ~obj.IsComplete
                 obj.flush();
-                info = obj.MatFile.info;
+                info = obj.Info;
                 info.StoppedAt = datetime('now');
                 info.Complete = true;
                 info.ValidFrames = obj.Count;
@@ -190,7 +181,8 @@ classdef MatRecordingWriter < handle
                 info.CRCRejected = crcRejected;
                 info.ExtensionFrames = obj.ExtensionCount;
                 info.RecordingStop = stopDetails;
-                obj.MatFile.info = info;
+                obj.submit(struct('FilePath',obj.FilePath,'Initialize',false,'Info',info));
+                obj.Info = info;
                 obj.IsComplete = true;
             end
             path = obj.FilePath;
@@ -211,20 +203,17 @@ classdef MatRecordingWriter < handle
             obj.ExtensionLengthBuffer(k)=uint8(numel(rawFrame));
             obj.ExtensionHostTimeBuffer(k)=toc(obj.Clock);
             obj.ExtensionBuffered=k;
-            if k>=obj.Capacity,obj.flushExtensions();end
+            if k>=obj.Capacity,obj.flush();end
         end
     end
 
     methods (Access = private)
-        function flushExtensions(obj)
-            n=obj.ExtensionBuffered;
-            if n==0,return;end
-            first=obj.ExtensionCount+1;last=obj.ExtensionCount+n;
-            obj.MatFile.extensionTelemetry(first:last,1:166)=obj.ExtensionBuffer(1:n,:);
-            obj.MatFile.extensionFrames(first:last,1:246)=obj.ExtensionRawBuffer(1:n,:);
-            obj.MatFile.extensionFrameLength(first:last,1)=obj.ExtensionLengthBuffer(1:n);
-            obj.MatFile.extensionHostElapsedSeconds(first:last,1)=obj.ExtensionHostTimeBuffer(1:n);
-            obj.ExtensionCount=last;obj.ExtensionBuffered=0;
+        function submit(obj,job)
+            if isempty(obj.WriteBatchFcn)
+                imu.MatRecordingWriter.writeJobs({job});
+            else
+                obj.WriteBatchFcn(job);
+            end
         end
         function growBuffers(obj)
             extra = obj.Capacity;
@@ -232,6 +221,53 @@ classdef MatRecordingWriter < handle
             obj.RawBuffer(end+1:end+extra,:) = uint8(0);
             obj.LengthBuffer(end+1:end+extra,1) = uint8(0);
             obj.HostTimeBuffer(end+1:end+extra,1) = 0;
+        end
+    end
+    methods (Static)
+        function result = writeJobs(jobs)
+            % Indexed writes are repeatable, so a failed batch can be retried.
+            result = struct('CompletedFiles',strings(0,1),'Files',strings(0,1));
+            m = []; opened = "";
+            for k = 1:numel(jobs)
+                job = jobs{k}; file = string(job.FilePath);
+                result.Files(end+1,1) = file;
+                if job.Initialize && ~isfile(file)
+                    telemetry=zeros(0,80); rawFrames=zeros(0,190,'uint8');
+                    frameLength=zeros(0,1,'uint8'); hostElapsedSeconds=zeros(0,1);
+                    extensionTelemetry=zeros(0,166); extensionFrames=zeros(0,246,'uint8');
+                    extensionFrameLength=zeros(0,1,'uint8'); extensionHostElapsedSeconds=zeros(0,1);
+                    info=job.Info;
+                    initialFile=file+".initializing.mat";
+                    save(initialFile,'telemetry','rawFrames','frameLength','hostElapsedSeconds', ...
+                        'extensionTelemetry','extensionFrames','extensionFrameLength', ...
+                        'extensionHostElapsedSeconds','info','-v7.3');
+                    movefile(initialFile,file);
+                end
+                if file ~= opened
+                    m = matfile(file,'Writable',true); opened = file;
+                end
+                if isfield(job,'Telemetry')
+                    n=size(job.Telemetry,1); e=size(job.ExtensionTelemetry,1);
+                    if n>0
+                        rows=job.First:job.First+n-1;
+                        m.telemetry(rows,1:80)=job.Telemetry;
+                        m.rawFrames(rows,1:190)=job.RawFrames;
+                        m.frameLength(rows,1)=job.FrameLength;
+                        m.hostElapsedSeconds(rows,1)=job.HostTime;
+                    end
+                    if e>0
+                        rows=job.ExtensionFirst:job.ExtensionFirst+e-1;
+                        m.extensionTelemetry(rows,1:166)=job.ExtensionTelemetry;
+                        m.extensionFrames(rows,1:246)=job.ExtensionFrames;
+                        m.extensionFrameLength(rows,1)=job.ExtensionFrameLength;
+                        m.extensionHostElapsedSeconds(rows,1)=job.ExtensionHostTime;
+                    end
+                elseif isfield(job,'Info') && ~job.Initialize
+                    m.info=job.Info;
+                    if job.Info.Complete, result.CompletedFiles(end+1,1)=file; end
+                end
+            end
+            result.Files=unique(result.Files,'stable');
         end
     end
 end

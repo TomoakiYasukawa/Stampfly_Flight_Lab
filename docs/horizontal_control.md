@@ -1,8 +1,8 @@
 # 光学フローによる水平補助
 
-`StampFly_IMU400.slx`の水平補助は、**移動中も速度を制御し、中立後は減速して停止位置を保持**します。既存7個の姿勢・角速度・高度PIDの内部と係数は維持し、その前段のRoll／Pitch目標を作ります。磁気によるYaw補正・絶対位置・自動航行は別工程です。
+`Stampfly_Tx.slx`の水平補助は、**移動中も速度を制御し、中立後は減速して停止位置を保持**します。既存7個の姿勢・角速度・高度PIDの内部と係数は維持し、その前段のRoll／Pitch目標を作ります。磁気によるYaw補正・絶対位置・自動航行は別工程です。
 
-**Revision 1804でユーザーから安定飛行の報告を得ています。** CPU固定・高度推定・記録の修正と、確認範囲は[実飛行記録](incident1804_flight_verification.json)・[調査履歴](history/horizontal_trials/20261017_fall_review.md)にまとめています。
+**Revision 1804でユーザーから安定飛行の報告を得ています。** CPU固定・高度推定・記録の修正と、確認範囲は[実飛行記録](history/README.md)・[調査履歴](history/README.md)にまとめています。
 
 ## 操作と条件
 
@@ -77,7 +77,7 @@ IMUSensorの`horizontal.IMUSource`は、従来の加速度・角速度・温度�
 
 ## アプリと記録
 
-モニターの **「水平補助」** に状態、補助有効、観測有効、速度と目標速度を表示します。ツールチップに局所位置・保持目標・混合率・棄却理由があります。従来のXYグラフは[東, 北]の表示用軌跡で、保持目標の比較には水平補助の局所XYを使います。
+モニターの **「水平補助」** に状態、補助有効、観測有効、速度と目標速度を表示します。ツールチップに局所位置・保持目標・混合率・棄却理由があります。Optical Flowの[東, 北]軌跡は3D機体の下のXY平面へ、ToF補正高さを使ったYZ／ZX軌跡は奥の2面へ表示します。現行BuildID 1401はユーザーの手動移動確認に合わせ、表示の東・北を両方反転し、3D機体の位置・向きと履歴も揃えています。旧`stampfly_imu_monitor`の方向は維持します。これはPCの表示座標変更で、生ログと水平補助の局所XYは変えません。保持目標の比較には水平補助の局所XYを使います。
 
 記録には既存SFI8／SFIX／SFIYに加え **SFIH（182 byte、50 Hz）** を追加します。受信機も対応版へ再ビルド・書き込みしてください。`imu.readExtendedTelemetry`で既存列を維持したまま結合し、欠落した補足はNaNです。
 
@@ -91,18 +91,18 @@ FlowMotionのStatus8は **[Valid, Updated, IntervalS, FlowAgeS, RangeAgeS, Cover
 
 | 検証 | 内容と記録 |
 |---|---|
-| 補助OFF（1801） | 高度修正前の保存モデルと基準版で36,000周期・36出力が完全一致。[当時の結果](horizontal_off_verification.json)。現行版との全出力一致は主張しない |
-| 実ブロック動作 | 4シナリオ、16評価。[結果](horizontal_behavior_verification.json) |
-| 閉ループ | 既存7 PID、配分、フロー整数化、ToF35 ms遅延を含む保持・移動・Yaw・欠測復帰。[結果](horizontal_closed_loop_verification.json) |
-| 条件のずれ | 倍率±20%、ToF70 ms、角速度5～20 ms、モーター80 ms、方位積算誤差と複合条件。[結果](horizontal_robustness_verification.json) |
-| 生成コード | 30秒・12,000周期をMATLAB実行と生成MEXで比較。状態一致、数値誤差を記録。[結果](horizontal_codegen_verification.json) |
-| IMU健全性 | 短い再読出し、読出し失敗、更新停止、補助開始。[結果](horizontal_imu_health_verification.json) |
-| ログ負荷分散 | 保存時刻・Sequenceを保ち、入力変化と巡回countを含む192パケットが従来byte列と一致。[結果](horizontal_telemetry_verification.json) |
-| 表示・自動記録・履歴 | 48試験、CRC、欠落・時刻リセット・遅延パケット・旧記録の互換。[結果](incident_recording_verification.json) |
-| 高度推定修正 | 静止ToF量子化、既知上昇、再離陸切替。実ブロックの有限試験。[結果](vertical_boundary_verification.json) |
-| 1804の変更範囲 | 5個の高度境界ブロックと3か所の設定・配線変更を明示。CPU固定・区間計測を追加し、14 MATLAB Function、7PID、Supervisorを維持。[結果](incident_invariants_verification.json) |
-| 実飛行1804 | ユーザーが問題解消・安定飛行を報告。試験したモデル・BINを保全。[結果](incident1804_flight_verification.json) |
+| 補助OFF（1801） | 高度修正前の保存モデルと基準版で36,000周期・36出力が完全一致。[当時の結果](history/README.md)。現行版との全出力一致は主張しない |
+| 実ブロック動作 | 4シナリオ、16評価。[結果](history/README.md) |
+| 閉ループ | 既存7 PID、配分、フロー整数化、ToF35 ms遅延を含む保持・移動・Yaw・欠測復帰。[結果](history/README.md) |
+| 条件のずれ | 倍率±20%、ToF70 ms、角速度5～20 ms、モーター80 ms、方位積算誤差と複合条件。[結果](history/README.md) |
+| 生成コード | 30秒・12,000周期をMATLAB実行と生成MEXで比較。状態一致、数値誤差を記録。[結果](history/README.md) |
+| IMU健全性 | 短い再読出し、読出し失敗、更新停止、補助開始。[結果](history/README.md) |
+| ログ負荷分散 | 保存時刻・Sequenceを保ち、入力変化と巡回countを含む192パケットが従来byte列と一致。[結果](history/README.md) |
+| 表示・自動記録・履歴 | 48試験、CRC、欠落・時刻リセット・遅延パケット・旧記録の互換。[結果](history/README.md) |
+| 高度推定修正 | 静止ToF量子化、既知上昇、再離陸切替。実ブロックの有限試験。[結果](history/README.md) |
+| 1804の変更範囲 | 5個の高度境界ブロックと3か所の設定・配線変更を明示。CPU固定・区間計測を追加し、14 MATLAB Function、7PID、Supervisorを維持。[結果](history/README.md) |
+| 実飛行1804 | ユーザーが問題解消・安定飛行を報告。試験したモデル・BINを保全。[結果](history/README.md) |
 
-閉ループの剛体・推力係数は**この機体の同定値ではありません**。高度には真値を使い、IMU Filterや高度Kalmanの推定誤差を含みません。生成MEXはESP32でのPILではありません。フローの取付軸・倍率と実機の保持性能は飛行前後の机上・実飛行ログで確認します。過去の機体モデルの飛行成功を、この水平補助版の成功として扱いません。[設計と試験方針](specs/algorithms/horizontal-hold/horizontal-hold-system.md)
+閉ループの剛体・推力係数は**この機体の同定値ではありません**。高度には真値を使い、IMU Filterや高度Kalmanの推定誤差を含みません。生成MEXはESP32でのPILではありません。フローの取付軸・倍率と実機の保持性能は飛行前後の机上・実飛行ログで確認します。過去の機体モデルの飛行成功を、この水平補助版の成功として扱いません。[設計と試験方針](history/README.md)
 
-処理時間とUSB通信の中間測定・調整は[履歴](history/horizontal_trials/README.md)にまとめています。`SFTASK`は全タスクの時間、`SFTIMING`は途中までの計測です。ログの`Passed`と周期内完了の判定は別項目です。
+処理時間とUSB通信の中間測定・調整は[履歴](history/README.md)にまとめています。`SFTASK`は全タスクの時間、`SFTIMING`は途中までの計測です。ログの`Passed`と周期内完了の判定は別項目です。

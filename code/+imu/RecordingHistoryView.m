@@ -1,93 +1,132 @@
 classdef RecordingHistoryView
     %RECORDINGHISTORYVIEW UI behavior for the logger's history tab.
     methods (Static)
+        function signature=fileSignature(paths)
+            signature=nan(numel(paths),2);
+            for k=1:numel(paths)
+                entry=dir(paths(k));
+                if ~isempty(entry),signature(k,:)=[entry(1).bytes entry(1).datenum];end
+            end
+        end
+
         function refresh(app, newPath)
-            if nargin < 2
-                newPath = "";
-            end
-            state = app.HistoryList.UserData;
-            if ~isstruct(state) || ~isfield(state,'ExtraPaths')
-                state = struct('ExtraPaths',strings(0,1));
-            end
+            if nargin < 2, newPath = ""; end
             previous = strings(0,1);
             if strcmp(app.HistoryList.Enable,'on')
-                previous = string(app.HistoryList.Value);
-                previous = previous(:);
+                previous=string(app.HistoryList.Value);previous=previous(:);
             end
-            if strlength(string(newPath)) > 0
-                state.ExtraPaths(end+1,1) = string(newPath);
-            end
-            folder = imu.recordingFolder(app);
-            app.HistoryFolderLabel.Text = char("保存先: " + folder);
-            app.HistoryFolderLabel.Tooltip = char(folder);
-            files = dir(fullfile(folder,'*.mat'));
-            [~,order] = sort([files.datenum],'descend');
-            files = files(order);
-            if isempty(files)
-                paths = strings(0,1);
-                labels = strings(0,1);
-            else
-                paths = string(fullfile({files.folder},{files.name})).';
-                labels = string({files.name}).';
-            end
-            state.ExtraPaths = unique(state.ExtraPaths(isfile(state.ExtraPaths)),'stable');
-            extra = state.ExtraPaths(~ismember(state.ExtraPaths,paths));
-            extraLabels = strings(size(extra));
-            for k = 1:numel(extra)
-                [parent,name,ext] = fileparts(extra(k));
-                [~,folderName] = fileparts(parent);
-                extraLabels(k) = string(name) + string(ext) + " [" + string(folderName) + "]";
-            end
-            paths = [paths;extra];
-            labels = [labels;extraLabels];
-            app.HistoryList.UserData = state;
+            folder=imu.recordingFolder(app);
+            app.HistoryFolderLabel.Text=char("保存先: "+folder);
+            app.HistoryFolderLabel.Tooltip=char(folder);
+            files=dir(fullfile(folder,'*.mat'));
+            files=files(~[files.isdir] & ~endsWith(string({files.name}),'.initializing.mat'));
+            [~,order]=sort([files.datenum],'descend');files=files(order);
+            paths=string(fullfile({files.folder},{files.name})).';
+            labels=string({files.name}).';
             if isempty(paths)
-                app.HistoryList.ItemsData = {};
-                app.HistoryList.Items = {'記録なし'};
-                app.HistoryList.Enable = 'off';
-                app.HistoryStatusLabel.Text = '選択した保存先にMAT記録がありません';
-                app.HistorySummaryTable.Data = cell(0,8);
-                imu.RecordingHistoryView.show(app);
+                app.invalidateHistoryRead();
+                app.HistoryList.ItemsData={};app.HistoryList.Items={'記録なし'};
+                app.HistoryList.Enable='off';app.HistoryDeleteButton.Enable='off';
+                app.HistoryCache=[];app.HistoryStatusLabel.Text='選択した保存先にMAT記録がありません';
+                app.renderHistory(cell(0,1),strings(0,1));
                 return
             end
-            chosen = previous(ismember(previous,paths));
-            if strlength(string(newPath)) > 0 && ismember(string(newPath),paths)
-                chosen = string(newPath);
-            elseif isempty(chosen)
-                chosen = paths(1);
-            end
-            app.HistoryList.ItemsData = {};
-            app.HistoryList.Items = cellstr(labels);
-            app.HistoryList.ItemsData = cellstr(paths);
-            app.HistoryList.Enable = 'on';
-            app.HistoryList.Value = cellstr(chosen);
+            chosen=previous(ismember(previous,paths));
+            if strlength(string(newPath))>0 && ismember(string(newPath),paths)
+                chosen=string(newPath);
+            elseif isempty(chosen),chosen=paths(1);end
+            app.HistoryList.ItemsData={};app.HistoryList.Items=cellstr(labels);
+            app.HistoryList.ItemsData=cellstr(paths);app.HistoryList.Enable='on';
+            app.HistoryList.Value=cellstr(chosen);
             imu.RecordingHistoryView.show(app);
         end
 
-        function addFile(app)
-            folder = imu.recordingFolder(app);
-            [name,parent] = uigetfile({'*.mat','MAT記録 (*.mat)'}, ...
-                '過去のStampFly記録を選択',folder);
-            if isequal(name,0)
-                return
+        function deleted=deleteSelected(app)
+            deleted=strings(0,1);errors=strings(0,1);
+            if strcmp(app.HistoryList.Enable,'off'),return;end
+            selected=unique(string(app.HistoryList.Value),'stable');selected=selected(:);
+            listed=string(app.HistoryList.ItemsData);listed=listed(:);
+            busy=string(app.recordingFilesBusy());
+            app.invalidateHistoryRead();
+            for k=1:numel(selected)
+                path=selected(k);
+                if ~ismember(path,listed) || ~endsWith(path,'.mat','IgnoreCase',true),continue;end
+                if ismember(path,busy)
+                    errors(end+1,1)="記録中または保存中のファイルは削除できません: "+path; %#ok<AGROW>
+                    continue
+                end
+                try
+                    if isfile(path),delete(path);end
+                    deleted(end+1,1)=path; %#ok<AGROW>
+                catch err
+                    errors(end+1,1)=string(err.message); %#ok<AGROW>
+                end
             end
-            imu.RecordingHistoryView.refresh(app,string(fullfile(parent,name)));
+            app.HistoryCache=[];
+            nextPath="";
+            survivors=selected(~ismember(selected,deleted) & isfile(selected));
+            if isempty(survivors) && ~isempty(deleted)
+                deletedRows=find(ismember(listed,deleted));
+                remaining=~ismember(listed,deleted) & isfile(listed);
+                nextRow=find(remaining & (1:numel(listed))'>max(deletedRows),1);
+                if isempty(nextRow),nextRow=find(remaining,1,'last');end
+                if ~isempty(nextRow),nextPath=listed(nextRow);end
+            end
+            imu.RecordingHistoryView.refresh(app,nextPath);
+            app.HistoryStatusLabel.Text=sprintf('%d件削除 / %d件削除できませんでした',numel(deleted),numel(errors));
+            app.HistoryStatusLabel.Tooltip=char(strjoin(errors,newline));
         end
 
         function show(app)
+            if strcmp(app.HistoryList.Enable,'off'),return;end
+            selected=string(app.HistoryList.Value);selected=selected(:);
+            selected=selected(isfile(selected));
+            if isempty(selected)
+                app.invalidateHistoryRead();
+                app.HistoryDeleteButton.Enable='off';
+                app.HistoryCache=[];
+                app.renderHistory(cell(0,1),strings(0,1));
+                app.HistoryStatusLabel.Text='記録を選択してください';return
+            end
+            busy=string(app.recordingFilesBusy());
+            app.HistoryDeleteButton.Enable=any(~ismember(selected,busy));
+            if any(ismember(selected,busy))
+                app.invalidateHistoryRead();
+                app.HistoryStatusLabel.Text='選択した記録は保存中です。保存完了後に一覧更新してください。';
+                return
+            end
+            selected=selected(1:min(6,numel(selected)));
+            mode=string(app.HistoryRangeDropDown.Value);cache=app.HistoryCache;
+            signature=imu.RecordingHistoryView.fileSignature(selected);
+            if ~isempty(cache) && isequal(cache.Request.Paths,selected) && cache.Request.Mode==mode ...
+                    && isfield(cache.Request,'Signature') && isequal(cache.Request.Signature,signature)
+                % A cached selection supersedes a different read still in flight.
+                % Otherwise that older completion can replace this selection.
+                app.invalidateHistoryRead();
+                source=app.HistoryHeightAxes.UserData;
+                if ~isstruct(source) || ~isfield(source,'SourceFiles') || ~isequal(source.SourceFiles,selected) ...
+                        || ~isfield(source,'Mode') || source.Mode~=mode ...
+                        || ~isfield(source,'Signature') || ~isequal(source.Signature,signature)
+                    app.renderHistory(cache.Logs,cache.Errors);
+                end
+                return
+            end
+            app.startHistoryRead(selected,mode);
+        end
+
+        function render(app,logs,errors)
             timeAxes = [app.HistoryHeightAxes app.HistoryVerticalSpeedAxes ...
                 app.HistoryHeightErrorAxes app.HistoryVelocityErrorAxes ...
                 app.HistoryControlAxes app.HistoryThrottleAxes ...
                 app.HistoryMotorAxes app.HistoryValidityAxes];
             axesList = [timeAxes app.HistoryXYAxes app.HistoryStateAxes];
             for ax = axesList
+                if ~isempty(ax.Legend),delete(ax.Legend);end
                 delete(findall(ax,'Type','constantline'));
                 % HandleVisibility='off'の診断線も消し、一覧更新で重ねません。
                 delete(allchild(ax));
-                cla(ax);
-                legend(ax,'off');
                 grid(ax,'on');
-                hold(ax,'on');
+                ax.NextPlot='add';
             end
             title(app.HistoryHeightAxes,'高度: 制御用推定 / ToF');
             xlabel(app.HistoryHeightAxes,'飛行制御開始からの時間 (s、負値は直前記録)');
@@ -113,8 +152,8 @@ classdef RecordingHistoryView
             ylabel(app.HistoryMotorAxes,'指令値 (0–255)');
             ylim(app.HistoryMotorAxes,[0 255]);
             title(app.HistoryXYAxes,'相対XY (区間開始=0)');
-            xlabel(app.HistoryXYAxes,'ΔX (m)');
-            ylabel(app.HistoryXYAxes,'ΔY (m)');
+            xlabel(app.HistoryXYAxes,'Δ東 E (m)');
+            ylabel(app.HistoryXYAxes,'Δ北 N (m)');
             title(app.HistoryStateAxes,'飛行状態');
             xlabel(app.HistoryStateAxes,'飛行制御開始からの時間 (s)');
             states=imu.flightStatePresentation();
@@ -129,7 +168,7 @@ classdef RecordingHistoryView
                 '飛行平均高度(cm)','高度範囲(cm)','欠落','CRC','保存終了理由'};
             app.HistoryDataLabel.Text = '表示データ: 未選択';
             for ax=axesList
-                ax.Subtitle.String='表示データ: 未選択';
+                ax.Subtitle.String='';
                 ax.Subtitle.Interpreter='none';
                 ax.Title.Interpreter='none';
                 ax.UserData=struct('SourceFiles',strings(0,1));
@@ -137,26 +176,9 @@ classdef RecordingHistoryView
             if strcmp(app.HistoryList.Enable,'off')
                 return
             end
-            selected = string(app.HistoryList.Value);
-            selected = selected(:);
-            selected = selected(isfile(selected));
-            if isempty(selected)
-                app.HistoryStatusLabel.Text = '記録を選択してください';
-                return
-            end
-            omitted = max(0,numel(selected)-6);
-            selected = selected(1:min(6,numel(selected)));
-            mode = string(app.HistoryRangeDropDown.Value);
-            logs = cell(0,1);
-            errors = strings(0,1);
-            for k = 1:numel(selected)
-                try
-                    logs{end+1,1} = imu.readRecordingHistory( ...
-                        selected(k),mode,5000,double(app.ExpectedBuildID)); %#ok<AGROW>
-                catch err
-                    errors(end+1,1) = string(err.message); %#ok<AGROW>
-                end
-            end
+            selected=string(app.HistoryList.Value);selected=selected(:);
+            selected=selected(isfile(selected));omitted=max(0,numel(selected)-6);
+            selected=selected(1:min(6,numel(selected)));
             if isempty(logs)
                 app.HistoryStatusLabel.Text = '選択したMATファイルを読めません';
                 app.HistoryStatusLabel.Tooltip = char(strjoin(errors,newline));
@@ -172,13 +194,12 @@ classdef RecordingHistoryView
             sourceLabel="表示データ: "+strjoin(fileNames," / ");
             app.HistoryDataLabel.Text=char(sourceLabel);
             app.HistoryDataLabel.Tooltip=char(strjoin(selected,newline));
+            renderedSignature=imu.RecordingHistoryView.fileSignature(selected);
             for ax=axesList
-                ax.Subtitle.String=char(sourceLabel);
-                ax.Subtitle.FontSize=9;
-                ax.UserData=struct('SourceFiles',selected);
+                ax.UserData=struct('SourceFiles',selected,'Mode',string(app.HistoryRangeDropDown.Value), ...
+                    'Signature',renderedSignature);
             end
             if logs{1}.IsOfficialFixedPID
-                app.HistoryControlAxes.Subtitle.String=char(sourceLabel);
                 app.HistoryControlAxes.UserData.Note= ...
                     'SFIXのThrustCommand/3.7−BaseDuty。10ms平滑化・制限後の差で、PIDのP/I/D個別項ではありません。';
             else
@@ -393,10 +414,12 @@ classdef RecordingHistoryView
                     last=find(all(isfinite(xy),2),1,'last');
                     plot(app.HistoryXYAxes,xy(origin,1),xy(origin,2),'o', ...
                         'Color',color,'MarkerFaceColor',color,'MarkerSize',7, ...
-                        'Tag','XYStart','DisplayName',[name ' 開始']);
+                        'Tag','XYStart','DisplayName',sprintf('%s 開始 %.2f s',name,tp(origin)), ...
+                        'UserData',struct('TimeSeconds',tp(origin)));
                     plot(app.HistoryXYAxes,xy(last,1),xy(last,2),'x', ...
                         'Color',color,'MarkerSize',9,'LineWidth',1.8, ...
-                        'Tag','XYEnd','DisplayName',[name ' 終了']);
+                        'Tag','XYEnd','DisplayName',sprintf('%s 終了 %.2f s',name,tp(last)), ...
+                        'UserData',struct('TimeSeconds',tp(last)));
                 end
                 if any(isfinite(log.FlightState))
                     levels=nan(size(plotLog.FlightState));
@@ -466,10 +489,15 @@ classdef RecordingHistoryView
             xlim(app.HistoryStateAxes,[firstTime lastTime+max(0.2,0.02*(lastTime-firstTime))]);
             for ax = axesList
                 hold(ax,'off');
-                if any(arrayfun(@(item) isprop(item,'DisplayName') && ...
+                plots=flipud(ax.Children);
+                named=arrayfun(@(item) isprop(item,'DisplayName') && ...
                         ~isempty(item.DisplayName) && ...
-                        strcmp(item.HandleVisibility,'on'),ax.Children))
-                    legend(ax,'show','Location','best');
+                        strcmp(item.HandleVisibility,'on'),plots);
+                plots=plots(named);
+                if ~isempty(plots)
+                    labels=arrayfun(@(item)item.DisplayName,plots,'UniformOutput',false);
+                    legend(ax,plots,labels,'Location','northwest', ...
+                        'AutoUpdate','off','Interpreter','none');
                 end
             end
             if isempty(findall(app.HistoryControlAxes,'Type','line'))

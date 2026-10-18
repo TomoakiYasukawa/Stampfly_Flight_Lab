@@ -39,7 +39,7 @@ report=struct('Passed',true,'FirmwareRevision',1802,'Groups',groups,'ByteIdentic
     'ChangingInputsDuringPacking',true,'CumulativeCounterWrap',true, ...
     'SameSavedTimeAndSequence',true,'Legacy50HzBytesPreserved',true, ...
     'CaptureToSendDelayMs',[10 2.5 5]);
-fid=fopen(fullfile(root,'docs','horizontal_telemetry_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/horizontal_telemetry_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('HORIZONTAL_DISTRIBUTED_TELEMETRY_BYTES_VERIFIED\n');
 end

@@ -38,7 +38,7 @@ end
 assert(active&&enabledCount==800);release(tracker);release(command);
 report=struct('Passed',true,'BoundedRepeatedReadsAccepted',true,'ReadFailureRejectedImmediately',true, ...
     'StaleGyroRejected',true,'AssistCanEngage',true);
-fid=fopen(fullfile(stampfly_project_root(),'docs','horizontal_imu_health_verification.json'),'w','n','UTF-8');
+fid=fopen(stampfly_report_file('docs/horizontal_imu_health_verification.json'),'w','n','UTF-8');
 assert(fid>=0);fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('HORIZONTAL_IMU_HEALTH_VERIFICATION_PASSED\n');
 end

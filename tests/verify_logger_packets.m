@@ -1,6 +1,6 @@
 function result=verify_logger_packets()
 %VERIFY_LOGGER_PACKETS Compare the complete copied SFI2..8 byte streams.
-root=fileparts(fileparts(mfilename('fullpath')));addpath(fullfile(root,'archive','logger_packers'));
+root=fileparts(fileparts(mfilename('fullpath')));folder=fullfile(root,'build','history','models');if ~isfolder(fullfile(folder,'archive','logger_packers')),mkdir(folder);unzip(fullfile(root,'archive','model_history.zip'),folder);end;addpath(fullfile(folder,'archive','logger_packers'));
 common={uint16(37),single(1.25),single([1;2;9.8]),single([.1;-.2;.3]), ...
  uint8(1),single(.35),uint8(1),uint8(0),single([NaN;NaN]),uint8(0), ...
  uint8(0),uint16(0),single([NaN;NaN]),uint8(0)};
@@ -22,5 +22,5 @@ for k=1:numel(names)
  assert(isequal(payload(1:end-2),full(1:end-2)));
 end
 result=struct('FormatsCompared',7,'ByteIdentical',true);
-save(fullfile(root,'tests','logger_packet_verification.mat'),'result');disp(result);
+save(fullfile(reference_mex_folder(),'logger_packet_verification.mat'),'result');disp(result);
 end

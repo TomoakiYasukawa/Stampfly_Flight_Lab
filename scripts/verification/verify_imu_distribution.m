@@ -3,7 +3,7 @@ function report=verify_imu_distribution()
 % restoredefaultpath 後に、コピー側のプロジェクトから実行する検証。
 root=stampfly_project_root();license('checkout','Navigation_Toolbox');
 project=currentProject();assert(strcmpi(project.RootFolder,root));
-models={'StampFly_IMU400','M5Stamp_IMU_Rx'};
+models={'Stampfly_Tx','M5Stamp_Rx'};
 for k=1:numel(models)
     open_system(fullfile(root,[models{k} '.slx']));
     set_param(models{k},'SimulationCommand','update');
@@ -23,7 +23,7 @@ for k=1:numel(classes)
     source=which(classes{k});assert(within(source,root),'cleanup:ExternalMATLABCode','%s resolves outside project.',classes{k});
 end
 assert(strcmpi(stampfly.BMI270IMU.libsRoot(),root));
-app=StampFlyIMUApp();figureHandle=app.UIFigure;delete(app);assert(~isvalid(figureHandle));
+app=DataLogger();figureHandle=app.UIFigure;delete(app);assert(~isvalid(figureHandle));
 % 同名の比較IMU版を検索パスへ置かないことも確認する。
 currentPaths=strsplit(path,pathsep);
 assert(~any(cellfun(@(p)within(p,fullfile(root,'archive')),currentPaths)));
@@ -39,7 +39,7 @@ nonSourceControlPassed=all([checks(~sourceControlCheck).Passed]);
 gitIncluded=isfolder(fullfile(root,'.git')) || isfile(fullfile(root,'.git'));
 projectChecksPassed=all([checks.Passed]);
 passed=nonSourceControlPassed && (~gitIncluded || projectChecksPassed);
-report=struct('ProjectFile','StampFly_Official.prj','FreshCopy',true,'RestoredDefaultPath',true, ...
+report=struct('ProjectFile','StampFly_Lab.prj','FreshCopy',true,'RestoredDefaultPath',true, ...
     'FullModelUpdatesPassed',true,'CurrentAircraft',models{1},'CurrentReceiver',models{2}, ...
     'AppConstructedAndClosed',true,'CustomClassesResolveInsideProject',true, ...
     'ArchivedModelsExcludedFromPath',true,'ExternalCustomDependencies',0, ...
@@ -50,7 +50,7 @@ if ~gitIncluded
     report.SourceControlCheckNote=['配布用コピーは.gitを含まないためGit管理のチェックを実行可否の判定から除きます。' ...
         'ファイル存在・パス・起動・モデル更新・アプリと、元リポジトリの登録は別に検証します。'];
 end
-writeJSON(fullfile(root,'docs','imu_distribution_verification.json'),report);
+writeJSON(stampfly_report_file('docs/imu_distribution_verification.json'),report);
 assert(report.Passed,'cleanup:DistributionFailed','配布コピーの検証に失敗しました。');
 fprintf('IMU_FRESH_DISTRIBUTION_MODEL_AND_APP_PASSED\n');
 end

@@ -3,7 +3,7 @@ function report=verify_horizontal_behavior()
 root=stampfly_project_root();init_imu_flight();ensure_simulink_toolkit();
 [~,~,~,~,motion,context]=horizontal.fixture();
 assignin('base','HorizontalTestMotion',motion);assignin('base','HorizontalTestContext',context);
-folder=fullfile(root,'build','horizontal_control','harnesses');addpath(folder);
+folder=fullfile(root,'tests','models');addpath(folder);
 if bdIsLoaded('HorizontalControllerTest'),close_system('HorizontalControllerTest',0);end
 oldFolder=pwd;restoreFolder=onCleanup(@()cd(oldFolder)); %#ok<NASGU>
 cd(folder);
@@ -20,7 +20,7 @@ assert(~contains(reply,'FAILED scenario:')&&~contains(reply,'FAILED Assessment:'
 report=struct('Passed',true,'ActualSavedBlocks',true,'DraftMode',false, ...
     'ScenarioCount',4,'AssessmentCount',16,'Output',reply);
 save(fullfile(root,'build','horizontal_control','behavior_verification.mat'),'report');
-fid=fopen(fullfile(root,'docs','horizontal_behavior_verification.json'),'w','n','UTF-8');
+fid=fopen(stampfly_report_file('docs/horizontal_behavior_verification.json'),'w','n','UTF-8');
 assert(fid>=0);fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('HORIZONTAL_BEHAVIOR_VERIFICATION_PASSED\n');
 end

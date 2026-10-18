@@ -1,13 +1,14 @@
 function result=compare_official_estimators()
 %COMPARE_OFFICIAL_ESTIMATORS Compare exact Madgwick and Kalman implementations.
 root=fileparts(fileparts(mfilename('fullpath')));ref=fullfile(root,'tests','reference');addpath(root,ref);
-if ~isfile(fullfile(ref,['official_estimator_reference.' mexext]))
+folder=reference_mex_folder();
+if ~isfile(fullfile(folder,['official_estimator_reference.' mexext]))
     source=fullfile(root,'official_sources','M5StampFly');
     mex('-R2018a','COMPFLAGS=$COMPFLAGS /utf-8 /wd4305 /wd4244',['-I' ref], ...
         ['-I' fullfile(source,'src')],['-I' fullfile(source,'lib','MdgwickAHRS')], ...
         fullfile(ref,'official_estimator_reference.cpp'),fullfile(source,'src','alt_kalman.cpp'), ...
         fullfile(source,'lib','MdgwickAHRS','MadgwickAHRS.cpp'), ...
-        '-outdir',ref,'-output','official_estimator_reference');
+        '-outdir',folder,'-output','official_estimator_reference');
 end
 n=2400;t=single((0:n-1)'*.0025);u=zeros(n,12,'single');
 u(:,1)=.2*sin(t*3);u(:,2)=.1*cos(t*2);u(:,3)=.15*sin(t);
@@ -23,7 +24,7 @@ for k=1:n
 end
 result=struct('Samples',n,'MaxAttitudeErrorRad',max(abs(actual(:,1:3)-expected(:,1:3)),[],'all'), ...
     'MaxKalmanError',max(abs(actual(:,4:6)-expected(:,4:6)),[],'all'));
-save(fullfile(root,'tests','estimator_comparison.mat'),'u','expected','actual','result');disp(result);
+save(fullfile(folder,'estimator_comparison.mat'),'u','expected','actual','result');disp(result);
 assert(result.MaxAttitudeErrorRad<single(3e-6),'Madgwick port differs from official.');
 assert(result.MaxKalmanError<single(3e-6),'Kalman port differs from official.');
 end

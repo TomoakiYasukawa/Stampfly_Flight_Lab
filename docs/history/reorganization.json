@@ -1,0 +1,373 @@
+{
+  "Project": "StampFly_Lab",
+  "Status": "complete",
+  "Folder": "stampfly_lab",
+  "EntryPoints": {
+    "Project": "StampFly_Lab.prj",
+    "Aircraft": "Stampfly_Tx.slx",
+    "Receiver": "M5Stamp_Rx.slx",
+    "App": [
+      "DataLogger.m",
+      "DataLogger.xml"
+    ],
+    "Launch": "run_datalogger"
+  },
+  "Documentation": {
+    "FlightGuide": "README.md",
+    "AppGuide": "DataLogger_GUIDE.md",
+    "AgentContext": "AI_CONTEXT.md",
+    "Index": "docs/README.md"
+  },
+  "ModelPreservation": {
+    "AircraftBlocks": 979,
+    "AircraftCharts": 17,
+    "ReceiverBlocks": 3,
+    "ReceiverCharts": 0,
+    "ComputationsAndConnectivityPreserved": true
+  },
+  "AppPreservation": {
+    "AppId": "6045714e-c100-4972-8d8f-120b58fc45dc",
+    "NativePropertyDefaults": 90,
+    "MethodsAndCallbacksPreserved": true
+  },
+  "Validation": {
+    "AppTests": {
+      "Tests": 83,
+      "Passed": 83,
+      "Failed": 0,
+      "Incomplete": 0
+    },
+    "FreshCopyAndControlSettingsPassed": true,
+    "NewLocationModelUpdatesAndAppPassed": true,
+    "NewLocationBuildsPassed": true,
+    "ProjectRegistrationChecksPassed": true,
+    "NonSourceControlChecksPassed": true,
+    "SourceControlChecksPendingUserGitStep": true,
+    "ReferenceMEXRebuiltAndCompared": true,
+    "TelemetryCRCAndByteCompatibilityPassed": true,
+    "HorizontalLoggingAndAlgorithmsPassed": true,
+    "DocumentationLinksPassed": true,
+    "PythonSyntaxPassed": true,
+    "FirmwareHashesPassed": true,
+    "ArchiveHashesPassed": true,
+    "ProtectedRecordingsAndBackupHashesPassed": true,
+    "ProjectRegisteredFiles": 585,
+    "DependencyNodes": 521,
+    "DependencyEdges": 1566,
+    "NewLocationDependencyNodes": 514,
+    "NewLocationDependencyEdges": 1554
+  },
+  "Cleanup": {
+    "Before": {
+      "Files": 10825,
+      "Bytes": 1343477786
+    },
+    "DeletedExactTargets": 587,
+    "DeletedFilesAtRemoval": 10332,
+    "DeletedBytesAtRemoval": 1319004538,
+    "ProtectedFiles": 79,
+    "RecordedMATFiles": 15,
+    "OriginalHistoryRecords": 216,
+    "MEXDistributionRequired": false,
+    "MEXBinariesRemoved": true,
+    "Retained": [
+      "Active source and drivers",
+      "Vendor licenses",
+      "Current tests",
+      "Flight-success and failure baselines",
+      "Unique hardware backups",
+      "User recordings",
+      "Indexed original evidence"
+    ],
+    "BuildWorkspaceRemoved": true,
+    "OwnedVerificationCopiesRemoved": true,
+    "After": {
+      "Files": 2548,
+      "Bytes": 162911827,
+      "Groups": {
+        "(root)": {
+          "Files": 11,
+          "Bytes": 1230373
+        },
+        "archive": {
+          "Files": 15,
+          "Bytes": 8659614
+        },
+        "backups": {
+          "Files": 65,
+          "Bytes": 74006214
+        },
+        "code": {
+          "Files": 166,
+          "Bytes": 433560
+        },
+        "config": {
+          "Files": 8,
+          "Bytes": 6464
+        },
+        "docs": {
+          "Files": 17,
+          "Bytes": 5498680
+        },
+        "firmware": {
+          "Files": 24,
+          "Bytes": 19878688
+        },
+        "libraries": {
+          "Files": 1,
+          "Bytes": 2015051
+        },
+        "logs": {
+          "Files": 3,
+          "Bytes": 14182682
+        },
+        "official_sources": {
+          "Files": 126,
+          "Bytes": 5925817
+        },
+        "recordings": {
+          "Files": 15,
+          "Bytes": 25091358
+        },
+        "resources": {
+          "Files": 1882,
+          "Bytes": 660098
+        },
+        "scripts": {
+          "Files": 25,
+          "Bytes": 80490
+        },
+        "src": {
+          "Files": 54,
+          "Bytes": 2116100
+        },
+        "tests": {
+          "Files": 51,
+          "Bytes": 1928946
+        },
+        "third_party": {
+          "Files": 77,
+          "Bytes": 1170014
+        },
+        "tools": {
+          "Files": 8,
+          "Bytes": 27678
+        }
+      }
+    },
+    "ReductionBytes": 1180565959,
+    "ReductionPercent": 87.874,
+    "BytesExcludeGitHistory": true,
+    "SourceDistributionBytes": 49631573
+  },
+  "Builds": {
+    "Project": "StampFly_Lab",
+    "RecordedAt": "2026/10/18 06:00:37 UTC",
+    "MATLABRelease": "2026b",
+    "BuildPassed": true,
+    "Flashed": false,
+    "Models": [
+      {
+        "Model": "Stampfly_Tx.slx",
+        "ModelSHA256": "8d75fd93fa1f9eb564e1c772301411b78c6bf32a863a768b520929e9f20b781b",
+        "BuildPassed": true,
+        "BuildAction": "Build",
+        "FixedStep": 0.0025,
+        "BuildSeconds": 215.7101021,
+        "Binaries": [
+          {
+            "File": "firmware/current/Stampfly_Tx.bin",
+            "SHA256": "8e480d7e894ae9837802a8f8af6bd4857541a8def50b0be6876655c07ce9dcc1",
+            "Bytes": 1003616.0
+          },
+          {
+            "File": "firmware/current/Stampfly_Tx.bootloader.bin",
+            "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+            "Bytes": 20112
+          },
+          {
+            "File": "firmware/current/Stampfly_Tx.partitions.bin",
+            "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+            "Bytes": 3072
+          }
+        ],
+        "Dependencies": {
+          "ProjectSources": [
+            "src/official_battery.cpp",
+            "src/vl53l3cx/vl53l3cx_uld_wrapper.cpp",
+            "src/vl53l3cx/uld/vl53lx_class.cpp",
+            "src/common/i2c_esp32.cpp",
+            "src/vl53l3cx/vl53l3cx_bottom_official128_wrapper.cpp",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_api.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_api_calibration.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_api_core.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_api_debug.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_api_preset_modes.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_core.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_core_support.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_dmax.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_hist_algos_gen3.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_hist_algos_gen4.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_hist_char.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_hist_core.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_hist_funcs.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_nvm.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_nvm_debug.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_platform.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_platform_init.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_platform_ipp.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_platform_log.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_register_funcs.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_sigma_estimate.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_silicon_core.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_wait.c",
+            "third_party/M5StampFly_official_5d6c3417/lib/vl53l3c/vl53lx_xtalk.c",
+            "src/official_timing.cpp",
+            "src/imu_tx.cpp",
+            "src/official_usb.cpp",
+            "src/bmi270/bmi270_imu_driver.c",
+            "src/bmi270/bmi270_spi_esp32.cpp",
+            "src/bmi270/bmi270.c",
+            "src/bmi270/bmi2.c",
+            "src/common/spi_esp32.cpp",
+            "src/official_radio.cpp",
+            "src/official_status.cpp",
+            "src/bmm150/bmm150_driver.c",
+            "src/bmm150/upstream/bmm150.c",
+            "src/bmm150/bmm150_logger.cpp",
+            "src/official_pwm.cpp",
+            "src/pmw3901/pmw3901_wrapper.cpp",
+            "src/pmw3901/upstream/Bitcraze_PMW3901.cpp",
+            "src/official_scheduler.cpp",
+            "src/official_runtime_probe.cpp"
+          ],
+          "GeneratedSources": [
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/ert_main.c",
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/Stampfly_Tx.c",
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/Stampfly_Tx_data.c",
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/rtGetInf.c",
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/rtGetNaN.c",
+            "build/firmware/Stampfly_Tx/Stampfly_Tx_ert_rtw/rt_nonfinite.c"
+          ],
+          "InstalledProductSourceCount": 10,
+          "ExternalCustomDependencyCount": 0
+        }
+      },
+      {
+        "Model": "M5Stamp_Rx.slx",
+        "ModelSHA256": "56505ea55eb27850a4a29f382e13bfde3a619f11217ac9634da0aa60d88fc537",
+        "BuildPassed": true,
+        "BuildAction": "Build",
+        "FixedStep": 0.01,
+        "BuildSeconds": 26.0762697,
+        "Binaries": [
+          {
+            "File": "firmware/current/M5Stamp_Rx.bin",
+            "SHA256": "515ebaa30ae15d791f64564f3de71c382aa4cc56aa334a48febad8907412d6b3",
+            "Bytes": 853888
+          },
+          {
+            "File": "firmware/current/M5Stamp_Rx.bootloader.bin",
+            "SHA256": "71242cb75e7388e23b901146ba56790eb8ab9b0667e1cbc3c28e6770fe60296f",
+            "Bytes": 20112
+          },
+          {
+            "File": "firmware/current/M5Stamp_Rx.partitions.bin",
+            "SHA256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+            "Bytes": 3072
+          }
+        ],
+        "Dependencies": {
+          "ProjectSources": [
+            "src/imu_rx.cpp"
+          ],
+          "GeneratedSources": [
+            "build/firmware/M5Stamp_Rx/M5Stamp_Rx_ert_rtw/ert_main.c",
+            "build/firmware/M5Stamp_Rx/M5Stamp_Rx_ert_rtw/M5Stamp_Rx.c"
+          ],
+          "InstalledProductSourceCount": 8,
+          "ExternalCustomDependencyCount": 0
+        }
+      }
+    ]
+  },
+  "Archives": [
+    {
+      "Archive": "archive/model_history.zip",
+      "IndexedRecords": 36,
+      "SHA256": "07c419604cae4eb0a754cc42603335e3cd24510a1b484c5add5d474a22f0acc2"
+    },
+    {
+      "Archive": "firmware/history/before_stampfly_lab_20261018.zip",
+      "IndexedRecords": 13,
+      "SHA256": "234c12f21a33f1f287d33fd03d16ca39d55218f16c73aa4e1053c53f535dc1d8"
+    },
+    {
+      "Archive": "firmware/history/earlier_firmware.zip",
+      "IndexedRecords": 52,
+      "SHA256": "fa3636f241d6b3b21c75c97f829b63bb1187968b9bfce322efbb2a30f62c9dda"
+    },
+    {
+      "Archive": "tests/reference/horizontal_timing_baseline.zip",
+      "IndexedRecords": 1,
+      "SHA256": "93ab1e489027a99e6677056874648a4d74dd45f2a4793d908220b95bf28ca52b"
+    },
+    {
+      "Archive": "tests/reference/model_regressions.zip",
+      "IndexedRecords": 9,
+      "SHA256": "96afb7cfa24ad43a9fedae44b83f7b039b5774347a82aba58800ac3c87984b8f"
+    },
+    {
+      "Archive": "logs/hardware_history.zip",
+      "IndexedRecords": 287,
+      "SHA256": "4599efe0ed3de213c291d51a8cb81c468310a9fa3575b7b336a7110e6ea9c606"
+    },
+    {
+      "Archive": "backups/project_before_stampfly_lab_20261018/project_metadata.zip",
+      "IndexedRecords": 3213,
+      "SHA256": "b6b2fbf18d5daa9104b6b0a3bdf7d3ddbdb1b07c29972589eea08b04e177052a"
+    },
+    {
+      "Archive": "backups/runtime1802/debug_symbols.zip",
+      "IndexedRecords": 1,
+      "SHA256": "dd890a0d64f38e83da98ebce2e15d73b1f88c8ed529e836c353725a1dd0847ec"
+    },
+    {
+      "Archive": "backups/runtime1803/debug_symbols.zip",
+      "IndexedRecords": 1,
+      "SHA256": "24e8c29211421a9ce90a8df028d173570d8ebbcd780accfb62eb85c544cfef5b"
+    },
+    {
+      "Archive": "backups/runtime1804/debug_symbols.zip",
+      "IndexedRecords": 1,
+      "SHA256": "c027dead6656a09462735060a85a87568a888889bbc07b4319d7f22a2a654e66"
+    }
+  ],
+  "Evidence": {
+    "Archive": "reorganization_evidence.zip",
+    "Index": "reorganization_evidence.index.json",
+    "Records": 206
+  },
+  "Git": {
+    "StagedFiles": 0,
+    "CommitPerformed": false,
+    "PushPerformed": false,
+    "RemoteChanged": false,
+    "MATLABUnintendedStagingRestored": true
+  },
+  "HardwareFlashedDuringReorganization": false,
+  "OldEmptyFolder": {
+    "Folder": "Official_setup",
+    "ContainsProjectFiles": false,
+    "Reason": "Active DevAI/Codex holds old working directory",
+    "Cleanup": "Hidden guarded cleanup removes only the empty folder after handles are released",
+    "CleanupDeadlineHours": 8,
+    "Status": "waiting_for_DevAI_Codex_directory_handles",
+    "NextSessionFolder": "stampfly_lab"
+  },
+  "KnownEngineeringLimits": [
+    "Current control parameter write requires rebuilding firmware",
+    "Compiler/Runtime packaging remains untested",
+    "Measured 2.5 ms overruns remain documented"
+  ]
+}

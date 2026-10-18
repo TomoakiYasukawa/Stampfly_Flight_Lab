@@ -1,6 +1,6 @@
 function frame=packCommandExtension(sequence,t,buildID,revision,estimate,control)
 %PACKCOMMANDEXTENSION SFIX190. Command values are full single precision.
-% Reserved button/phase bytes stay zero for compatibility with StampFlyIMUApp.
+% Reserved button/phase bytes stay zero for compatibility with DataLogger.
 % Layout is documented in docs/logging_extensions.md; all scalars little endian.
 %#codegen
 frame=zeros(190,1,'uint8');frame(1:4)=uint8('SFIX');

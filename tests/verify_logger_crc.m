@@ -6,7 +6,7 @@ for len=[0 1 37 63 93 106 111 114 182 188 190 256 1024]
 end
 for byte=0:255,assert(imu.crc16(uint8(byte))==original(uint8(byte)));end
 result=struct('ByteValues',256,'PacketLengths',13,'KnownVector','29B1','Passed',true);
-save(fullfile(fileparts(mfilename('fullpath')),'logger_crc_verification.mat'),'result');disp(result);
+save(fullfile(reference_mex_folder(),'logger_crc_verification.mat'),'result');disp(result);
 end
 function crc=original(bytes)
 crc=uint16(65535);

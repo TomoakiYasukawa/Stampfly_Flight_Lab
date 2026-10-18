@@ -3,7 +3,7 @@ function report=audit_imu_cleanup()
 root=stampfly_project_root();ensure_simulink_toolkit();
 assert(library.settingsLookup().gatePass);
 license('checkout','Navigation_Toolbox');init_imu_flight();
-models={'StampFly_IMU400','M5Stamp_IMU_Rx'};
+models={'Stampfly_Tx','M5Stamp_Rx'};
 reports=struct('Model',{},'FullUpdatePassed',{},'CheckedScopes',{}, ...
     'ConnectionIssues',{},'MATLABFunctionCount',{},'JapaneseFunctionComments',{}, ...
     'CustomSystemHeaders',{},'MaskedSubsystemPortLabels',{});
@@ -86,7 +86,7 @@ assert(isempty(find_system(main,'LookUnderMasks','all','Name','OfficialFlipSeque
 assert(isempty(find_system(main,'LookUnderMasks','all','Name','MadgwickAttitude')));
 report=struct('Models',reports,'Passed',true,'RawToFHasNoModeInput',true, ...
     'RawToFStep',.0025,'PhysicalFlightTested',false,'Flashed',false);
-writeJSON(fullfile(root,'docs','imu_cleanup_model_audit.json'),report);
+writeJSON(stampfly_report_file('docs/imu_cleanup_model_audit.json'),report);
 fprintf('IMU_CLEANUP_SAVED_MODEL_AUDIT_PASSED\n');
 end
 

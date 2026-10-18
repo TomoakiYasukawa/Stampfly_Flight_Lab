@@ -1,7 +1,8 @@
 function result=compare_embedded_estimators()
 %COMPARE_EMBEDDED_ESTIMATORS Execute the actual copied .slx charts against C++.
 root=fileparts(fileparts(mfilename('fullpath')));init_official;addpath(fullfile(root,'tests','reference'));
-compare_official_estimators;s=load(fullfile(root,'tests','estimator_comparison.mat'));u=s.u;n=size(u,1);t=(0:n-1)'*.0025;
+folder=reference_mex_folder();
+compare_official_estimators;s=load(fullfile(folder,'estimator_comparison.mat'));u=s.u;n=size(u,1);t=(0:n-1)'*.0025;
 % The chart intentionally skips the first Kalman update after startup. Supply
 % one first-cycle reset to the independent oracle, then retain public outputs.
 u(1,12)=1;
@@ -12,15 +13,16 @@ source=strrep(source,'Madgwick ahrs;ahrs.begin(400);Alt_kalman kalman;', ...
  'Madgwick ahrs;ahrs.begin(400);Alt_kalman kalman;bool first=true;');
 source=strrep(source,'if(u[i+n*11]!=0)kalman.reset();else kalman.update(u[i+n*6],u[i+n*7],u[i+n*8]);', ...
  'if(u[i+n*11]!=0)kalman.reset();if(first)first=false;else kalman.update(u[i+n*6],u[i+n*7],u[i+n*8]);');
-file=fullfile(root,'tests','reference','official_embedded_estimator_reference.cpp');fid=fopen(file,'w');fwrite(fid,source);fclose(fid);
+file=fullfile(folder,'official_embedded_estimator_reference.cpp');fid=fopen(file,'w');fwrite(fid,source);fclose(fid);
 original=fullfile(root,'official_sources','M5StampFly');ref=fullfile(root,'tests','reference');
 mex('-R2018a','COMPFLAGS=$COMPFLAGS /utf-8 /wd4305 /wd4244',['-I' ref],['-I' fullfile(original,'src')], ...
  ['-I' fullfile(original,'lib','MdgwickAHRS')],file,fullfile(original,'src','alt_kalman.cpp'), ...
- fullfile(original,'lib','MdgwickAHRS','MadgwickAHRS.cpp'),'-outdir',ref,'-output','official_embedded_estimator_reference');
+ fullfile(original,'lib','MdgwickAHRS','MadgwickAHRS.cpp'),'-outdir',folder,'-output','official_embedded_estimator_reference');
 expected=official_embedded_estimator_reference(u);
 model='StampFly_Official_EstimatorReplay400';if bdIsLoaded(model),close_system(model,0);end
 new_system(model);open_system(model);model_read(model,'root','0');
 bench='StampFly_Official_Bench400';
+load_system(stampfly_model_file(bench));ensure_simulink_toolkit();
 ops={struct('op','add_block','type','FromWorkspace','name','EstimatorInputs','ref','input','params',struct('VariableName','EstimatorTrace','Interpolate','off','SampleTime','.0025','OutputAfterFinalValue','Holding final value')), ...
  struct('op','add_block','type','Demux','name','Fields','ref','fields','params',struct('Outputs','[3 3 1 1 1 1 1 1]')), ...
  struct('op','add_block','type',Simulink.ID.getFullName([bench ':120']),'name','Madgwick400','ref','madgwick'), ...
@@ -42,7 +44,7 @@ assignin('base','EstimatorTrace',struct('time',t,'signals',struct('values',u,'di
 model_check(model,'root','["all"]');save_system(model,stampfly_model_file(model));
 out=sim(model);actual=out.yout{1}.Values.Data;
 result=struct('Samples',n,'MaxAttitudeErrorRad',max(abs(actual(:,1:3)-expected(:,1:3)),[],'all'),'MaxKalmanError',max(abs(actual(:,4:6)-expected(:,4:6)),[],'all'));
-save(fullfile(root,'tests','embedded_estimator_comparison.mat'),'u','actual','expected','result');disp(result);
+save(fullfile(folder,'embedded_estimator_comparison.mat'),'u','actual','expected','result');disp(result);
 assert(result.MaxAttitudeErrorRad<single(3e-6)&&result.MaxKalmanError<single(3e-6),'official:EmbeddedEstimatorMismatch','Embedded estimator differs from original C++.');
 end
 function op=wire(a,b),op=struct('op','connect','target',[a ' -> ' b]);end

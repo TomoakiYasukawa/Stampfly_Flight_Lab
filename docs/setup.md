@@ -1,8 +1,8 @@
 # セットアップとSimulink画面からの書き込み
 
-現行機体は `StampFly_IMU400.slx`、ログ受信機は `M5Stamp_IMU_Rx.slx` です。[README](../README.md)の手順を、設定画面ごとに補足します。
+現行機体は `Stampfly_Tx.slx`、ログ受信機は `M5Stamp_Rx.slx` です。[README](../README.md)の手順を、設定画面ごとに補足します。
 
-**現在の1802は落下調査のUSB机上診断版で、実飛行確認は未完了です。** 以下の設定・ビルド手順は使えますが、飛行再開の確認ではありません。[調査結果と保存版](history/horizontal_trials/20261017_fall_review.md)を確認してください。
+Revision 1804ではユーザーから安定飛行の報告を得ています。最新の書き込み・USB診断と、その後の名称整理の確認範囲は[履歴](history/README.md)を参照してください。
 
 ## 機体と送信機の準備
 
@@ -35,7 +35,7 @@ JoyStickの更新が必要な場合は[M5Stack公式ファームウェアガイ�
 
 ## モデル設定
 
-MATLABで **`StampFly_Official.prj`** を開き、機体モデルを開いて **Ctrl+D**。続いて **Ctrl+E（モデル設定）** を開きます。
+MATLABで **`StampFly_Lab.prj`** を開き、機体モデルを開いて **Ctrl+D**。続いて **Ctrl+E（モデル設定）** を開きます。
 
 | 設定画面 | 機体 | ログ受信機 |
 |---|---|---|
@@ -52,7 +52,7 @@ MATLABで **`StampFly_Official.prj`** を開き、機体モデルを開いて **
 
 ## ビルドと展開
 
-まず **Build action = Build**、保存、**［アプリ］→［Embedded Coder］→［Cコード］→［ビルド］（Ctrl+B）** で実行形式を作ります。ビルドログに表示される出力先で `StampFly_IMU400.bin` の生成を確認してください。生成コードとキャッシュは通常`build/`へ保存されます。
+まず **Build action = Build**、保存、**［アプリ］→［Embedded Coder］→［Cコード］→［ビルド］（Ctrl+B）** で実行形式を作ります。ビルドログに表示される出力先で `Stampfly_Tx.bin` の生成を確認してください。生成コードとキャッシュは通常`build/`へ保存されます。
 
 書き込みは、機体のバッテリー・プロペラを外し、USB接続した状態で行います。
 

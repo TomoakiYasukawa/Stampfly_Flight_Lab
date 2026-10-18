@@ -1,7 +1,0 @@
-{
-  "Passed": true,
-  "BoundedRepeatedReadsAccepted": true,
-  "ReadFailureRejectedImmediately": true,
-  "StaleGyroRejected": true,
-  "AssistCanEngage": true
-}

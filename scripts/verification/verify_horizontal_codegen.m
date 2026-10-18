@@ -7,7 +7,7 @@ if ~isfolder(folder),mkdir(folder);end
 addpath(folder);[flow,inertial,range,context,~,control]=horizontal.fixture();manual=zeros(2,1,'single');
 cfg=coder.config('mex');cfg.GenerateReport=true;
 codegen('-config',cfg,'horizontal_codegen_step','-args',{flow,inertial,range,context,manual,control,false}, ...
-    '-d',folder,'-o','horizontal_codegen_step_mex');
+    '-d',folder,'-o',fullfile(folder,'horizontal_codegen_step_mex'));
 clear horizontal_codegen_step horizontal_codegen_step_mex
 duration=30;n=duration*400;reference=zeros(40,n,'single');generated=reference;
 totals=int64([4294967000;4294967000]);
@@ -35,6 +35,15 @@ end
 error=max(abs(double(reference)-double(generated)),[],2);
 % 時間改善前の保存結果と比較し、400 Hzの数値と状態が変わらないことも確認します。
 goldenFile=fullfile(root,'build','horizontal_control','timing_before','golden_codegen_comparison.mat');
+if ~isfile(goldenFile)
+    baseline=fullfile(root,'tests','reference','horizontal_timing_baseline.zip');
+    if isfile(baseline)
+        folder=fullfile(root,'build','history','timing_baseline');
+        if ~isfolder(folder),mkdir(folder);end
+        unzip(baseline,folder);
+        goldenFile=fullfile(folder,'build','horizontal_control','timing_before','golden_codegen_comparison.mat');
+    end
+end
 goldenCompared=false;goldenError=0;
 if isfile(goldenFile)
     golden=load(goldenFile,'reference');
@@ -51,7 +60,7 @@ save(fullfile(folder,'comparison.mat'),'reference','generated','error');
 report=struct('Passed',true,'Samples',n,'DurationS',duration,'ExactStateMatch',true, ...
     'MaximumError',max(error),'Errors40',error,'GeneratedMEXExecuted',true,'ESP32PILExecuted',false, ...
     'ComparedWithBeforeTimingAdjustment',goldenCompared,'MaximumBeforeAfterError',goldenError);
-fid=fopen(fullfile(root,'docs','horizontal_codegen_verification.json'),'w','n','UTF-8');assert(fid>=0);
+fid=fopen(stampfly_report_file('docs/horizontal_codegen_verification.json'),'w','n','UTF-8');assert(fid>=0);
 fprintf(fid,'%s\n',jsonencode(report,'PrettyPrint',true));fclose(fid);
 fprintf('HORIZONTAL_GENERATED_CODE_VERIFICATION_PASSED\n');
 end

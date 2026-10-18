@@ -17,15 +17,21 @@ sys.stdout.reconfigure(encoding="utf-8")
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", default="COM4")
 parser.add_argument("--device", choices=("aircraft", "receiver"), default="aircraft")
+parser.add_argument("--expected-mac", default=None,
+                    help="USB serial/MAC of your own device; defaults to the recorded development device.")
 parser.add_argument("--seconds", type=float, default=15)
 parser.add_argument("--record-stem", default="imu")
-parser.add_argument("--expected-revision", type=int, default=1701)
+parser.add_argument("--expected-revision", type=int, default=1804)
+parser.add_argument("--expected-horizontal-revision", type=int, default=None,
+                    help="Expected SFIH revision when it differs from SFIX/SFIY.")
 parser.add_argument("--horizontal", action="store_true")
 parser.add_argument("--deployment-stem", default=None)
 parser.add_argument("--reset", action="store_true", help="Reset the USB-only bench device before capture; no firmware is written.")
 parser.add_argument("--stationary-bench", action="store_true", help="Check the confirmed level, stationary bench condition separately from packet integrity.")
 parser.add_argument("--input-file", default=None, help="Re-analyse saved USB data without connecting to hardware.")
 args = parser.parse_args()
+if args.expected_horizontal_revision is not None and not args.horizontal:
+    parser.error("--expected-horizontal-revision requires --horizontal.")
 if not re.fullmatch(r"[a-z][a-z0-9_]*", args.record_stem):
     raise ValueError("Record stem must contain only lowercase letters, digits and underscores.")
 deployment_stem = args.deployment_stem or args.record_stem
@@ -35,6 +41,8 @@ root = Path(__file__).resolve().parents[1]
 if args.seconds <= 0 or args.seconds > 60:
     raise ValueError("Capture must be between 0 and 60 seconds.")
 expected_mac = {"aircraft": "70:AF:09:DF:A6:C4", "receiver": "10:51:DB:55:A1:60"}[args.device]
+if args.expected_mac:
+    expected_mac = args.expected_mac.upper()
 devices = [p for p in list_ports.comports() if p.device == args.port
            and (p.serial_number or "").upper() == expected_mac]
 if not args.input_file and len(devices) != 1:
@@ -42,7 +50,7 @@ if not args.input_file and len(devices) != 1:
 reset_transcript = ""
 if args.reset and not args.input_file:
     # 電池・プロペラを外した確認済みのUSB机上試験。読み出しと再起動だけ。
-    result = subprocess.run([str(root / "tools" / "esptool.exe"), "--chip", "esp32s3",
+    result = subprocess.run([sys.executable, "-m", "esptool", "--chip", "esp32s3",
                              "--port", args.port, "--after", "watchdog_reset", "chip_id"],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
     reset_transcript = result.stdout.decode("utf-8", errors="replace")
@@ -103,6 +111,10 @@ if args.horizontal:
     frames["SFIH"] = 0
 bad = {key: 0 for key in frames}
 revisions, builds, modes = set(), set(), set()
+revisions_by_packet = {name: set() for name in frames if name != "SFI8"}
+expected_revisions = {name: args.expected_horizontal_revision
+                      if name == "SFIH" and args.expected_horizontal_revision is not None
+                      else args.expected_revision for name in revisions_by_packet}
 times = []
 max_pwm = 0
 reserved_zero = True
@@ -158,7 +170,9 @@ for magic, length in packets:
                 vertical_velocities.append(encoded_velocity / 1000)
         else:
             builds.add(struct.unpack_from("<I", packet, 10)[0])
-            revisions.add(struct.unpack_from("<I", packet, 14)[0])
+            revision = struct.unpack_from("<I", packet, 14)[0]
+            revisions.add(revision)
+            revisions_by_packet[magic.decode()].add(revision)
         build_offset = 176 if magic == b"SFI8" else 10
         packet_keys[magic.decode()].add((struct.unpack_from("<H", packet, 4)[0],
                                         struct.unpack_from("<I", packet, 6)[0],
@@ -228,6 +242,8 @@ report = {
     "Device": args.device, "Port": args.port, "BaudRate": 921600, "CaptureSeconds": args.seconds,
     "CapturedBytes": len(data), "Frames": frames, "CRCErrors": bad,
     "BuildIDs": sorted(builds), "FirmwareRevisions": sorted(revisions), "ObservedModes": sorted(modes),
+    "FirmwareRevisionsByPacket": {name: sorted(values) for name, values in revisions_by_packet.items()},
+    "ExpectedFirmwareRevisionsByPacket": expected_revisions,
     "ReservedFieldsZero": reserved_zero, "MaximumAppliedPWMCount": max_pwm,
     "FiniteFilteredSensorsAndQuaternion": finite_estimates,
     "FiniteAltitudeAndVelocity": finite_altitude and bool(heights) and bool(vertical_velocities),
@@ -253,7 +269,8 @@ report = {
     "FrameKeysMatchedToBase": {key: len(base_keys & keys) for key, keys in packet_keys.items()},
     "PassedScope": "USB packet integrity and zero waiting outputs only; actual boot, stationary health and timing have separate results",
     "Passed": all(count > 0 for count in frames.values()) and not any(bad.values())
-        and revisions == {args.expected_revision} and builds == {1401} and modes <= {0, 1, 3}
+        and all(revisions_by_packet[name] == {value} for name, value in expected_revisions.items())
+        and builds == {1401} and modes <= {0, 1, 3}
         and max_pwm == 0 and reserved_zero and finite_estimates and unit_quaternions
         and finite_altitude and finite_bias and finite_control_diagnostics
         and bool(heights) and bool(vertical_velocities) and bool(biases),
@@ -309,10 +326,12 @@ if args.horizontal:
         len(base_keys & keys) >= len(keys) - 2 for keys in packet_keys.values())
 report["BenchChecksPassed"] = report["Passed"] and (not args.reset or boot_captured) and (
     not args.stationary_bench or report["StationaryBenchHealth"]["Passed"]) and timing["AllObservedTasksWithinBudget"]
-(root / "docs" / f"{args.record_stem}_usb_startup.json").write_text(
+report_folder = root / "build" / "reports"
+report_folder.mkdir(parents=True, exist_ok=True)
+(report_folder / f"{args.record_stem}_usb_startup.json").write_text(
     json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=2), flush=True)
-deployment_file = root / "docs" / f"{deployment_stem}_{args.device}_deployment.json"
+deployment_file = report_folder / f"{deployment_stem}_{args.device}_deployment.json"
 if deployment_file.is_file() and not args.input_file:
     deployment = json.loads(deployment_file.read_text(encoding="utf-8"))
     deployment["usb_startup"] = report

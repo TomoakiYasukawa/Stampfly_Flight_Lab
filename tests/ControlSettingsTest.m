@@ -7,7 +7,6 @@ classdef ControlSettingsTest < matlab.unittest.TestCase
         function loadModel(testCase)
             root=fileparts(fileparts(mfilename('fullpath')));
             addpath(fullfile(root,'config'));configure_stampfly_project();
-            ensure_simulink_toolkit();assert(library.settingsLookup().gatePass);
             testCase.Settings=imu.ControlSettings.read();
             testCase.addTeardown(@()testCase.restore());
         end

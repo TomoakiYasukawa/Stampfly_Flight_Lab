@@ -3,7 +3,7 @@ function report=verify_horizontal_closed_loop()
 % 実機同定前のモデルです。数値安定性、符号、指令・欠測時の動作を確認し、
 % 実飛行での精度と処理時間は別に確認します。
 root=stampfly_project_root();addpath(fullfile(root,'tests'));horizontaltest.init();
-folder=fullfile(root,'build','horizontal_control','harnesses');addpath(folder);
+folder=fullfile(root,'tests','models');addpath(folder);
 open_system(fullfile(folder,'HorizontalClosedLoop.slx'));
 t=(0:.0025:25)';n=numel(t);cases=struct;
 names={'HoldDisturbance','MoveBrakeHold','YawAndHold','LossAndRecovery'};
@@ -61,7 +61,7 @@ for c=1:numel(names)
 end
 report=struct('Passed',true,'RealPIDCount',7,'RangeDelayS',.035,'QuantizedFlow',true, ...
     'UsesTrueAttitudeAndAltitude',true,'PlantCoefficientsCalibrated',false,'Cases',cases,'PhysicalFlightTested',false);
-writeJSON(fullfile(root,'docs','horizontal_closed_loop_verification.json'),report);
+writeJSON(stampfly_report_file('docs/horizontal_closed_loop_verification.json'),report);
 fprintf('HORIZONTAL_CLOSED_LOOP_VERIFICATION_PASSED\n');
 end
 function data=samples(signal)

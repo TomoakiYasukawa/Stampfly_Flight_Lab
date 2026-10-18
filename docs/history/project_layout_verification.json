@@ -1,8 +1,0 @@
-{
-  "FlightModelCompilePassed": true,
-  "ReceiverModelCompilePassed": true,
-  "PackageRootsResolved": true,
-  "AppXMLAtRoot": true,
-  "CacheFolder": "build/cache",
-  "CodeGenFolder": "build/codegen"
-}
